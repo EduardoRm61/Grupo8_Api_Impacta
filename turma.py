@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-
+import dadosPro 
 app = Flask(__name__)
 
 dadosTurma = {"Turma":[
@@ -12,10 +12,19 @@ dadosTurma = {"Turma":[
 
 @app.route("/Turma", methods=["GET"])           #mesmo endpoint
 def listarTurma():
-    return jsonify (dadosTurma)
+    return jsonify(dadosTurma)
 
-@app.route("/Turma", methods=["GET"])           #mesmo endpoint
-def procurarTurma():
+@app.route("/Turma: <Id:int>")
+
+@app.route("/Turma/<int:id_tuma>", methods=["GET"])           #mesmo endpoint
+def procurarTurma(id_turma):
+    try:
+        
 
 
-@app.route("/Turma.criar")
+
+@app.route("/Turma.criar", methods=["POST"])
+def criarTurma():
+    novo_dict = request.jsonify
+
+
