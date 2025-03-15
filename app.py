@@ -37,13 +37,23 @@ def ProcurarTurmaPorId(id_turma):
             raise TurmaNaoIdentificada()
 
 def CriarNovaTurma(nv_dict):
-     dadosTurma["Turma"].append(nv_dict)
-     return
+    dadosTurma["Turma"].append(nv_dict)
+    return
 
 def ListarTurma():
-     return dadosTurma["Turma"]
-    
-  
+    return dadosTurma["Turma"]
+
+def DeletarTurma():
+    dadosTurma["Turma"] = []
+
+def DeletarTurmaPorId(id_turma):
+    turmas = dadosTurma["Turma"]
+    for turma in turmas:
+          if turma["Id"] == id_turma:
+               turmas.remove(turma)
+               return 
+    raise TurmaNaoIdentificada()
+
 #Criando as rotas:
 
 @app.route("/Turma",methods=["GET"])           #Conferindo lista de turmas
@@ -67,6 +77,19 @@ def AddTurma():
      ListarTurma()
      return 
 
+@app.route("/Turma/Resetar", methods=["DELETE"])
+def ResetarTodaTurma():
+     DeletarTurma()
+     return "Resetado"
+
+@app.route("/Turma/Resetar/<int:id_turma>")
+def ResetarTurmaId(id_turma):
+     try:
+          DeletarTurmaPorId(id_turma)
+          return jsonify(dadosTurma["Turma"]), 200
+     except TurmaNaoIdentificada as trm:
+          return jsonify({"Erro:": str(trm)}), 404
+     
 
 if __name__ == '__main__':
         app.run(host = 'localhost', port = 5002, debug = True)

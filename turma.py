@@ -12,6 +12,7 @@ dadosTurma = {"Turma":[
     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 15}     
 ]}
 
+dadosTurma.remove
  # Criando Classes de excessões 
 
 class ProfessorNaoIdentificado(Exception):
