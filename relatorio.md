@@ -20,5 +20,5 @@ resposta da Rafaela "quero fazer tudo porque quero aprender tudo"
 Até o momento presto auxílio para ela na maioria de comandos do git, se oque ela está fazendo está no caminho certo e um pouco de .py
 &nbsp;
 dia 16/03 foi marcado reunião via Meet ou Discord (veremos na hora se cada um consegue entrar) para juntarmos partes, resolver problemas e discutir o andamento do projeto
-
+&nbsp;
 Preocupação atual, não conseguir fazer o projeto usando commit e só sar assistência para quem está commitando
