@@ -22,3 +22,13 @@ Até o momento presto auxílio para ela na maioria de comandos do git, se oque e
 dia 16/03 foi marcado reunião via Meet ou Discord (veremos na hora se cada um consegue entrar) para juntarmos partes, resolver problemas e discutir o andamento do projeto
 &nbsp;
 Preocupação atual, não conseguir fazer o projeto usando commit e só sar assistência para quem está commitando
+
+- 15/03
+
+Problemas persistente em ativar venv - path estava correto  mas não ativava com comando <style = "color>source venv/Scripts/activate<> no bash. O .\venv\Scripts\Activate dava erro (commando not found, algo assim) e o comando do powerShell tamb dava erros
+Depois de muitas tentativas tentei desisntalar mas o deactivate não is, depois tive que deletar na mão.
+Reinstalei o venv, e rodou
+Ainda alguns comandos não funcionam como deveriam
+Troquei file para pasta correta
+&nbsp;
+Iniciei código junto a Rafaela - atualmente farei o 2° Get e Post
