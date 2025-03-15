@@ -35,12 +35,21 @@ def ProcurarTurmaPorId(id_turma):
                 if dict['Id'] == id_turma:
                     return dict
             raise TurmaNaoIdentificada()
-                
 
+def CriarNovaTurma(nv_dict):
+     dadosTurma["Turma"].append(nv_dict)
+     return
+
+def ListarTurma():
+     return dadosTurma["Turma"]
+    
+  
 #Criando as rotas:
+
 @app.route("/Turma",methods=["GET"])           #Conferindo lista de turmas
-def listarTurma():
-    return jsonify(dadosTurma)
+def listar_turma():
+    Turmas = ListarTurma()
+    return jsonify(Turmas)
 
 @app.route("/Turma/<int:id_turma>", methods=["GET"])           #Procurar turma específica
 def procurarTurma(id_turma):
@@ -50,6 +59,14 @@ def procurarTurma(id_turma):
      except TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 402
 
+@app.route("/Turma", methods=["POST"])
+def AddTurma():
+     nv_dict = request.json
+     nv_dict['Id'] = int(nv_dict['Id'])
+     CriarNovaTurma(nv_dict)
+     ListarTurma()
+     return 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
+if __name__ == '__main__':
+        app.run(host = 'localhost', port = 5002, debug = True)
