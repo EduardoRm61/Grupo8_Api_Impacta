@@ -1,8 +1,17 @@
 from flask import Flask, jsonify
 
+dados = {"alunos":[], 
+        "professores":[
+            {"ide": 10, "nome": "Caio", "idade": 27, "matéria": "Dev API E Micros", "obsercacoes": "Contato com aulo via Chat"}
+            {"ide": 11, "nome": "Odair", "idade": 30, "matéria": "- DevOps", "obsercacoes": None }
+            ]
+        }
+
 app = Flask(__name__)
+
 @app.route('/professores', methods=['GET'])
 def listar_professores():
+    
     return jsonify(professores), 200
 
 @app.route('/professores', methods=['POST'])
