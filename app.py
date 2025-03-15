@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 
 dados = {"alunos":[], 
         "professores":[
-            {"ide": 10, "nome": "Caio", "idade": 27, "matéria": "Dev API E Micros", "obsercacoes": "Contato com aulo via Chat"}
+            {"ide": 10, "nome": "Caio", "idade": 27, "matéria": "Dev API E Micros", "obsercacoes": "Contato com aulo via Chat"},     #lembrar da vírula
             {"ide": 11, "nome": "Odair", "idade": 30, "matéria": "- DevOps", "obsercacoes": None }
             ]
         }
@@ -12,7 +12,24 @@ app = Flask(__name__)
 @app.route('/professores', methods=['GET'])
 def listar_professores():
     
-    return jsonify(professores), 200
+    ''' Retorno dos dados da list/dict professor'''
+    
+    return jsonify("mensagem": "Dados gerais do professor ": professores), 200
+
+
+@app.route("/professores/<int:id>", methods=["GET"])
+
+def pesquisa_professor(id):
+        
+    '''Retorno do dono dos dados id/pk do dict professor'''
+            
+    for professor in dados["professores"]:     #lembrar - chamar nome da lista e dentro do colchete o dado a ser acessado, neste caso dict professores
+        print(professor)
+        if professor["id"] == id:
+            return jsonify("mensagem": "Dados do professor": professor), 200
+        return jsonify({"mensagem": "Not Found - Professor inexistente"}), 404
+
+        
 
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
