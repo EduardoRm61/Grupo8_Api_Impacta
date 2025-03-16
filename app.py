@@ -68,7 +68,7 @@ def DeletarTurmaPorId(id_turma):
     for indice, turma in enumerate(turmas):
         if turma["Id"] == id_turma:
             turmas.pop(indice)
-            return 
+            return {"Mensagem": "Turma deletada com sucesso."}
     raise TurmaNaoIdentificada()
 
 
@@ -167,7 +167,7 @@ def ResetarTodaTurma():
      DeletarTurma()
      return "Resetado"
 
-@app.route("/Turma/Resetar/<int:id_turma>")
+@app.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
 def ResetarTurmaId(id_turma):
      try:
           DeletarTurmaPorId(id_turma)
