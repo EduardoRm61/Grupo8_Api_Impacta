@@ -2,8 +2,8 @@ from flask import Flask, jsonify, request
 
 
 professores = {"professor":[
-            {"ide": 10, "nome": "Caio", "idade": 27, "materia": "Dev API E Micros", "observacoe": "Contato com aulo via Chat"},     #lembrar da vírula
-            {"ide": 11, "nome": "Odair", "idade": 30, "matéria": "- DevOps", "obsercacoes": None }
+            {"id": 10, "nome": "Caio", "idade": 27, "materia": "Dev API E Micros", "observacoe": "Contato com aulo via Chat"},     #lembrar da vírula
+            {"id": 11, "nome": "Odair", "idade": 30, "matéria": "- DevOps", "obsercacoes": None }
             ]
         }
 
