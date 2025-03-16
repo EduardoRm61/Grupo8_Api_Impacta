@@ -10,7 +10,7 @@ class Teste_GET_Professor(unittest.TestCase):
         self.professores_iniciais = {
             "professor": [
                 {"id": 10, "nome": "Caio", "idade": 27, "materia": "Dev API E Micros", "observacoe": "Contato com aluno via Chat"},
-                {"id": 11, "nome": "Odair", "idade": 30, "materia": "DevOps", "observacoe": None}
+                {"id": 11, "nome": "Odair", "idade": 30, "materia": "DevOps", "observacoe": None}       #cuiado com escrita, acentuação, podem sar erro
             ]
         }
         app.config['PROFESSORES'] = self.professores_iniciais.copy()

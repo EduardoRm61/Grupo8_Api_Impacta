@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 
 professores = {"professor":[
             {"id": 10, "nome": "Caio", "idade": 27, "materia": "Dev API E Micros", "observacoe": "Contato com aluno via Chat"},     #lembrar da vírula
-            {"id": 11, "nome": "Odair", "idade": 30, "matéria": "- DevOps", "obsercacoes": None }
+            {"id": 11, "nome": "Odair", "idade": 30, "materia": "DevOps", "observacoe": None }   #correção do nome - Dev para apenas Dev = cuiaddo, dá erro
             ]
         }
 
