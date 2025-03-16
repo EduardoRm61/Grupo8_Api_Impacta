@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 
 professores = {"professor":[
-            {"ide": 10, "nome": "Caio", "idade": 27, "matéria": "Dev API E Micros", "obsercacoes": "Contato com aulo via Chat"},     #lembrar da vírula
+            {"ide": 10, "nome": "Caio", "idade": 27, "materia": "Dev API E Micros", "observacoe": "Contato com aulo via Chat"},     #lembrar da vírula
             {"ide": 11, "nome": "Odair", "idade": 30, "matéria": "- DevOps", "obsercacoes": None }
             ]
         }
@@ -27,12 +27,15 @@ def pesquisa_professor(id):
     for professor in professores["professor"]:     #lembrar - chamar nome da lista e dentro do colchete o dado a ser acessado, neste caso dict professores
         if professor["id"] == id:
             return jsonify(professor), 200
-        return jsonify({"mensagem": "Not Found - Professor inexistente"}), 404
+        return jsonify({"Not Found - Professor inexistente"}), 404
 
         
 #observar cod no comentário a baixo
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
+    
+    '''Adição de novo professor'''
+    
     professores = request.json
     novo_professor = {
         'id': len(professores) +1,
@@ -44,7 +47,9 @@ def cadastrar_professores():
 ''' 
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
+
    ''''Cadastra um novo professor''''
+   
     novo_professor = request.json
 
     if not novo_professor or "id" not in novo_professor:
@@ -64,13 +69,19 @@ def cadastrar_professores():
     
 @app.route('/profesores/<int:id>', methods=['PUT'])
 def atualizar_professor(id):
+    
+    ''' Atualização dos dados do professor'''
+    
     professores = request.json
     for professor in professores:
         if professor['id'] == id:
             professor['nome'] = professores.get('nome', professor['nome'])
-            professor['disciplina'] = professores.get('disciplina', professor['disciplina'])
+            professor['idade'] = professores.get('idade', professor['idade'])
+            professor['materia'] = professores.get('materia', professor['materia'])
+            professor['obsercacoes'] = professores.get('obsercacoes', professor['obsercacoes'])
             return jsonify(professor), 200
-    return jsonify({'Professor não encontrado'}), 404
+    return jsonify({"Not Found - Professor inexistente"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
