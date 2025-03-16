@@ -29,9 +29,19 @@ class TurmaExistente(Exception):
         super().__init__(self.msg)
 
 class CadastroDeTurmaFalhado(Exception):
-     def __init__(self, msg="Erro, Id turma e Id Professor incorretos ."):
+     def __init__(self, msg="Erro, Id turma e Id Professor incorretos!"):
           self.msg = msg
           super().__init__(self.msg)
+
+class AtualizacaoTurma(Exception):
+    def __init__(self, msg="Erro, Não foi possível atualizar os dados da turma! Reveja os campos e preencha corretamente"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class ValorBool(Exception):
+    def __init__(self, msg="Erro, valor Booleano incorreto, deigite True ou False"):
+        self.msg = msg
+        super().__init__(self.msg)
 
 #Criando fuções para as requisições:
 
@@ -54,17 +64,19 @@ def DeletarTurma():
 
 def DeletarTurmaPorId(id_turma):
     turmas = dadosTurma["Turma"]
-    for turma in turmas:
-          if turma["Id"] == id_turma:
-               turmas.remove(turma)
-               return 
+
+    for indice, turma in enumerate(turmas):
+        if turma["Id"] == id_turma:
+            turmas.pop(indice)
+            return 
     raise TurmaNaoIdentificada()
-          
+
+
 def ProfessorExistente(Id_professor):
     for professor in dadosProfessor["Professor"]:
         if professor["Id"] == Id_professor:
             return True  
-    return False  
+    return False
 
 def TurmaJaExiste(Id_turma):
     for turma in dadosTurma["Turma"]:
@@ -72,14 +84,49 @@ def TurmaJaExiste(Id_turma):
             return True
     return False
 
-#Criando as rotas:
+def ValoorBuleano(valorbool):
+    if valorbool is True or valorbool is False:
+        return True
+    return False
 
-@app.route("/Turma",methods=["GET"])           #Conferindo lista de turmas
+def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
+    nv_dados = dadosTurma["Turma"]
+    try:
+        for turma in nv_dados:
+            if turma["Id"] == Id_turma:
+                if not ProfessorExistente(Id_Pro):
+                    return ({
+                        "Erro": "Requisição inválida",
+                        "Descrição": "Id do Professor inexistente"
+                    }), 400
+                if not ValoorBuleano(Ativa):
+                    return ({
+                        "Erro": "Requisição inválida",
+                        "Descricao": "Valor de Ativa incorreto. Digite True ou False"
+                    }), 400
+                turma["Descrição"] = Descricao
+                turma["Professor Id"] = Id_Pro
+                turma["Ativa"] = Ativa
+                return {"Detalhes":"Turma atualizada com seucesso!"}, 200
+        return ({
+            "Erro": "Requisição inválida",
+            "Descrição": "Id da turma inexistente"
+        }), 400
+    except Exception as e:
+        return({
+            "Erro": "Não foi possível fazer a requisição",
+            "Descrição": str(e)
+        }), 500
+                
+ 
+#Criando as rotas, lembrando que a função jsonify só pode ser usada nas rotas:
+
+@app.route("/Turma",methods=["GET"])                              
 def listar_turma():
     Turmas = ListarTurma()
     return jsonify(Turmas)
 
-@app.route("/Turma/<int:id_turma>", methods=["GET"])           #Procurar turma específica
+@app.route("/Turma/<int:id_turma>", methods=["GET"])            
 def procurarTurma(id_turma):
      try:
         dados = ProcurarTurmaPorId(id_turma)
@@ -113,9 +160,7 @@ def AddTurma():
          return jsonify({
             "Erro": "Falha ao cadastrar turma",
             "detalhes": str(cdtf)
-         }), 400
-         
-
+         }), 400    
 
 @app.route("/Turma/Resetar", methods=["DELETE"])
 def ResetarTodaTurma():
@@ -129,6 +174,43 @@ def ResetarTurmaId(id_turma):
           return jsonify(dadosTurma["Turma"]), 200
      except TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 404
+     
+@app.route("/Turma/Alterar/<int:id_turma>", methods=["PUT"])
+def AlterarInfo(id_turma):
+    dados = request.json
+    
+    #dict['id'] = int (dict['id'])
+
+    if not dados:
+        return jsonify({
+            "Erro": "Requisição inválida",
+            "Descrição": "O corpo da requisição está vazio, preencha todos os campos"
+        }), 400
+    
+    if "Descrição" not in dados:
+        return jsonify({
+            "Erro": "Não foi possível fazer a requisição",
+            "Dscrição": "O campo Descrição da turma é obrigatório ser preenchido"
+        }), 400
+    
+    if "Ativa" not in dados:
+        return jsonify({
+            "Erro": "Não foi possível fazer a requisição",
+            "Descrição": "O campo Ativa é obrigatório ser preenchido "
+        }), 400
+    
+    if "Professor Id" not in dados:
+        return jsonify({
+            "Erro": "Não foi possível fazer a requisição",
+            "Descrição": "O campo Professor Id é obrigatório se preechido"
+        }), 400
+    
+    # Chama a função AlterarInformacoes e retorna a resposta
+    resultado, status_code = AlterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
+    return jsonify(resultado), status_code      #Aqui eu quase chorei
+
+  
+     
 
 if __name__ == '__main__':
         app.run(host = 'localhost', port = 5002, debug = True)
