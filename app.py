@@ -18,6 +18,10 @@ class TurmaNaoIdentificada(Exception):
         self.msg = msg
         super().__init__(self.msg)
     
+
+#teste
+
+
 class ProfessorNaoIdentificado(Exception):
     def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
         self.msg = msg
