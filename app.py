@@ -84,6 +84,15 @@ def atualizar_professor(id):
             return jsonify(professor), 200
     return jsonify({"Not Found - Professor inexistente"}), 404
 
+@app.route("/professsores/<int:id>", methods = ["DELETE"])
+
+def delete_professor(id):
+    for professor in professores:
+        if professor["id"] == id:
+            professores.remove(professor)
+            return jsonify(professor)
+    return jsonify("Not Found - Professor inexistente")
+
 if __name__ == '__main__':
     app.run(debug=True)
     
