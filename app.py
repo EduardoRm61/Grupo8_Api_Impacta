@@ -19,7 +19,7 @@ class TurmaNaoIdentificada(Exception):
         super().__init__(self.msg)
     
 class ProfessorNaoIdentificado(Exception):
-    def __init__(self,msg="Erro, Professor não indentificado ou inexistente!"):
+    def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
         self.msg = msg
         super().__init__(self.msg)
 
@@ -27,6 +27,11 @@ class TurmaExistente(Exception):
     def __init__(self, msg="Erro, Turma já existente!"):
         self.msg = msg
         super().__init__(self.msg)
+
+class CadastroDeTurmaFalhado(Exception):
+     def __init__(self, msg="Erro, Id turma e Id Professor incorretos ."):
+          self.msg = msg
+          super().__init__(self.msg)
 
 #Criando fuções para as requisições:
 
@@ -46,6 +51,7 @@ def ListarTurma():
 def DeletarTurma():
     dadosTurma["Turma"] = []
 
+
 def DeletarTurmaPorId(id_turma):
     turmas = dadosTurma["Turma"]
     for turma in turmas:
@@ -53,6 +59,18 @@ def DeletarTurmaPorId(id_turma):
                turmas.remove(turma)
                return 
     raise TurmaNaoIdentificada()
+          
+def ProfessorExistente(Id_professor):
+    for professor in dadosProfessor["Professor"]:
+        if professor["Id"] == Id_professor:
+            return True  
+    return False  
+
+def TurmaJaExiste(Id_turma):
+    for turma in dadosTurma["Turma"]:
+        if turma["Id"] == Id_turma:
+            return True
+    return False
 
 #Criando as rotas:
 
@@ -71,11 +89,33 @@ def procurarTurma(id_turma):
 
 @app.route("/Turma", methods=["POST"])
 def AddTurma():
-     nv_dict = request.json
-     nv_dict['Id'] = int(nv_dict['Id'])
-     CriarNovaTurma(nv_dict)
-     ListarTurma()
-     return 
+    nv_dict = request.json
+    nv_dict['Id'] = int(nv_dict['Id'])
+    nv_dict['Professor Id'] = int(nv_dict['Professor Id'])
+
+    try:
+         
+        if not ProfessorExistente(nv_dict["Professor Id"]):
+            return jsonify({
+                "Erro": "Requisição inválida",
+                "Detalhes": "Id do Professor inexistente"
+            }), 400
+
+        if TurmaJaExiste(nv_dict["Id"]):
+            return jsonify({
+                "Erro": "Requisição inválida",
+                "Detalhes": "Id da Turma já existente"
+            }), 400
+        CriarNovaTurma(nv_dict)
+        return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
+    
+    except CadastroDeTurmaFalhado as cdtf:
+         return jsonify({
+            "Erro": "Falha ao cadastrar turma",
+            "detalhes": str(cdtf)
+         }), 400
+         
+
 
 @app.route("/Turma/Resetar", methods=["DELETE"])
 def ResetarTodaTurma():
@@ -89,7 +129,6 @@ def ResetarTurmaId(id_turma):
           return jsonify(dadosTurma["Turma"]), 200
      except TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 404
-     
 
 if __name__ == '__main__':
         app.run(host = 'localhost', port = 5002, debug = True)
