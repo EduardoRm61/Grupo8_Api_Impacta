@@ -35,6 +35,6 @@ class Teste_GET_Professor(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         data = response.get_json()
         self.assertIsNotNone("Not Found - Professor inexistente", data)
-        #não havia colocado NotNone
+        #não havia colocado NotNone - outra falha era retorno do app.py
 if __name__ == "__main__":
     unittest.main()
