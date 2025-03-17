@@ -1,4 +1,4 @@
-from flask import Flasck, jsonfy
+from flask import Flask, jsonfy
 
 app = Flask(__name__)
 
