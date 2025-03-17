@@ -123,7 +123,7 @@ def listar_alunos():
     return jsonify(Alunos)
 
 @app.route("/Auno/<int:id_aluno>", methods=["GET"])
-def encontrarAluno(id_aluno):
+def encontrar_aluno (id_aluno):
     try:
         dados = ProcurarAlunoPorId(id_aluno)
         return jsonify(dados)
@@ -131,10 +131,9 @@ def encontrarAluno(id_aluno):
         return jsonify({"ERRO": str(aln)}), 404
     
 @app.route("/Aluno", methods=["POST"])
-def AdicionarAluno():
+def criar_aluno():
     novo_dic = request.json
     novo_dic['Id'] = int(novo_dic['Id'])
-
     try:
         if not AlunoJaExiste(novo_dic["Id"]):
             return jsonify({
@@ -143,32 +142,13 @@ def AdicionarAluno():
             }), 400
         CriarNovoAluno(novo_dic)
         return jsonify({"Mensagem": "Aluno criado com sucesso!", "Aluno": novo_dic}), 201
-    
     except FalhaAoCadastrarAluno as fca:
         return jsonify({
             "ERRO": "Falha ao cadastrar novo aluno.",
             "Detalhes": str(fca)
         }), 400
 
-@app.route("/aluno/resetar", methods=["DELETE"])
-def ResetarAlunoId(id_aluno):
-    try:
-        ResetarAlunoId(id_aluno)
-        return jsonify(dadosAluno["Aluno"]), 200
-    except AlunoNaoEncontrado as ane:
-          return jsonify({"Erro:": str(ane)}), 404
-
-@app.route("/alunos/<int:idAluno>", methods=['PUT'])
-def updateAlunos(idAluno):
-    alunos = dict["alunos"]
-    for aluno in alunos:
-        if aluno['id'] == idAluno:
-            dados = request.json
-            aluno.update(dados)
-            return jsonify({"mensagem": "Aluno atualizado com sucesso!"})
-        else:
-            return jsonify({"ERRO": "Aluno não encontrado"})
-        
+  
 
 if __name__ == '__main__':
     app.run(debug=True)
