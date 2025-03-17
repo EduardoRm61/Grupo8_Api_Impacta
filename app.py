@@ -173,8 +173,15 @@ def atualizar_alunos(idAluno):
         return jsonify(resultado), 200
     except AlunoNaoEncontrado as ane:
         return jsonify({"erro": str(ane)}), 404
+    
+@app.route("/aluno/resetar/<int:id_aluno>", methods=["DELETE"])
+def resetar_aluno_Id(id_aluno):
+    try:
+        resetar_aluno_Id(id_aluno)
+        return jsonify(dadosAluno["Aluno"]), 200
+    except AlunoNaoEncontrado as ane:
+          return jsonify({"Erro:": str(ane)}), 404
 
-  
 
 if __name__ == '__main__':
     app.run(debug=True)
