@@ -68,18 +68,18 @@ def cadastrar_professores():
 
     return jsonify({"mensagem": "Created", "professor": novo_professor}), 201    #retorna novo professor 
     
-@app.route('/profesores/<int:id>', methods=['PUT'])
+@app.route('/professores/<int:id>', methods=['PUT'])
 def atualizar_professor(id):
     
     ''' Atualização dos dados do professor'''
     
-    professores = request.json
-    for professor in professores:
+    atualizado = request.json
+    for professor in professores["professor"]: #mesmo erro, não chamou chave
         if professor['id'] == id:
-            professor['nome'] = professores.get('nome', professor['nome'])
-            professor['idade'] = professores.get('idade', professor['idade'])
-            professor['materia'] = professores.get('materia', professor['materia'])
-            professor['obs'] = professores.get('obs', professor['obs'])
+            professor['nome'] = atualizado.get('nome', professor['nome'])
+            professor['idade'] = atualizado.get('idade', professor['idade'])
+            professor['materia'] = atualizado.get('materia', professor['materia'])
+            professor['obs'] = atualizado.get('obs', professor['obs'])
             return jsonify({"mensagem": "Atualizado", "professor": professor}), 200  #não retorna a lista, apenas os dados da chave professor
     return jsonify({"error": "Not Found - Professor inexistente"}), 404
 
