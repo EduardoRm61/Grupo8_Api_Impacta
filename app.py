@@ -28,7 +28,7 @@ def pesquisa_professor(id):
     for professor in professores["professor"]:     #lembrar - chamar nome da lista e dentro do colchete o dado a ser acessado, neste caso dict professores
         if professor["id"] == id:
             return jsonify(professor), 200
-        return jsonify({"Not Found - Professor inexistente"}), 404
+        return jsonify("Not Found - Professor inexistente"), 404
 
         
 #observar cod no comentário a baixo
@@ -55,7 +55,7 @@ def cadastrar_professores():
     novo_professor = request.json
 
     if not novo_professor or "id" not in novo_professor:
-        return jsonify({"Id obrigatório"}), 400
+        return jsonify("Id obrigatório"), 400
 
     '''pegar último, compara, adiciona 1 no índice, add o prof. Caso list vazia, inicia no índice 1 (trás pra frente)'''
     if professores["professor"]:
@@ -82,7 +82,7 @@ def atualizar_professor(id):
             professor['materia'] = professores.get('materia', professor['materia'])
             professor['obsercacoes'] = professores.get('obsercacoes', professor['obsercacoes'])
             return jsonify(professor), 200
-    return jsonify({"Not Found - Professor inexistente"}), 404
+    return jsonify("Not Found - Professor inexistente"), 404
 
 @app.route("/professsores/<int:id>", methods = ["DELETE"])
 

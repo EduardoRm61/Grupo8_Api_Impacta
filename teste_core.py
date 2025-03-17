@@ -28,6 +28,13 @@ class Teste_GET_Professor(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
         self.assertEqual(data, self.professores_iniciais["professor"][0])  #acessa índice 0 da lista (1° chave)
-
+        
+    def test_get_nonxistent_professor(self):
+        '''Vê o erro de Not found professor'''
+        response = self.app.get("/professores/13")
+        self.assertEqual(response.status_code, 404)
+        data = response.get_json()
+        self.assertIsNotNone("Not Found - Professor inexistente", data)
+        #não havia colocado NotNone
 if __name__ == "__main__":
     unittest.main()
