@@ -1,34 +1,14 @@
-from flask import Flask, jsonify
+from flask import Flasck, jsonfy
 
 app = Flask(__name__)
-@app.route('/professores', methods=['GET'])
-def listar_professores():
-    return jsonify(professores), 200
 
-@app.route('/professores', methods=['POST'])
-def cadastrar_professores():
-    dados = request.json
-    novo_professor = {
-        'id': len(professores) +1,
-        'nome':dados.get('nome')
+dadosAluno = {"Aluno":[
+    {"Id": 20, "Nome": "Thaina", "Idade": 28, "Turma_Id": 12, "Data de nascimento": 20/5/1996, "Nota do primeiro semestre": 8, "Nota do segundo semestre": 8, "Media Final": 8},
+    {"Id": 20, "Nome": "Eduardo", "Idade": 20, "Turma_Id": 14, "Data de nascimento": 1/1/2005, "Nota do primeiro semestre": 10, "Nota do segundo semestre": 10, "Media Final": 10}
+]}
 
-        
-    }
-    professores.append(novo_professor)
-    return jsonify(novo_professor), 201
-    
-@app.route('/profesores/<int:id>', methods=['PUT'])
-def atualizar_professor(id):
-        dados = request.json
-        for professor in professores:
-        f professor['id'] == id:
-        professor['nome'] = dados.get('nome', professor['nome'])
-        professor['disciplina'] = dados.get('disciplina', professor['disciplina'])
-        return jsonify(professor), 200
-    return jsonify({'erro': 'Professor não encontrado'}), 404
+dadosTurma = {"Turma":[
+    {"Id": 1, "Descrição": "Banco de dados", "professor_id": 500, "Ativa": False},
+    {"Id": 1, "Descrição": "Desenvolvimento Mobile", "professor_id": 555, "Ativa": True}
+]}
 
-
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
