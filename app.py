@@ -148,6 +148,32 @@ def criar_aluno():
             "Detalhes": str(fca)
         }), 400
 
+@app.route("/alunos/<int:idAluno>", methods=['PUT'])
+def atualizar_alunos(idAluno):
+    try:
+        novos_dados = request.json
+        nome = novos_dados.get("Nome")
+        idade = novos_dados.get("Idade")
+        id_professor = novos_dados.get("Id_professor")
+        data_nascimento = novos_dados.get("Data_nascimento")
+        nota_primeiro_semestre = novos_dados.get("Nota_primeiro_semestre")
+        nota_segundo_semestre = novos_dados.get("Nota_segundo_semestre")
+        media_final = novos_dados.get("Media_final")
+
+        resultado = AlterarInformacoes(
+            idAluno,
+            nome=nome,
+            idade=idade,
+            id_professor=id_professor,
+            data_nascimento=data_nascimento,
+            nota_primeiro_semestre=nota_primeiro_semestre,
+            nota_segundo_semestre=nota_segundo_semestre,
+            media_final=media_final
+        )
+        return jsonify(resultado), 200
+    except AlunoNaoEncontrado as ane:
+        return jsonify({"erro": str(ane)}), 404
+
   
 
 if __name__ == '__main__':
