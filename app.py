@@ -30,3 +30,12 @@ class AtualizacaoAlunoFalhou(Exception):
     def __init__(self, msg="Erro, Não foi possível atualizar os dados do aluno. Verifique os campos!"):
         self.msg = msg
         super().__init__(self.msg)
+
+# Aqui estão as funções auxiliares para as rotas
+
+def ListarAlunos():
+    return dados["alunos"]
+
+def DeletarTodosAlunos():
+    dados["alunos"] = []
+    return
