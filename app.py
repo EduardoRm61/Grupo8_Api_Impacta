@@ -92,6 +92,18 @@ def delete_professor(id):
             return jsonify({"mensagem": "Deletado", "professor": professor}) #apenas o prfessor deletado
     return jsonify({"error": "Not Found - Professor inexistente"}), 404
 
+@app.route("/professores/>int:id", methods = ["DELETE"])
+
+def delete_professor(id):
+
+    ''' Excluir professor do dict'''
+    
+    for professor in professore["professor"]:
+        if professor["id"] == id:
+            professores["professor"].remove(professor)
+            return jsonify({"mensagem": "Deletado", "professor": professor}), 200
+    return jsonify({"error": "Not Found - Professor inexistente"}), 404
+
 if __name__ == '__main__':
     app.run(debug=True)
     
