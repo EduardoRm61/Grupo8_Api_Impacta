@@ -13,6 +13,7 @@ app = Flask(__name__)
 # Rota para listar todos os professores
 @app.route('/professores', methods=['GET'])
 def listar_professores():
+    
     return jsonify({"mensagem": "Ok", "professor": professores["professor"]}), 200
 
 # Rota para buscar um professor por ID
@@ -35,14 +36,15 @@ def cadastrar_professores():
     # Gera um novo ID para o professor
     if professores["professor"]:
         ultimo_professor = professores["professor"][-1]
-        novo_id_prof = ultimo_professor["id"] + 1
+        novo_id_prof = ultimo_professor["id"] + 1                                       
     else:
         novo_id_prof = 1
 
-    novo_professor["id"] = novo_id_prof
+    
     professores["professor"].append(novo_professor)
 
     return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
+ 
 
 # Rota para atualizar um professor existente
 @app.route('/professores/<int:id>', methods=['PUT'])
@@ -67,4 +69,4 @@ def delete_professor(id):
     return jsonify({"error": "Not Found - Professor inexistente"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 

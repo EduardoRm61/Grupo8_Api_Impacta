@@ -96,6 +96,9 @@ class Teste_DELETE_Professor(TestBase):
         # Verifica se os outros professores ainda existem
         response = self.app.get('/professores/10')
         self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertNotIn(11, [p["id"] for p in data["professor"]])
+        
 
 if __name__ == "__main__":
     unittest.main()
