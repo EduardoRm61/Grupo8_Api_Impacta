@@ -99,10 +99,10 @@ def atualizar_professor(id):
     except Exception as e:
         return jsonify({"erro": f"Internal Server Error: {str(e)}"}) # Correção: Mensagem de erro mais clara
 
-@app.route("/professores/<int:id>", methods=["DELETE"])
-def delete_professor(id):
+@app.route("/professores/deletar/<int:id_professor>", methods=["DELETE"])
+def delete_professor(id_professor):
     try:
-        resultado = deletarProfessorPorId(id)
+        resultado = deletarProfessorPorId(id_professor)
         return jsonify(resultado), 200
     except ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
