@@ -25,6 +25,27 @@ class CadastroDeProfessorFalhado(Exception):
         super().__init__(self.msg)
 
 
+def ProcurarProfessorPorId(id_professor):
+    for professor in professores["professor"]:
+        if professor['id'] == id_professor:
+            return professor
+    raise ProfessorNaoIdentificado()
+
+def CriarNovoProfessor(nv_dict):
+    professores["professor"].append(nv_dict)
+    return
+
+def DeletarProfessorPorId(id_professor):
+    for indice, professor in enumerate(professores["professor"]):
+        if professor["id"] == id_professor:
+            professores["professor"].pop(indice)
+            return {"mensagem": "Professor deletado com sucesso."}
+    raise ProfessorNaoIdentificado()
+
+#tratamento de execeção foi atualizado para ficar mais próximo ao feito na turma
+#lembrando que, a segui, try - funções que dão certo, except - retono de erro
+#chamar função correspondente dentro da rota
+
 @app.route('/professores', methods=['GET'])
 def listar_professores():
     return jsonify({"mensagem": "Ok", "professor": professores["professor"]}), 200
