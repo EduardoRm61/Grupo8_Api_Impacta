@@ -1,31 +1,54 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
-@app.route('/professores', methods=['GET'])
-def listar_professores():
-    return jsonify(professores), 200
 
-@app.route('/professores', methods=['POST'])
-def cadastrar_professores():
-    dados = request.json
-    novo_professor = {
-        'id': len(professores) +1,
-        'nome':dados.get('nome')
+# Dados iniciais
+dados = {
+    "alunos": [
+    {"Id": 20, "Nome": "Thaina", "Idade": 28, "Turma_Id": 12, "Data de nascimento": 20/5/1996, "Nota do primeiro semestre": 8, "Nota do segundo semestre": 8, "Media Final": 8},
+    {"Id": 20, "Nome": "Eduardo", "Idade": 20, "Turma_Id": 14, "Data de nascimento": 1/1/2005, "Nota do primeiro semestre": 10, "Nota do segundo semestre": 10, "Media Final": 10}
 
-        
-    }
-    professores.append(novo_professor)
-    return jsonify(novo_professor), 201
-    
-    @app.route('/profesores/<int:id>', methods=['PUT'])
-    def atualizar_professor(id):
-        dados = request.json
-        for professor in professores:
-        f professor['id'] == id:
-            professor['nome'] = dados.get('nome', professor['nome'])
-            professor['disciplina'] = dados.get('disciplina', professor['disciplina'])
-            return jsonify(professor), 200
-    return jsonify({'erro': 'Professor não encontrado'}), 404
+    ],
+    "professores": []
+}
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+# Classes de exceções para possíveis erros no código
+
+class AlunoNaoIdentificado(Exception):
+    def __init__(self, msg="Erro, Aluno não identificado ou inexistente!"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class AlunoExistente(Exception):
+    def __init__(self, msg="Erro, Aluno já existente!"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class CadastroDeAlunoFalhado(Exception):
+    def __init__(self, msg="Erro, Falha ao cadastrar aluno. Verifique os dados!"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class AtualizacaoAlunoFalhou(Exception):
+    def __init__(self, msg="Erro, Não foi possível atualizar os dados do aluno. Verifique os campos!"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+# Aqui estão as funções auxiliares para as rotas:
+
+def ListarAlunos():
+    return dados["alunos"]
+
+def DeletarTodosAlunos():
+    dados["alunos"] = []
+    return
+
+
+
+# Aqui estão todas as rotas:
+
+@app.route("/alunos", methods=["GET"])
+def listar_alunos():
+    alunos = ListarAlunos()
+    return jsonify(alunos), 200
