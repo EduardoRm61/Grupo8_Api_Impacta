@@ -68,8 +68,32 @@ def AlunoJaExiste(id_aluno):
             return True
         return False
     
-
-
+def AlterarInformacoes(Id_aluno, Nome, Idade, Id_professor, Data_nascimento, Nota_primeiro_semestre, Nota_segundo_semestre, Media_final):
+    novos_dados = dados["Aluno"]
+    try:
+        for aluno in novos_dados:
+            if aluno["Id"] == Id_aluno:
+                if not AlunoJaExistente(Id_aluno):
+                    return({
+                        "ERRO": "Aluno já cadastrado com esse Id"
+                    }), 400
+            aluno["Nome"] = Nome
+            aluno["Idade"] = Idade
+            aluno["Id professor"] = Id_professor
+            aluno["Data_nascimento"] = Data_nascimento
+            aluno["Nota do Primeiro Semestre"] = Nota_primeiro_semestre
+            aluno["Nota do Segundo Semestre"] = Nota_segundo_semestre
+            aluno["Média Final"] = Media_final
+            return {"Aluno atualizado com sucesso!"}, 200
+        return({
+            "ERRO": "Este Id já está associado a um aluno."
+    }), 400 #400 ou 404?
+    except Exception as e:
+        return({
+            "ERRO": "Não é possível fazer essa requisição",
+            "Descrição": str(e)
+        })
+    
 
 # Aqui estão todas as rotas:
 
