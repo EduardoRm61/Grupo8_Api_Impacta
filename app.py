@@ -21,3 +21,12 @@ class AlunoExistente(Exception):
         self.msg = msg
         super().__init__(self.msg)
 
+class CadastroDeAlunoFalhado(Exception):
+    def __init__(self, msg="Erro, Falha ao cadastrar aluno. Verifique os dados!"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class AtualizacaoAlunoFalhou(Exception):
+    def __init__(self, msg="Erro, Não foi possível atualizar os dados do aluno. Verifique os campos!"):
+        self.msg = msg
+        super().__init__(self.msg)
