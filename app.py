@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request
+import requests
+import unittest
 
 app = Flask(__name__)
 
@@ -164,4 +166,9 @@ def resetar_aluno_Id(id_aluno):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host = 'localhost', port = 5002, debug=True)
+
+
+#########TESTES#################
+
+
