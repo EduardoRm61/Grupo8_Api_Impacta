@@ -11,6 +11,9 @@ dados = {
     "professores": []
 }
 
+
+# Classes de exceções para possíveis erros no código
+
 class AlunoNaoIdentificado(Exception):
     def __init__(self, msg="Erro, Aluno não identificado ou inexistente!"):
         self.msg = msg
@@ -31,7 +34,7 @@ class AtualizacaoAlunoFalhou(Exception):
         self.msg = msg
         super().__init__(self.msg)
 
-# Aqui estão as funções auxiliares para as rotas
+# Aqui estão as funções auxiliares para as rotas:
 
 def ListarAlunos():
     return dados["alunos"]
@@ -39,3 +42,10 @@ def ListarAlunos():
 def DeletarTodosAlunos():
     dados["alunos"] = []
     return
+
+# Aqui estão todas as rotas:
+
+@app.route("/alunos", methods=["GET"])
+def listar_alunos():
+    alunos = ListarAlunos()
+    return jsonify(alunos), 200
