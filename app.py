@@ -101,3 +101,67 @@ def AlterarInformacoes(Id_aluno, Nome, Idade, Id_professor, Data_nascimento, Not
 def listar_alunos():
     alunos = ListarAlunos()
     return jsonify(alunos), 200
+
+@app.route("/Auno/<int:id_aluno>", methods=["GET"])
+def encontrar_aluno (id_aluno):
+    try:
+        dados = ProcurarAlunoPorId(id_aluno)
+        return jsonify(dados)
+    except AlunoNaoIdentificado as ani:
+        return jsonify({"ERRO": str(ani)}), 404
+    
+@app.route("/Aluno", methods=["POST"])
+def criar_aluno():
+    novo_dic = request.json
+    novo_dic['Id'] = int(novo_dic['Id'])
+    try:
+        if not AlunoJaExiste(novo_dic["Id"]):
+            return jsonify({
+                "ERRO": "Requisição inválida.",
+                "Mensagem": "Este Id já está associado a um aluno"
+            }), 400
+        CriarNovoAluno(novo_dic)
+        return jsonify({"Mensagem": "Aluno criado com sucesso!", "Aluno": novo_dic}), 201
+    except CadastroDeAlunoFalhado as fca:
+        return jsonify({
+            "ERRO": "Falha ao cadastrar novo aluno.",
+            "Detalhes": str(fca)
+        }), 400
+
+@app.route("/alunos/<int:idAluno>", methods=['PUT'])
+def atualizar_alunos(idAluno):
+    try:
+        novos_dados = request.json
+        nome = novos_dados.get("Nome")
+        idade = novos_dados.get("Idade")
+        id_professor = novos_dados.get("Id_professor")
+        data_nascimento = novos_dados.get("Data_nascimento")
+        nota_primeiro_semestre = novos_dados.get("Nota_primeiro_semestre")
+        nota_segundo_semestre = novos_dados.get("Nota_segundo_semestre")
+        media_final = novos_dados.get("Media_final")
+
+        resultado = AlterarInformacoes(
+            idAluno,
+            nome=nome,
+            idade=idade,
+            id_professor=id_professor,
+            data_nascimento=data_nascimento,
+            nota_primeiro_semestre=nota_primeiro_semestre,
+            nota_segundo_semestre=nota_segundo_semestre,
+            media_final=media_final
+        )
+        return jsonify(resultado), 200
+    except AlunoNaoIdentificado as ani:
+        return jsonify({"erro": str(ani)}), 404
+    
+@app.route("/aluno/resetar/<int:id_aluno>", methods=["DELETE"])
+def resetar_aluno_Id(id_aluno):
+    try:
+        resetar_aluno_Id(id_aluno)
+        return jsonify(dados["Aluno"]), 200
+    except AlunoNaoIdentificado as ani:
+          return jsonify({"Erro:": str(ani)}), 404
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
