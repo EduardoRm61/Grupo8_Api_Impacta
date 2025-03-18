@@ -19,7 +19,7 @@ class TestBase(unittest.TestCase):
 
 class Teste_GET_Professor(TestBase):
     def test_get_all_professores(self):
-        '''Testa a rota GET /professores (listar todos os professores)'''
+        '''Listar todos os professores'''
         response = self.app.get('/professores')
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
@@ -27,7 +27,7 @@ class Teste_GET_Professor(TestBase):
         self.assertEqual(data["professor"], self.professores_iniciais["professor"])
 
     def test_get_existing_professor(self):
-        '''Testa a rota GET /professores/<id> (buscar um professor existente)'''
+        '''Buscar um professor existente'''
         response = self.app.get('/professores/10')
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
@@ -35,18 +35,18 @@ class Teste_GET_Professor(TestBase):
         self.assertEqual(data["professor"], self.professores_iniciais["professor"][0])
 
     def test_get_nonxistent_professor(self):
-        '''Testa a rota GET /professores/<id> (buscar um professor inexistente)'''
-        response = self.app.get("/professores/13")
+        '''Mensagem de professor inexistente'''
+        response = self.app.get("/professores/18")
         self.assertEqual(response.status_code, 404)
         data = response.get_json()
         self.assertEqual(data["error"], "Not Found - Professor inexistente")
 
 class Teste_POST_Professor(TestBase):
     def test_post_professor(self):
-        '''Testa a rota POST /professores (adicionar novo professor)'''
+        '''Adicionar novo professor'''
         novo_professor = {
             "nome": "Gustavo",
-            "idade": None,
+            "idade": None,          #no postmain deve trocar para null para não dar erro
             "materia": "Dev Mob",
             "obs": "Sexta é dia da maldade"
         }
@@ -59,6 +59,20 @@ class Teste_POST_Professor(TestBase):
         self.assertEqual(data["professor"]["materia"], novo_professor["materia"])
         self.assertEqual(data["professor"]["obs"], novo_professor["obs"])
 
+    def teste_falha_post_professor(self):
+        
+        '''Análise de requisitos obrigatórios'''
+        novo_professor = {
+            "nome": "Gustavo",
+            "idade": None,          #no postmain deve trocar para null para não dar erro
+            "materia": None,
+            "obs": "Sexta é dia da maldade"
+        }
+        response = self.app.post("/professores", json = novo_professor)
+        self.assertEqual(response.status_code, 400)
+        data = response.get_json()
+        self.assertEqual(data["erro"], "ID, nome e matéria são obrigatório")
+        
 class Teste_PUT_Professor(TestBase):
     def test_put_professor(self):
         '''Testa a rota PUT /professores/<id> (atualizar um professor existente)'''
