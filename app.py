@@ -55,6 +55,7 @@ def CriarNovaTurma(nv_dict):
     dadosTurma["Turma"].append(nv_dict)
     return
 
+
 def ListarTurma():
     return dadosTurma["Turma"]
 
@@ -205,6 +206,8 @@ def AlterarInfo(id_turma):
             "Descrição": "O campo Professor Id é obrigatório se preechido"
         }), 400
     
+
+
     # Chama a função AlterarInformacoes e retorna a resposta
     resultado, status_code = AlterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
     return jsonify(resultado), status_code      #Aqui eu quase chorei

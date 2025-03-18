@@ -51,6 +51,65 @@ class TestStringMethods(unittest.TestCase):
 
         except requests.exceptions.RequestException as e:
             self.fail(f"Erro ao fazer requisição: {e}")
- 
+
+    def test_002_pesquisaId_turma(self):
+        # base_url = 'http://localhost:5002/Turma'
+        
+    
+
+        r = requests.post('http://localhost:5002/Turma',json={
+            "Id": 23,
+            "Descrição": "Banco de Dados",
+            "Ativa": False,
+            "Professor Id": 12 })
+        
+
+        resposta = requests.get('http://localhost:5002/Turma/23')
+        dict_return = resposta.json()
+        self.assertEqual(type(dict_return),dict)
+        self.assertIn('Id',dict_return)
+        self.assertEqual(dict_return['Id'],23)
+
+    def test_003_resetar(self):
+
+        r = requests.post('http://localhost:5002/Turma',json={
+            "Id": 24,
+            "Descrição": "Banco de Dados",
+            "Ativa": False,
+            "Professor Id": 12 })
+        
+        r_list = requests.get('http://localhost:5002/Turma')
+        self.assertTrue(len(r_list()) > 0)
+        r_reset = requests.post('http://localhost:5002/Turma/Resetar')
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
