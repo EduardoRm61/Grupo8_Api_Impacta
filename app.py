@@ -55,7 +55,11 @@ def CriarNovaTurma(nv_dict):
     dadosTurma["Turma"].append(nv_dict)
     return
 
-
+##############################
+# Função para todo o servidor:
+# def apaga_tudo():
+#     dados['alunos'] = []
+##############################
 def ListarTurma():
     return dadosTurma["Turma"]
 
@@ -121,6 +125,14 @@ def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
                 
  
 #Criando as rotas, lembrando que a função jsonify só pode ser usada nas rotas:
+
+#################################################
+#Rota para apagar todo o servidor
+# @app.route("/reseta", methods=["POST","DELETE"])
+# def reseta():
+#     apaga_tudo()
+#     return "resetado" 
+##################################################
 
 @app.route("/Turma",methods=["GET"])                              
 def listar_turma():
