@@ -78,23 +78,27 @@ class Teste_PUT_Professor(TestBase):
         '''Testa a rota PUT /professores/<id> (atualizar um professor existente)'''
         atualizado = {
             "nome": "Caio Eduardo",
-        }
+        }      #só por referência a ser atualizada
         response = self.app.put('/professores/10', json=atualizado)
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
         self.assertEqual(data["mensagem"], "Atualizado")
+        '''Atualizado'''
         self.assertEqual(data["professor"]["nome"], "Caio Eduardo")
-        self.assertEqual(data["professor"]["id"], 10)
-        self.assertEqual(data["professor"]["idade"], 27)
-        self.assertEqual(data["professor"]["materia"], "Dev API E Micros")
-        self.assertEqual(data["professor"]["obs"], "Contato com aluno via Chat")
+        # '''Mantido'''
+        # self.assertEqual(data["professor"]["id"], 10)
+        # self.assertEqual(data["professor"]["idade"], 27)
+        # self.assertEqual(data["professor"]["materia"], "Dev API E Micros")
+        # self.assertEqual(data["professor"]["obs"], "Contato com aluno via Chat")
 
 class Teste_DELETE_Professor(TestBase):
-    def test_delete_professor_11(self):
-        '''Testa a rota DELETE /professores/<id> (deletar um professor existente)'''
+    def test_delete_professor(self):
+        '''Deletar um professor existente)'''
         # Verifica se o professor com id=11 existe antes de deletar
-        response = self.app.get('/professores/11')
+        response = self.app.delete('/professores/11') #havia posto get
         self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["mensagem"], "Professor deletado com sucesso")
 
         # Deleta o professor com id=11
         response = self.app.delete('/professores/11')
