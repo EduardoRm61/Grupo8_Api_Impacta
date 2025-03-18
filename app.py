@@ -5,8 +5,9 @@ app = Flask(__name__)
 # Dados iniciais
 dados = {
     "alunos": [
-        {"nome": "lucas", "id": 15},
-        {"nome": "cicero", "id": 29},
+    {"Id": 20, "Nome": "Thaina", "Idade": 28, "Turma_Id": 12, "Data de nascimento": 20/5/1996, "Nota do primeiro semestre": 8, "Nota do segundo semestre": 8, "Media Final": 8},
+    {"Id": 20, "Nome": "Eduardo", "Idade": 20, "Turma_Id": 14, "Data de nascimento": 1/1/2005, "Nota do primeiro semestre": 10, "Nota do segundo semestre": 10, "Media Final": 10}
+
     ],
     "professores": []
 }
@@ -42,6 +43,8 @@ def ListarAlunos():
 def DeletarTodosAlunos():
     dados["alunos"] = []
     return
+
+
 
 # Aqui estão todas as rotas:
 
