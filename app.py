@@ -40,9 +40,34 @@ class AtualizacaoAlunoFalhou(Exception):
 def ListarAlunos():
     return dados["alunos"]
 
+def CriarNovoAluno(nv_dict):
+    dados["Aluno"].append(nv_dict)
+    return
+
 def DeletarTodosAlunos():
     dados["alunos"] = []
     return
+
+def DeletarAlunoPorId(id_aluno):
+    alunos = dados["Aluno"]
+    for indice, alunos in enumerate(alunos):
+        if alunos["Id"] == id_aluno:
+            alunos.pop(indice)
+            return {"Mensagem": "Aluno foi deletado."}
+        raise AlunoNaoIdentificado()
+
+def ProcurarAlunoPorId(id_aluno):
+    for dict in dados["Aluno"]:
+        if dict['Id'] == id_aluno:
+            return dict
+        raise AlunoNaoIdentificado
+    
+def AlunoJaExiste(id_aluno):
+    for aluno in dados["Aluno"]:
+        if aluno["Id"] == id_aluno:
+            return True
+        return False
+    
 
 
 
