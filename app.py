@@ -4,7 +4,7 @@ from app import app
 
 
 ###TESTE###
-class TestAlunoAPI(unittest.TestCase):
+class TestStringMethodsI(unittest.TestCase):
 
 
     def teste_000_alunos_retorna_lista(self):
@@ -162,6 +162,3 @@ class TestAlunoAPI(unittest.TestCase):
         self.assertEqual(r_depois.json()['Descrição'], 9.0)
         #mas o id nao mudou
         self.assertEqual(r_depois.json()['Id'],55)
-
-
-
