@@ -35,13 +35,13 @@ professores = {"professor": [
 ]}
 
 
-# dadosTurma = {"Turma":[
-#     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 12},
-#     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 15}     
-# ]}
-
-dadosTurma = {"Turma":[     
+dadosTurma = {"Turma":[
+    {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 12},
+    {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 15}     
 ]}
+
+# dadosTurma = {"Turma":[     
+# ]}
 
 #Criando todas as classes de exceções:
 class TurmaNaoIdentificada(Exception):
@@ -476,7 +476,7 @@ def alterar_aluno_route(id_aluno):
         return jsonify({"Erro": "Falha ao atualizar aluno", "Detalhes": str(e)}), 500
 
 
-####TESTE###
+
 
 if __name__ == '__main__':
     app.run(debug=True)
