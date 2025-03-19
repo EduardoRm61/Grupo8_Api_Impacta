@@ -2,12 +2,13 @@ import unittest
 import requests
 from app import app
 
+
+###TESTE###
 class TestAlunoAPI(unittest.TestCase):
 
-    BASE_URL = 'http://localhost:5002/alunos'
 
     def test_000_alunos_retorna_lista(self):
-        r = requests.get(self.BASE_URL)
+        r = requests.get('http://localhost:5002/alunos')
 
         if r.status_code == 404:
             self.fail("Você não definiu a página /alunos no seu servidor")
