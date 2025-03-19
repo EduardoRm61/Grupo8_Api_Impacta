@@ -7,11 +7,18 @@ app = Flask(__name__)
 
 dados = {
     "alunos": [
-    {"Id": 20, "Nome": "Thaina"},
-    {"Id": 22, "Nome": "Eduardo"}
-    ],
-    
+        {
+            "Id": 20,
+            "Nome": "Thaina",
+            "Idade": 19,
+            "Turma_Id": 12,
+            "Data_nascimento": "10/08/2005",
+            "Nota_Primeiro_Semestre": 8.0,
+            "Nota_Segundo_semestre": 9.0,
+        }
+    ]
 }
+
 
 
 # Classes de exceções para possíveis erros no código
@@ -113,20 +120,17 @@ def encontrar_aluno (id_aluno):
     
 @app.route("/aluno", methods=["POST"])
 def criar_aluno():
+    nv_dict = request.json
+    nv_dict["Id"] = int(nv_dict["Id"])
+    nv_dict["Id_aluno"] = int(nv_dict["Id_aluno"])
     try:
         nv_dict = request.json
-        if "Id" not in nv_dict or "Nome" not in nv_dict:
+        if not AlunoJaExiste(nv_dict["id_aluno"]):
             return jsonify({
                 "ERRO": "Requisição inválida.",
-                "Mensagem": "Os campos 'Id' e 'Nome' são obrigatórios."
+                "Mensagem": "Os campos 'Id' é obrigatório."
             }), 400
 
-        nv_dict["Id"] = int(nv_dict["Id"])
-        if AlunoJaExiste(nv_dict["Id"]):
-            return jsonify({
-                "ERRO": "Requisição inválida.",
-                "Mensagem": "Este Id já está associado a um aluno."
-            }), 400
         CriarNovoAluno(nv_dict)
         return jsonify({
             "Mensagem": "Aluno criado com sucesso!",
