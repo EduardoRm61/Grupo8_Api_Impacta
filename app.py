@@ -146,8 +146,8 @@ def DeletarTurmaPorId(id_turma):
 
 
 def ProfessorExistente(Id_professor):
-    for professor in professores["Professor"]:
-        if professor["Id"] == Id_professor:
+    for professor in professores["professor"]:
+        if professor["id"] == Id_professor:
             return True  
     return False
 
@@ -190,7 +190,7 @@ def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
             "Erro": "Não foi possível fazer a requisição",
             "Descrição": str(e)
         }), 500
-    
+                
 
 def gerar_novo_id():
     '''Criação de id, obrigatório'''
@@ -474,4 +474,4 @@ def alterar_aluno_route(id_aluno):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+        app.run(host = 'localhost', port = 5002, debug = True)
