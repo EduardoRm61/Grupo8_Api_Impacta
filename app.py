@@ -114,30 +114,20 @@ def encontrar_aluno (id_aluno):
 @app.route("/aluno", methods=["POST"])
 def criar_aluno():
     try:
-        # Obtém os dados do corpo da requisição
         nv_dict = request.json
-
-        # Verifica se o ID foi fornecido
         if "Id" not in nv_dict or "Nome" not in nv_dict:
             return jsonify({
                 "ERRO": "Requisição inválida.",
                 "Mensagem": "Os campos 'Id' e 'Nome' são obrigatórios."
             }), 400
 
-        # Converte o ID para inteiro
         nv_dict["Id"] = int(nv_dict["Id"])
-
-        # Verifica se o aluno já existe
         if AlunoJaExiste(nv_dict["Id"]):
             return jsonify({
                 "ERRO": "Requisição inválida.",
                 "Mensagem": "Este Id já está associado a um aluno."
             }), 400
-
-        # Adiciona o novo aluno
         CriarNovoAluno(nv_dict)
-
-        # Retorna a lista atualizada de alunos
         return jsonify({
             "Mensagem": "Aluno criado com sucesso!",
             "alunos": ListarAlunos()
@@ -172,6 +162,6 @@ if __name__ == '__main__':
     app.run(host = 'localhost', port = 5002, debug=True)
 
 
-#########TESTES#################
+
 
 
