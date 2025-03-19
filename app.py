@@ -99,7 +99,7 @@ class TestAlunoAPI(unittest.TestCase):
 
         ##
 
-    def teste_003_deletaId(self):
+    def teste_003_deletaId_aluno(self):
         r_reset = requests.delete('http://localhost:5002/alunos/') #ver no código princiapal
         self.assertEqual(r_reset.status_code, 200, "Falha ao resetar o aluno")
 
@@ -114,23 +114,54 @@ class TestAlunoAPI(unittest.TestCase):
             "Nota_Segundo_semestre": 4.0, 
             "Media_final": 3.0
         })
-        requests.post('http://localhost:5002/alunos', json={
-            "Id": 39,
-            "Nome": "Danilo",
-            "Idade": 40,
-            "Turma_Id": 11,
-            "Data_nascimento": "04/05/1985",
-            "Nota_Primeiro_Semestre": 4.0,
-            "Nota_Segundo_semestre": 4.0, 
-            "Media_final": 4.0
-        })
-
 
 
         r_list = requests.get('http://localhost:5002/alunos')
         r_return = r_list.json()
-        self.assertEqual(len(r_return),2, "A lista de aluno deve ter 2 alunos incluidos")
+        self.assertEqual(len(r_return), 1, "A lista de aluno deve ter incluido 1 aluno")
 
-        requests.delete
-
+        requests.delete('http://localhost:5002/alunos/resetar/33')
+        r2_list = requests.get('http://localhost:5002/alunos')
         
+      # Verificar se aluno ainda existe
+        r2 = requests.get(f"http://127.0.0.1:5000/api/alunos")
+        self.assertEqual(r2.status_code, 404, "Erro: Aluno ainda existe após deleção")
+
+
+    def teste_004_aluno_edita(self):
+        r_reset = requests.delete('http://localhost:5002/alunos/resetar/33')
+        self.assertEqual(r_reset.status_code,200)
+
+        requests.post('http://localhost:5002/alunos', json={
+            "Id": 55,
+            "Nome": "Thais",
+            "Idade": 18,
+            "Turma_Id": 16,
+            "Data_nascimento": "10/09/2007",
+            "Nota_Primeiro_Semestre": 1.0,
+            "Nota_Segundo_semestre": 1.0, 
+            "Media_final": 2.0
+        })
+
+        r_antes = requests.get('http://localhost:5002/alunos/55')
+        self.assertEqual(r_antes.json()['Nota_primeiro_semestre'], 1.0)
+
+        requests.put('http://localhost:5002/Turma/Alterar/55',json={
+           "Id": 55,
+            "Nome": "Thais",
+            "Idade": 18,
+            "Turma_Id": 16,
+            "Data_nascimento": "10/09/2007",
+            "Nota_Primeiro_Semestre": 9.0,
+            "Nota_Segundo_semestre": 1.0, 
+            "Media_final": 2.0
+            })
+        
+        r_depois = requests.get('http://localhost:5002/alunos/55')
+
+        self.assertEqual(r_depois.json()['Descrição'], 9.0)
+        #mas o id nao mudou
+        self.assertEqual(r_depois.json()['Id'],55)
+
+
+
