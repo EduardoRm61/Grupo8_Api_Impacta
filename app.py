@@ -2,6 +2,21 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+dados = {
+    "alunos": [
+        {
+            "Id": 20,
+            "Nome": "Thaina",
+            "Idade": 19,
+            "Turma_Id": 12,
+            "Data_nascimento": "10/08/2005",
+            "Nota_Primeiro_Semestre": 8.0,
+            "Nota_Segundo_semestre": 9.0,
+        }
+    ]
+}
+
+
 dadosProfessor = {"Professor":[
     {"Id": 12, "Nome": "Caio"},
     {"Id": 15, "Nome": "Furlan"}
@@ -227,9 +242,8 @@ def AlterarInfo(id_turma):
     resultado, status_code = AlterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
     return jsonify(resultado), status_code      #Aqui eu quase chorei
 
-  from flask import Flask, jsonify, request
 
-app = Flask(__name__)
+
 
 
 professores = {"professor": [
@@ -341,27 +355,6 @@ if __name__ == '__main__':
 
 
 ###ALUNO###
-
-from flask import Flask, jsonify, request
-
-
-app = Flask(__name__)
-
-
-dados = {
-    "alunos": [
-        {
-            "Id": 20,
-            "Nome": "Thaina",
-            "Idade": 19,
-            "Turma_Id": 12,
-            "Data_nascimento": "10/08/2005",
-            "Nota_Primeiro_Semestre": 8.0,
-            "Nota_Segundo_semestre": 9.0,
-        }
-    ]
-}
-
 
 # Criando classes para minhas exceções:
 class AlunoNaoIdentificado(Exception):
