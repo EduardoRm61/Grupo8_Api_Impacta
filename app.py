@@ -7,9 +7,12 @@ dadosProfessor = {"Professor":[
     {"Id": 15, "Nome": "Furlan"}
 ]}
 
-dadosTurma = {"Turma":[
-    {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 12},
-    {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 15}     
+# dadosTurma = {"Turma":[
+#     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 12},
+#     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 15}     
+# ]}
+
+dadosTurma = {"Turma":[     
 ]}
 
 #Criando classes para minhas excessões:
@@ -178,7 +181,7 @@ def AddTurma():
 @app.route("/Turma/Resetar", methods=["DELETE"])
 def ResetarTodaTurma():
      DeletarTurma()
-     return "Resetado"
+     return jsonify({"mensagem": "Resetado"}), 200
 
 @app.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
 def ResetarTurmaId(id_turma):
