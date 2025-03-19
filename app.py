@@ -35,13 +35,13 @@ professores = {"professor": [
 ]}
 
 
-# dadosTurma = {"Turma":[
-#     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 12},
-#     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 15}     
-# ]}
-
-dadosTurma = {"Turma":[     
+dadosTurma = {"Turma":[
+    {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
+    {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}     
 ]}
+
+# dadosTurma = {"Turma":[     
+# ]}
 
 #Criando todas as classes de exceções:
 class TurmaNaoIdentificada(Exception):
@@ -191,7 +191,6 @@ def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
             "Descrição": str(e)
         }), 500
     
-# Aqui estão as funções auxiliares para as rotas:
 
 def gerar_novo_id():
     '''Criação de id, obrigatório'''
@@ -225,7 +224,7 @@ def procurar_aluno_por_id(id_aluno):
 
 def criar_novo_aluno(novo_aluno):
     dados["alunos"].append(novo_aluno)
-    return
+    return {"Resposta":"Aluno criando com sucesso"}
 
 def listar_alunos():
     return dados["alunos"]
@@ -411,7 +410,6 @@ def delete_professor(id_professor):
         return jsonify({"erro": str(e)}), 404
 
 
-# Aqui estão todas as rotas:
 @app.route("/alunos", methods=["GET"])
 def listar_alunos_route():
     alunos = listar_alunos()
@@ -436,10 +434,9 @@ def adicionar_aluno():
             raise AlunoExistente()
         criar_novo_aluno(novo_aluno)
         return jsonify({"mensagem": "Aluno criado com sucesso!", "aluno": novo_aluno}), 201
-    except AlunoExistente as e:
-        return jsonify({"Erro": str(e)}), 400
-    except Exception as e:
-        return jsonify({"Erro": "Falha ao cadastrar aluno", "Detalhes": str(e)}), 400
+    except AlunoExistente as es:
+        return jsonify({"Erro": str(es)}), 400
+
 
 @app.route("/alunos/<int:id_aluno>", methods=["DELETE"])
 def deletar_aluno_route(id_aluno):
