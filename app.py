@@ -36,6 +36,7 @@ class TestAlunoAPI(unittest.TestCase):
             if r1.status_code != 201:
                 self.fail(f"Falha ao criar aluno 01: {r1.status_code}")
 
+            #criando outro aluno
             r2 = requests.post('http://localhost:5002/alunos', json={
                 "Id": 27,
                 "Nome": "Eduardo",
@@ -98,6 +99,38 @@ class TestAlunoAPI(unittest.TestCase):
 
         ##
 
-        
+    def teste_003_deletaId(self):
+        r_reset = requests.delete('http://localhost:5002/alunos/') #ver no código princiapal
+        self.assertEqual(r_reset.status_code, 200, "Falha ao resetar o aluno")
+
+        # Cria aluno
+        requests.post('http://localhost:5002/alunos', json={
+            "Id": 33,
+            "Nome": "Victor",
+            "Idade": 32,
+            "Turma_Id": 80,
+            "Data_nascimento": "04/05/1993",
+            "Nota_Primeiro_Semestre": 2.0,
+            "Nota_Segundo_semestre": 4.0, 
+            "Media_final": 3.0
+        })
+        requests.post('http://localhost:5002/alunos', json={
+            "Id": 39,
+            "Nome": "Danilo",
+            "Idade": 40,
+            "Turma_Id": 11,
+            "Data_nascimento": "04/05/1985",
+            "Nota_Primeiro_Semestre": 4.0,
+            "Nota_Segundo_semestre": 4.0, 
+            "Media_final": 4.0
+        })
+
+
+
+        r_list = requests.get('http://localhost:5002/alunos')
+        r_return = r_list.json()
+        self.assertEqual(len(r_return),2, "A lista de aluno deve ter 2 alunos incluidos")
+
+        requests.delete
 
         
