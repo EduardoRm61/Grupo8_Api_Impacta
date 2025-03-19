@@ -193,5 +193,102 @@ class TestStringMethods(unittest.TestCase):
     #     self.assertIn(r.status_code,[400,404])
     #     self.assertEqual(r.json()['erro'],'Turma não identificada')
    
+
+
+### TESTES DE ALUNOS###
+
+    BASE_URL = 'http://localhost:5002/alunos'
+
+    def test_000_alunos_retorna_lista(self):
+        r = requests.get(self.BASE_URL)
+
+        if r.status_code == 404:
+            self.fail("Você não definiu a página /alunos no seu servidor")
+
+        try:
+            obj_retornado = r.json()
+        except:
+            self.fail("O retorno deve ser em JSON")
+
+        self.assertEqual(type(obj_retornado), type([]))
+
+    def test_001_adiciona_alunos(self):
+        r1 = requests.post(self.BASE_URL, json={
+            "Id": 21,
+            "Nome": "Fernando",
+            "Idade": 20,
+            "Turma_Id": 12,
+            "Data_nascimento": "01/01/2003",
+            "Nota_Primeiro_Semestre": 7.5,
+            "Nota_Segundo_semestre": 8.5
+        })
+        r2 = requests.post(self.BASE_URL, json={
+            "Id": 22,
+            "Nome": "Roberto",
+            "Idade": 21,
+            "Turma_Id": 13,
+            "Data_nascimento": "02/02/2002",
+            "Nota_Primeiro_Semestre": 9.0,
+            "Nota_Segundo_semestre": 8.0
+        })
+
+        r_lista = requests.get(self.BASE_URL)
+        lista_retornada = r_lista.json()
+
+        achei_fernando = False
+        achei_roberto = False
+        for aluno in lista_retornada:
+            if aluno['Nome'] == 'Fernando':
+                achei_fernando = True
+            if aluno['Nome'] == 'Roberto':
+                achei_roberto = True
+
+        if not achei_fernando:
+            self.fail('Aluno Fernando não apareceu na lista de alunos')
+        if not achei_roberto:
+            self.fail('Aluno Roberto não apareceu na lista de alunos')
+
+    def test_002_aluno_por_id(self):
+        r = requests.post(self.BASE_URL, json={
+            "Id": 23,
+            "Nome": "Mario",
+            "Idade": 22,
+            "Turma_Id": 14,
+            "Data_nascimento": "03/03/2001",
+            "Nota_Primeiro_Semestre": 6.5,
+            "Nota_Segundo_semestre": 7.0
+        })
+
+        resposta = requests.get(f'{self.BASE_URL}/23')
+        dict_retornado = resposta.json()
+        self.assertEqual(type(dict_retornado), dict)
+        self.assertIn('Nome', dict_retornado)
+        self.assertEqual(dict_retornado['Nome'], 'Mario')
+
+    def test_003_reseta(self):
+        r = requests.post(self.BASE_URL, json={
+            "Id": 24,
+            "Nome": "Cicero",
+            "Idade": 23,
+            "Turma_Id": 15,
+            "Data_nascimento": "04/04/2000",
+            "Nota_Primeiro_Semestre": 8.0,
+            "Nota_Segundo_semestre": 9.0
+        })
+
+        r_lista = requests.get(self.BASE_URL)
+        self.assertTrue(len(r_lista.json()) > 0)
+
+        r_reset = requests.delete(f'{self.BASE_URL}/Resetar')
+        self.assertEqual(r_reset.status_code, 200)
+
+        r_lista_depois = requests.get(self.BASE_URL)
+        self.assertEqual(len(r_lista_depois.json()), 0)
+
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
