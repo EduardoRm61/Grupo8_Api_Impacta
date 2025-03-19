@@ -152,6 +152,10 @@ def alterar_aluno_route(id_aluno):
         return jsonify({"Erro": "Falha ao atualizar aluno", "Detalhes": str(e)}), 500
 
 
+
+#TESTE 
+
+
 if __name__ == '__main__':
     app.run(host = 'localhost', port = 5002, debug=True)
 
