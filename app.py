@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
-import requests
-#import unittest
+
 
 app = Flask(__name__)
 
@@ -20,28 +19,26 @@ dados = {
 }
 
 
-
-# Classes de exceções para possíveis erros no código
-
+# Criando classes para minhas exceções:
 class AlunoNaoIdentificado(Exception):
-    def __init__(self, msg="Erro, Aluno não identificado ou inexistente!"):
+    def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
         self.msg = msg
-        super().__init__(self.msg)
+        super()._init_(self.msg)
 
-class AlunoJaExistente(Exception):
-    def __init__(self, msg="Erro, Aluno já existente!"):
+class AlunoExistente(Exception):
+    def _init_(self, msg="Erro, Aluno já existente!"):
         self.msg = msg
-        super().__init__(self.msg)
+        super()._init_(self.msg)
 
 class CadastroDeAlunoFalhado(Exception):
-    def __init__(self, msg="Erro, Falha ao cadastrar aluno. Verifique os dados!"):
+    def _init_(self, msg="Erro, Id do aluno ou Turma_Id incorretos!"):
         self.msg = msg
-        super().__init__(self.msg)
+        super()._init_(self.msg)
 
 class AtualizacaoAlunoFalhou(Exception):
-    def __init__(self, msg="Erro, Não foi possível atualizar os dados do aluno. Verifique os campos!"):
+    def _init_(self, msg="Erro, Não foi possível atualizar os dados do aluno! Reveja os campos e preencha corretamente"):
         self.msg = msg
-        super().__init__(self.msg)
+        super()._init_(self.msg)
 
 # Aqui estão as funções auxiliares para as rotas:
 
