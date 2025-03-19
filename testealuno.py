@@ -1,7 +1,5 @@
 import unittest
 import requests
-from app import app
-
 
 ###TESTE###
 class TestStringMethodsI(unittest.TestCase):
