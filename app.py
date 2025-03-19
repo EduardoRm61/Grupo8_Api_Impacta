@@ -88,68 +88,68 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
 
 
 # Aqui estão todas as rotas:
-
-@app.route("/") 
-def hello():
-        print("rodei mesmo") 
-        return "Hello World!"
-
-
 @app.route("/alunos", methods=["GET"])
-def listar_alunos():
-    alunos = ListarAlunos()
-    return jsonify(alunos), 200
+def listar_alunos_route():
+    alunos = listar_alunos()
+    return jsonify(alunos)
 
-@app.route("/Auno/<int:id_aluno>", methods=["GET"])
-def encontrar_aluno (id_aluno):
+@app.route("/alunos/<int:id_aluno>", methods=["GET"])
+def procurar_aluno_route(id_aluno):
     try:
-        aluno = ProcurarAlunoPorId(id_aluno)
+        aluno = procurar_aluno_por_id(id_aluno)
         return jsonify(aluno)
-    except AlunoNaoIdentificado as ani:
-        return jsonify({"ERRO": str(ani)}), 404
-    
-@app.route("/aluno", methods=["POST"])
-def criar_aluno():
-    nv_dict = request.json
-    nv_dict["Id"] = int(nv_dict["Id"])
-    nv_dict["Id_aluno"] = int(nv_dict["Id_aluno"])
+    except AlunoNaoIdentificado as e:
+        return jsonify({"Erro": str(e)}), 404
+
+@app.route("/alunos", methods=["POST"])
+def adicionar_aluno():
+    novo_aluno = request.json
+    novo_aluno["Id"] = int(novo_aluno["Id"])
+    novo_aluno["Turma_Id"] = int(novo_aluno["Turma_Id"])
+
     try:
-        nv_dict = request.json
-        if not AlunoJaExiste(nv_dict["id_aluno"]):
-            return jsonify({
-                "ERRO": "Requisição inválida.",
-                "Mensagem": "Os campos 'Id' é obrigatório."
-            }), 400
-
-        CriarNovoAluno(nv_dict)
-        return jsonify({
-            "Mensagem": "Aluno criado com sucesso!",
-            "alunos": ListarAlunos()
-        }), 201
-
+        if aluno_ja_existe(novo_aluno["Id"]):
+            raise AlunoExistente()
+        criar_novo_aluno(novo_aluno)
+        return jsonify({"mensagem": "Aluno criado com sucesso!", "aluno": novo_aluno}), 201
+    except AlunoExistente as e:
+        return jsonify({"Erro": str(e)}), 400
     except Exception as e:
-        return jsonify({
-            "ERRO": "Falha ao cadastrar novo aluno.",
-            "Detalhes": str(e)
-        }), 500
+        return jsonify({"Erro": "Falha ao cadastrar aluno", "Detalhes": str(e)}), 400
 
-@app.route("/alunos/<int:idAluno>", methods=['PUT'])
-def atualizar_alunos(idAluno):
+@app.route("/alunos/<int:id_aluno>", methods=["DELETE"])
+def deletar_aluno_route(id_aluno):
     try:
-        novos_dados = request.json
-        nome = novos_dados.get("Nome")
-        resultado = AlterarInformacoes(idAluno, nome=nome)
+        resultado = deletar_aluno_por_id(id_aluno)
         return jsonify(resultado), 200
-    except AlunoNaoIdentificado as ani:
-        return jsonify({"erro": str(ani)}), 404
-    
-@app.route("/aluno/resetar/<int:id_aluno>", methods=["DELETE"])
-def resetar_aluno_Id(id_aluno):
+    except AlunoNaoIdentificado as e:
+        return jsonify({"Erro": str(e)}), 404
+
+@app.route("/alunos/<int:id_aluno>", methods=["PUT"])
+def alterar_aluno_route(id_aluno):
+    dados_aluno = request.json
+
+    if not dados_aluno:
+        return jsonify({
+            "Erro": "Requisição inválida",
+            "Descrição": "O corpo da requisição está vazio, preencha todos os campos"
+        }), 400
+
     try:
-        resetar_aluno_Id(id_aluno)
-        return jsonify(dados["alunos"]), 200
-    except AlunoNaoIdentificado as ani:
-          return jsonify({"Erro:": str(ani)}), 404
+        resultado, status_code = alterar_informacoes_aluno(
+            id_aluno,
+            dados_aluno.get("Nome"),
+            dados_aluno.get("Idade"),
+            dados_aluno.get("Turma_Id"),
+            dados_aluno.get("Data_nascimento"),
+            dados_aluno.get("Nota_Primeiro_Semestre"),
+            dados_aluno.get("Nota_Segundo_semestre")
+        )
+        return jsonify(resultado), status_code
+    except AlunoNaoIdentificado as e:
+        return jsonify({"Erro": str(e)}), 404
+    except Exception as e:
+        return jsonify({"Erro": "Falha ao atualizar aluno", "Detalhes": str(e)}), 500
 
 
 if __name__ == '__main__':
