@@ -40,59 +40,52 @@ class AtualizacaoAlunoFalhou(Exception):
         self.msg = msg
         super()._init_(self.msg)
 
-# Aqui estão as funções auxiliares para as rotas:
 
-def ListarAlunos():
+
+
+# Aqui estão as funções auxiliares para as rotas:
+def procurar_aluno_por_id(id_aluno):
+    for aluno in dados["alunos"]:
+        if aluno["Id"] == id_aluno:
+            return aluno
+    raise AlunoNaoIdentificado()
+
+def criar_novo_aluno(novo_aluno):
+    dados["alunos"].append(novo_aluno)
+    return
+
+def listar_alunos():
     return dados["alunos"]
 
-def CriarNovoAluno(nv_dict):
-    dados["alunos"].append(nv_dict)
-    return
-
-def DeletarTodosAlunos():
-    dados["alunos"] = []
-    return
-
-def DeletarAlunoPorId(id_aluno):
+def deletar_aluno_por_id(id_aluno):
     alunos = dados["alunos"]
-    for indice, alunos in enumerate(alunos):
-        if alunos["Id"] == id_aluno:
+    for indice, aluno in enumerate(alunos):
+        if aluno["Id"] == id_aluno:
             alunos.pop(indice)
-            return {"Mensagem": "Aluno foi deletado."}
-        raise AlunoNaoIdentificado()
+            return {"Mensagem": "Aluno deletado com sucesso."}
+    raise AlunoNaoIdentificado()
 
-def ProcurarAlunoPorId(id_aluno):
+def aluno_ja_existe(id_aluno):
     for aluno in dados["alunos"]:
-        if aluno['Id'] == id_aluno:
-            return aluno
-        raise AlunoNaoIdentificado()
-    
-def AlunoJaExiste(id_aluno):
-    for aluno in dados["aluno"]:
         if aluno["Id"] == id_aluno:
             return True
-        return False
-    
-def AlterarInformacoes(Id_aluno, Nome):
-    novos_dados = dados["alunos"]
+    return False
+
+def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre): #NÃO SEI SE VAI PRECISAR
     try:
-        for aluno in novos_dados:
-            if aluno["Id"] == Id_aluno:
-                if AlunoJaExistente(Id_aluno):
-                    return({
-                        "ERRO": "Aluno já cadastrado com esse Id"
-                    }), 400
-            aluno["Nome"] = Nome
-            return {"Aluno atualizado com sucesso!"}, 200
-        return({
-            "ERRO": "Este Id já está associado a um aluno."
-    }), 400 #400 ou 404?
+        for aluno in dados["alunos"]:
+            if aluno["Id"] == id_aluno:
+                aluno["Nome"] = nome
+                aluno["Idade"] = idade
+                aluno["Turma_Id"] = turma_id
+                aluno["Data_nascimento"] = data_nascimento
+                aluno["Nota_Primeiro_Semestre"] = nota_primeiro_semestre
+                aluno["Nota_Segundo_semestre"] = nota_segundo_semestre
+                return {"Detalhes": "Aluno atualizado com sucesso!"}, 200
+        raise AlunoNaoIdentificado()
     except Exception as e:
-        return({
-            "ERRO": "Não é possível fazer essa requisição",
-            "Descrição": str(e)
-        })
-    
+        return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
+
 
 # Aqui estão todas as rotas:
 
