@@ -1,7 +1,9 @@
 import requests
 import unittest
 
-def teste_000_lista_turmaGET(self):
+class TestStringMethods(unittest.TestCase):
+
+    def teste_000_lista_turmaGET(self):
         r = requests.get('http://127.0.0.1:5000/professores')
 
         if r.status_code == 404:
@@ -12,7 +14,7 @@ def teste_000_lista_turmaGET(self):
             self.fail("O Retorndo deve ser em JSON")
         self.assertEqual(type(obj_return),type([]))
         
-     def test_100b_nao_confundir_professor_e_aluno(self):
+    def test_100b_nao_confundir_professor_e_aluno(self):
         r_reset = requests.post('http://127.0.0.1:5000/reseta')
         r = requests.post('http://127.0.0.1:5000/alunos',json={'nome':'fernando','id':1})
         self.assertEqual(r.status_code,200)
@@ -23,7 +25,7 @@ def teste_000_lista_turmaGET(self):
         r_lista_alunos = requests.get('http://127.0.0.1:5000/alunos')
         self.assertEqual(len(r_lista_alunos.json()),2)  
         
-         def test_101_adiciona_professores(self):
+    def test_101_adiciona_professores(self):
         r = requests.post('http://127.0.0.1:5000/professores',json={'nome':'fernando','id':1})
         r = requests.post('http://127.0.0.1:5000/professores',json={'nome':'roberto','id':2})
         r_lista = requests.get('http://127.0.0.1:5000/professores')
