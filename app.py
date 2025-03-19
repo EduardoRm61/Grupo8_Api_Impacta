@@ -12,6 +12,18 @@ dados = {
             "Data_nascimento": "10/08/2005",
             "Nota_Primeiro_Semestre": 8.0,
             "Nota_Segundo_semestre": 9.0,
+            "Media_final": 8.5
+        },
+
+        {
+            "Id": 25,
+            "Nome": "Rafaela",
+            "Idade": 25,
+            "Turma_Id": 16,
+            "Data_nascimento": "10/09/2000",
+            "Nota_Primeiro_Semestre": 6.0,
+            "Nota_Segundo_semestre": 9.0, 
+            "Media_final": 7.5
         }
     ]
 }
@@ -243,7 +255,7 @@ def aluno_ja_existe(id_aluno):
             return True
     return False
 
-def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre): #NÃO SEI SE VAI PRECISAR
+def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, media_final): #NÃO SEI SE VAI PRECISAR
     try:
         for aluno in dados["alunos"]:
             if aluno["Id"] == id_aluno:
@@ -253,6 +265,7 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
                 aluno["Data_nascimento"] = data_nascimento
                 aluno["Nota_Primeiro_Semestre"] = nota_primeiro_semestre
                 aluno["Nota_Segundo_semestre"] = nota_segundo_semestre
+                aluno["Media_final"] = media_final
                 return {"Detalhes": "Aluno atualizado com sucesso!"}, 200
         raise AlunoNaoIdentificado()
     except Exception as e:
@@ -464,7 +477,8 @@ def alterar_aluno_route(id_aluno):
             dados_aluno.get("Turma_Id"),
             dados_aluno.get("Data_nascimento"),
             dados_aluno.get("Nota_Primeiro_Semestre"),
-            dados_aluno.get("Nota_Segundo_semestre")
+            dados_aluno.get("Nota_Segundo_semestre"),
+            dados_aluno.get("Media_final")
         )
         return jsonify(resultado), status_code
     except AlunoNaoIdentificado as e:
