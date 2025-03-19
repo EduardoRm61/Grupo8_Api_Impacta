@@ -476,5 +476,7 @@ def alterar_aluno_route(id_aluno):
         return jsonify({"Erro": "Falha ao atualizar aluno", "Detalhes": str(e)}), 500
 
 
+####TESTE###
+
 if __name__ == '__main__':
     app.run(debug=True)
