@@ -285,7 +285,74 @@ class TestStringMethods(unittest.TestCase):
         r_lista_depois = requests.get(self.BASE_URL)
         self.assertEqual(len(r_lista_depois.json()), 0)
 
+def test_004_deleta(self):
+    # Reseta a lista de alunos
+    r_reset = requests.post('http://localhost:5002/reseta')
+    self.assertEqual(r_reset.status_code, 200, "Falha ao resetar a lista de alunos")
 
+    # Cria 3 alunos
+    r1 = requests.post('http://localhost:5002/alunos', json={'nome': 'cicero', 'id': 29})
+    self.assertEqual(r1.status_code, 201, "Falha ao criar o aluno cicero")
+    r2 = requests.post('http://localhost:5002/alunos', json={'nome': 'lucas', 'id': 28})
+    self.assertEqual(r2.status_code, 201, "Falha ao criar o aluno lucas")
+    r3 = requests.post('http://localhost:5002/alunos', json={'nome': 'marta', 'id': 27})
+    self.assertEqual(r3.status_code, 201, "Falha ao criar o aluno marta")
+    # Obtém a lista completa de alunos
+    r_lista = requests.get('http://localhost:5002/alunos')
+    self.assertEqual(r_lista.status_code, 200, "Falha ao obter a lista de alunos")
+    lista_retornada = r_lista.json()
+    # Verifica se a lista tem 3 elementos
+    self.assertEqual(len(lista_retornada), 3, "A lista de alunos deve ter 3 elementos após a criação")
+    # Deleta o aluno com id=28
+    r_delete = requests.delete('http://localhost:5002/alunos/28')
+    self.assertEqual(r_delete.status_code, 200, "Falha ao deletar o aluno com id=28")
+    # Obtém a lista de alunos novamente
+    r_lista2 = requests.get('http://localhost:5002/alunos')
+    self.assertEqual(r_lista2.status_code, 200, "Falha ao obter a lista de alunos após a deleção")
+    lista_retornada2 = r_lista2.json()
+    # Verifica se a lista tem 2 elementos após a deleção
+    self.assertEqual(len(lista_retornada2), 2, "A lista de alunos deve ter 2 elementos após a deleção")
+    # Verifica se os alunos corretos permaneceram na lista
+    acheiMarta = False
+    acheiCicero = False
+    for aluno in lista_retornada2:
+        if aluno['nome'] == 'marta':
+            acheiMarta = True
+        if aluno['nome'] == 'cicero':
+            acheiCicero = True
+    if not acheiMarta or not acheiCicero:
+        self.fail("Você deletou o aluno errado!")
+    # Deleta o aluno com id=27
+    r_delete2 = requests.delete('http://localhost:5002/alunos/27')
+    self.assertEqual(r_delete2.status_code, 200, "Falha ao deletar o aluno com id=27")
+    # Obtém a lista de alunos novamente
+    r_lista3 = requests.get('http://localhost:5002/alunos')
+    self.assertEqual(r_lista3.status_code, 200, "Falha ao obter a lista de alunos após a segunda deleção")
+    lista_retornada3 = r_lista3.json()
+    # Verifica se a lista tem 1 elemento após a segunda deleção
+    self.assertEqual(len(lista_retornada3), 1, "A lista de alunos deve ter 1 elemento após a segunda deleção")
+    # Verifica se o aluno restante é o correto
+    if lista_retornada3[0]['nome'] == 'cicero':
+        pass
+    else:
+        self.fail("Você parece ter deletado o aluno errado!")
+
+
+def test_005_edita(self):
+
+    r_reset = requests.post('http://localhost:5002/reseta')
+    self.assertEqual(r_reset.status_code, 200, "Falha ao resetar a lista de alunos")
+
+    # Cria um aluno
+    requests.post('http://localhost:5002/alunos', json={'nome': 'lucas', 'id': 28})
+    r_antes = requests.get('http://localhost:5002/alunos/28')
+    self.assertEqual(r_antes.json()['nome'], 'lucas', "O nome do aluno não foi criado corretamente")
+    requests.put('http://localhost:5002/alunos/28', json={'nome': 'lucas mendes'})
+    
+    # Obtém os dados do aluno após a edição
+    r_depois = requests.get('http://localhost:5002/alunos/28')
+    self.assertEqual(r_depois.json()['nome'], 'lucas mendes', "O nome do aluno não foi atualizado corretamente")
+    self.assertEqual(r_depois.json()['id'], 28, "O ID do aluno foi alterado indevidamente")
 
 
 
