@@ -1,17 +1,16 @@
 from flask import Flask, jsonify, request
 import requests
-import unittest
+#import unittest
 
 app = Flask(__name__)
 
 
 dados = {
     "alunos": [
-    {"Id": 20, "Nome": "Thaina", "Idade": 28, "Turma_Id": 12, "Data de nascimento": 20/5/1996, "Nota do primeiro semestre": 8, "Nota do segundo semestre": 8, "Media Final": 8},
-    {"Id": 20, "Nome": "Eduardo", "Idade": 20, "Turma_Id": 14, "Data de nascimento": 1/1/2005, "Nota do primeiro semestre": 10, "Nota do segundo semestre": 10, "Media Final": 10}
-
+    {"Id": 20, "Nome": "Thaina"},
+    {"Id": 22, "Nome": "Eduardo"}
     ],
-    "professores": []
+    
 }
 
 
@@ -43,7 +42,7 @@ def ListarAlunos():
     return dados["alunos"]
 
 def CriarNovoAluno(nv_dict):
-    dados["Aluno"].append(nv_dict)
+    dados["alunos"].append(nv_dict)
     return
 
 def DeletarTodosAlunos():
@@ -51,7 +50,7 @@ def DeletarTodosAlunos():
     return
 
 def DeletarAlunoPorId(id_aluno):
-    alunos = dados["Aluno"]
+    alunos = dados["alunos"]
     for indice, alunos in enumerate(alunos):
         if alunos["Id"] == id_aluno:
             alunos.pop(indice)
@@ -59,33 +58,27 @@ def DeletarAlunoPorId(id_aluno):
         raise AlunoNaoIdentificado()
 
 def ProcurarAlunoPorId(id_aluno):
-    for dict in dados["Aluno"]:
-        if dict['Id'] == id_aluno:
-            return dict
-        raise AlunoNaoIdentificado
+    for aluno in dados["alunos"]:
+        if aluno['Id'] == id_aluno:
+            return aluno
+        raise AlunoNaoIdentificado()
     
 def AlunoJaExiste(id_aluno):
-    for aluno in dados["Aluno"]:
+    for aluno in dados["aluno"]:
         if aluno["Id"] == id_aluno:
             return True
         return False
     
-def AlterarInformacoes(Id_aluno, Nome, Idade, Id_professor, Data_nascimento, Nota_primeiro_semestre, Nota_segundo_semestre, Media_final):
-    novos_dados = dados["Aluno"]
+def AlterarInformacoes(Id_aluno, Nome):
+    novos_dados = dados["alunos"]
     try:
         for aluno in novos_dados:
             if aluno["Id"] == Id_aluno:
-                if not AlunoJaExistente(Id_aluno):
+                if AlunoJaExistente(Id_aluno):
                     return({
                         "ERRO": "Aluno já cadastrado com esse Id"
                     }), 400
             aluno["Nome"] = Nome
-            aluno["Idade"] = Idade
-            aluno["Id professor"] = Id_professor
-            aluno["Data_nascimento"] = Data_nascimento
-            aluno["Nota do Primeiro Semestre"] = Nota_primeiro_semestre
-            aluno["Nota do Segundo Semestre"] = Nota_segundo_semestre
-            aluno["Média Final"] = Media_final
             return {"Aluno atualizado com sucesso!"}, 200
         return({
             "ERRO": "Este Id já está associado a um aluno."
@@ -99,6 +92,12 @@ def AlterarInformacoes(Id_aluno, Nome, Idade, Id_professor, Data_nascimento, Not
 
 # Aqui estão todas as rotas:
 
+@app.route("/") 
+def hello():
+        print("rodei mesmo") 
+        return "Hello World!"
+
+
 @app.route("/alunos", methods=["GET"])
 def listar_alunos():
     alunos = ListarAlunos()
@@ -107,51 +106,55 @@ def listar_alunos():
 @app.route("/Auno/<int:id_aluno>", methods=["GET"])
 def encontrar_aluno (id_aluno):
     try:
-        dados = ProcurarAlunoPorId(id_aluno)
-        return jsonify(dados)
+        aluno = ProcurarAlunoPorId(id_aluno)
+        return jsonify(aluno)
     except AlunoNaoIdentificado as ani:
         return jsonify({"ERRO": str(ani)}), 404
     
-@app.route("/Aluno", methods=["POST"])
+@app.route("/aluno", methods=["POST"])
 def criar_aluno():
-    novo_dic = request.json
-    novo_dic['Id'] = int(novo_dic['Id'])
     try:
-        if not AlunoJaExiste(novo_dic["Id"]):
+        # Obtém os dados do corpo da requisição
+        nv_dict = request.json
+
+        # Verifica se o ID foi fornecido
+        if "Id" not in nv_dict or "Nome" not in nv_dict:
             return jsonify({
                 "ERRO": "Requisição inválida.",
-                "Mensagem": "Este Id já está associado a um aluno"
+                "Mensagem": "Os campos 'Id' e 'Nome' são obrigatórios."
             }), 400
-        CriarNovoAluno(novo_dic)
-        return jsonify({"Mensagem": "Aluno criado com sucesso!", "Aluno": novo_dic}), 201
-    except CadastroDeAlunoFalhado as fca:
+
+        # Converte o ID para inteiro
+        nv_dict["Id"] = int(nv_dict["Id"])
+
+        # Verifica se o aluno já existe
+        if AlunoJaExiste(nv_dict["Id"]):
+            return jsonify({
+                "ERRO": "Requisição inválida.",
+                "Mensagem": "Este Id já está associado a um aluno."
+            }), 400
+
+        # Adiciona o novo aluno
+        CriarNovoAluno(nv_dict)
+
+        # Retorna a lista atualizada de alunos
+        return jsonify({
+            "Mensagem": "Aluno criado com sucesso!",
+            "alunos": ListarAlunos()
+        }), 201
+
+    except Exception as e:
         return jsonify({
             "ERRO": "Falha ao cadastrar novo aluno.",
-            "Detalhes": str(fca)
-        }), 400
+            "Detalhes": str(e)
+        }), 500
 
 @app.route("/alunos/<int:idAluno>", methods=['PUT'])
 def atualizar_alunos(idAluno):
     try:
         novos_dados = request.json
         nome = novos_dados.get("Nome")
-        idade = novos_dados.get("Idade")
-        id_professor = novos_dados.get("Id_professor")
-        data_nascimento = novos_dados.get("Data_nascimento")
-        nota_primeiro_semestre = novos_dados.get("Nota_primeiro_semestre")
-        nota_segundo_semestre = novos_dados.get("Nota_segundo_semestre")
-        media_final = novos_dados.get("Media_final")
-
-        resultado = AlterarInformacoes(
-            idAluno,
-            nome=nome,
-            idade=idade,
-            id_professor=id_professor,
-            data_nascimento=data_nascimento,
-            nota_primeiro_semestre=nota_primeiro_semestre,
-            nota_segundo_semestre=nota_segundo_semestre,
-            media_final=media_final
-        )
+        resultado = AlterarInformacoes(idAluno, nome=nome)
         return jsonify(resultado), 200
     except AlunoNaoIdentificado as ani:
         return jsonify({"erro": str(ani)}), 404
@@ -160,7 +163,7 @@ def atualizar_alunos(idAluno):
 def resetar_aluno_Id(id_aluno):
     try:
         resetar_aluno_Id(id_aluno)
-        return jsonify(dados["Aluno"]), 200
+        return jsonify(dados["alunos"]), 200
     except AlunoNaoIdentificado as ani:
           return jsonify({"Erro:": str(ani)}), 404
 
