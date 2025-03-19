@@ -451,7 +451,7 @@ def adicionar_aluno():
         return jsonify({"Erro": str(es)}), 400
 
 
-@app.route("/alunos/<int:id_aluno>", methods=["DELETE"])
+@app.route("/alunos/resetar/<int:id_aluno>", methods=["DELETE"])
 def deletar_aluno_route(id_aluno):
     try:
         resultado = deletar_aluno_por_id(id_aluno)
