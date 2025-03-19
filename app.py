@@ -17,8 +17,6 @@ dados = {
 }
 
 
-
-
 professores = {"professor": [
     {
     "id": 10,
