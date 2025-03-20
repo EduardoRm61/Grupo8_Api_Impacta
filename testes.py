@@ -406,7 +406,7 @@ class TestStringMethods(unittest.TestCase):
             self.fail(f"Erro ao fazer requisição: {e}")
 
         
-    def teste_013_POST_aluno(self):
+    def teste_014_POST_aluno(self):
         r = requests.post('http://localhost:5002/alunos',json={
             "Id": 20,
             "Nome": "Thaina",
@@ -426,7 +426,7 @@ class TestStringMethods(unittest.TestCase):
 
         ##
 
-    def teste_014_DELETE_aluno(self):
+    def teste_015_DELETE_aluno(self):
         r_reset = requests.delete('http://localhost:5002/alunos/') #ver no código princiapal
         self.assertEqual(r_reset.status_code, 200, "Falha ao resetar o aluno")
 
@@ -455,7 +455,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(r2.status_code, 404, "Erro: Aluno ainda existe após deleção")
 
 
-    def teste_015_aluno_DELETE_EDITA(self):
+    def teste_016_aluno_DELETE_EDITA(self):
         r_reset = requests.delete('http://localhost:5002/alunos/resetar/33')
         self.assertEqual(r_reset.status_code,200)
 
