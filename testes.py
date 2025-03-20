@@ -214,7 +214,7 @@ class TestStringMethods(unittest.TestCase):
             "materia": "Banco de Dados",
             "obs": "Contato com aluno via Chat"
         })
-        print(r.json())
+        #print(r.json())
         resposta = requests.get('http://localhost:5002/professores/17')
         dict_return = resposta.json()
         self.assertEqual(type(dict_return), dict)
@@ -223,33 +223,41 @@ class TestStringMethods(unittest.TestCase):
 
     def test_009_POSTProfessor(self):
         try:
+            # Cria um novo professor
             resp = requests.post('http://localhost:5002/professores', json={
-            "id": 18,
-            "nome": "Caio H.",
-            "idade": 27,
-            "materia": "Dev API E Micros",
-            "obs": "Contato com aluno via Chat"
+                "id": 18,
+                "nome": "Caio H.",
+                "idade": 27,
+                "materia": "Dev API E Micros",
+                "obs": "Contato com aluno via Chat"
             })
-        
+            
+            # Verifica se o POST foi bem-sucedido
             if resp.status_code != 201:
                 self.fail(f"Falha ao criar Professor. Status code: {resp.status_code}")
+            ##print("POST Response:", resp.json())  # Adicionado para depuração
 
+            # Obtém a lista de professores
             r_list = requests.get('http://localhost:5002/professores')
-            print(r_list.status_code)
-            if r_list.status_code !=201:
+            #print("GET Response:", r_list.status_code, r_list.json())  # Adicionado para depuração
+            if r_list.status_code != 200:  # Corrigido: status code 200 para GET
                 self.fail(f"Falha ao obter a lista de Professores. Status code: {r_list.status_code}")
 
-            r_list = r_list.json()  # Corrigido: usa json() para obter o conteúdo
+            r_list = r_list.json()  # Converte a resposta para JSON
 
+            # Verifica se o novo professor está na lista
             nv_professor = False
-            for professor in r_list:
+            professores = r_list.get('professores', [])  # Acessa a lista de professores
+            for professor in professores:
                 if professor['id'] == 18:
                     nv_professor = True
+                    break  # Otimização: para o loop quando encontrar o professor
             if not nv_professor:
-                self.fail('Professor não encontrada na lista de professores')
+                self.fail('Professor não encontrado na lista de professores')
         except requests.exceptions.RequestException as e:
-            self.fail(f"Erro na requisição: {e}") 
+            self.fail(f"Erro na requisição: {e}")
 
+    
 
         
 if __name__ == '__main__':
