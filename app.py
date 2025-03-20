@@ -268,6 +268,10 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
         raise AlunoNaoIdentificado()
     except Exception as e:
         return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
+    
+def resetar_professores():
+    professores["Professor"] = []
+    return
                 
 # Todas as rotas:
 
