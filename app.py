@@ -270,7 +270,7 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
         return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
     
 def resetar_professores():
-    professores["Professor"] = []
+    professores["professor"] = []
     return
                 
 # Todas as rotas:
@@ -429,7 +429,7 @@ def delete_professor(id_professor):
 
 @app.route('/professores/resetar', methods=['DELETE'])
 def resetar_professor():
-    resetar_professores()
+    resetar_professores()  # Função que reseta o dicionário de professores
     return jsonify({"mensagem": "Resetado"}), 200
 
 

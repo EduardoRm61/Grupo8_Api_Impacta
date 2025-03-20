@@ -306,7 +306,36 @@ class TestStringMethods(unittest.TestCase):
         except requests.exceptions.RequestException as e:
             self.fail(f"Erro na requisição: {e}")
         
-    def test_011_DELETE
+    def test_011_DELETE(self):
+        try:
+            # Adiciona um professor para garantir que há dados no dicionário
+            post_response = requests.post('http://localhost:5002/professores', json={
+                "id": 1,
+                "nome": "Professor Teste",
+                "idade": 40,
+                "materia": "Matemática",
+                "obs": "Teste de reset"
+            })
+            self.assertEqual(post_response.status_code, 201)  # Verifica se o POST foi bem-sucedido
+            print("POST Response (Adicionar Professor):", post_response.json())
+
+            # Verifica se o professor foi adicionado
+            get_response = requests.get('http://localhost:5002/professores/1')
+            self.assertEqual(get_response.status_code, 200)  # Verifica se o GET foi bem-sucedido
+            print("GET Response (Antes do Reset):", get_response.json())
+
+            # Reseta o dicionário de professores
+            reset_response = requests.delete('http://localhost:5002/professores/resetar')
+            self.assertEqual(reset_response.status_code, 200)  # Verifica se o DELETE foi bem-sucedido
+            print("DELETE Response (Resetar Professores):", reset_response.json())
+
+            # Tenta buscar o professor após o reset
+            get_response_after_reset = requests.get('http://localhost:5002/professores/1')
+            print("GET Response (Após o Reset):", get_response_after_reset.json())  # Depuração
+            self.assertEqual(get_response_after_reset.status_code, 404)  # Verifica se o professor não existe mais
+
+        except requests.exceptions.RequestException as e:
+            self.fail(f"Erro na requisição: {e}")
         
 if __name__ == '__main__':
     unittest.main()
