@@ -5,196 +5,196 @@ from app import app
 class TestStringMethods(unittest.TestCase):
 
     #Teste para listar Turma: 
-    # def teste_000_lista_professorGET(self):
-    #     r = requests.get('http://localhost:5002/Turma')
+    def teste_000_lista_professorGET(self):
+        r = requests.get('http://localhost:5002/Turma')
 
-    #     if r.status_code == 404:
-    #         self.fail("voce nao definiu a pagina /Turma no seu server")
-    #     try:
-    #         obj_return = r.json()
-    #     except:
-    #         self.fail("O Retorndo deve ser em JSON")
-    #     self.assertEqual(type(obj_return),type([]))
+        if r.status_code == 404:
+            self.fail("voce nao definiu a pagina /Turma no seu server")
+        try:
+            obj_return = r.json()
+        except:
+            self.fail("O Retorndo deve ser em JSON")
+        self.assertEqual(type(obj_return),type([]))
 
-    #     #Teste para criar nova turma:
-    # def test_001_criar_turmaPOST(self):
-    #     try:
-    #         # Cria a primeira turma
-    #         r1 = requests.post('http://localhost:5002/Turma', json={
-    #             "Id": 22,
-    #             "Descrição": "Eng. Requisitos",
-    #             "Ativa": False,
-    #             "Professor Id": 10})
+        #Teste para criar nova turma:
+    def test_001_criar_turmaPOST(self):
+        try:
+            # Cria a primeira turma
+            r1 = requests.post('http://localhost:5002/Turma', json={
+                "Id": 22,
+                "Descrição": "Eng. Requisitos",
+                "Ativa": False,
+                "Professor Id": 10})
             
-    #         if r1.status_code != 201: 
-    #             self.fail(f"Falha ao criar a turma 01. Status code: {r1.status_code}")
+            if r1.status_code != 201: 
+                self.fail(f"Falha ao criar a turma 01. Status code: {r1.status_code}")
 
-    #         # Cria a segunda turma
-    #         r2 = requests.post('http://localhost:5002/Turma', json={
-    #             "Id": 13,
-    #             "Descrição": "Eng. Sistemas",
-    #             "Ativa": True,
-    #             "Professor Id": 11})
+            # Cria a segunda turma
+            r2 = requests.post('http://localhost:5002/Turma', json={
+                "Id": 13,
+                "Descrição": "Eng. Sistemas",
+                "Ativa": True,
+                "Professor Id": 11})
             
-    #         if r2.status_code != 201:
-    #             self.fail(f"Falha ao criar a turma 02. Status code: {r2.status_code}")
+            if r2.status_code != 201:
+                self.fail(f"Falha ao criar a turma 02. Status code: {r2.status_code}")
 
-    #         # Obtém a lista de turmas
-    #         r_list = requests.get('http://localhost:5002/Turma')
-    #         if r_list.status_code != 200:
-    #             self.fail(f"Falha ao obter a lista de turmas. Status code: {r_list.status_code}")
+            # Obtém a lista de turmas
+            r_list = requests.get('http://localhost:5002/Turma')
+            if r_list.status_code != 200:
+                self.fail(f"Falha ao obter a lista de turmas. Status code: {r_list.status_code}")
 
-    #         r_list_return = r_list.json()  # Corrigido: usa json() para obter o conteúdo
+            r_list_return = r_list.json()  # Corrigido: usa json() para obter o conteúdo
 
-    #         # Verifica se as turmas foram criadas corretamente
-    #         turma01_encontrada = False
-    #         turma02_encontrada = False
+            # Verifica se as turmas foram criadas corretamente
+            turma01_encontrada = False
+            turma02_encontrada = False
 
-    #         for turma in r_list_return:
-    #             if turma['Id'] == 22:
-    #                 turma01_encontrada = True
-    #             if turma['Id'] == 13:
-    #                 turma02_encontrada = True
+            for turma in r_list_return:
+                if turma['Id'] == 22:
+                    turma01_encontrada = True
+                if turma['Id'] == 13:
+                    turma02_encontrada = True
 
-    #         if not turma01_encontrada:
-    #             self.fail('Turma 01 não encontrada na lista de turmas')
-    #         if not turma02_encontrada:
-    #             self.fail('Turma 02 não encontrada na lista de turmas')
-    #     except requests.exceptions.RequestException as e:
-    #         self.fail(f"Erro ao fazer requisição: {e}")
+            if not turma01_encontrada:
+                self.fail('Turma 01 não encontrada na lista de turmas')
+            if not turma02_encontrada:
+                self.fail('Turma 02 não encontrada na lista de turmas')
+        except requests.exceptions.RequestException as e:
+            self.fail(f"Erro ao fazer requisição: {e}")
 
-    # def test_002_pesquisaId_turma(self):
-    #     # base_url = 'http://localhost:5002/Turma'
+    def test_002_pesquisaId_turma(self):
+        # base_url = 'http://localhost:5002/Turma'
 
-    #     r = requests.post('http://localhost:5002/Turma',json={
-    #         "Id": 27,
-    #         "Descrição": "Banco de Dados",
-    #         "Ativa": False,
-    #         "Professor Id": 10 })
+        r = requests.post('http://localhost:5002/Turma',json={
+            "Id": 27,
+            "Descrição": "Banco de Dados",
+            "Ativa": False,
+            "Professor Id": 10 })
         
 
-    #     resposta = requests.get('http://localhost:5002/Turma/27')
-    #     dict_return = resposta.json()
-    #     self.assertEqual(type(dict_return),dict)
-    #     self.assertIn('Id',dict_return)
-    #     self.assertEqual(dict_return['Id'],27)
+        resposta = requests.get('http://localhost:5002/Turma/27')
+        dict_return = resposta.json()
+        self.assertEqual(type(dict_return),dict)
+        self.assertIn('Id',dict_return)
+        self.assertEqual(dict_return['Id'],27)
 
-    # def test_003_resetar(self):
+    def test_003_resetar(self):
 
-    #     r = requests.post('http://localhost:5002/Turma',json={
-    #         "Id": 24,
-    #         "Descrição": "Banco de Dados",
-    #         "Ativa": False,
-    #         "Professor Id": 12 })
+        r = requests.post('http://localhost:5002/Turma',json={
+            "Id": 24,
+            "Descrição": "Banco de Dados",
+            "Ativa": False,
+            "Professor Id": 12 })
         
-    #     r_list = requests.get('http://localhost:5002/Turma')
-    #     self.assertTrue(len(r_list.json()) > 0)
-    #     r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
-    #     self.assertEqual(r_reset.status_code,200)
-    #     r_nvlist = requests.get('http://localhost:5002/Turma')
-    #     self.assertEqual(len(r_nvlist.json()),0)
+        r_list = requests.get('http://localhost:5002/Turma')
+        self.assertTrue(len(r_list.json()) > 0)
+        r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
+        self.assertEqual(r_reset.status_code,200)
+        r_nvlist = requests.get('http://localhost:5002/Turma')
+        self.assertEqual(len(r_nvlist.json()),0)
 
-    # def test_004_criar_turmaPOST(self):
-    #     try:
-    #         # Cria a primeira turma
-    #         r1 = requests.post('http://localhost:5002/Turma', json={
-    #             "Id": 52,
-    #             "Descrição": "Eng. Requisitos",
-    #             "Ativa": False,
-    #             "Professor Id": 10})
-    #         #print(r1.json())
-    #         if r1.status_code != 201:  # 201 significa "Created"
-    #             self.fail(f"Falha ao criar a turma 01. Status code: {r1.status_code}")
+    def test_004_criar_turmaPOST(self):
+        try:
+            # Cria a primeira turma
+            r1 = requests.post('http://localhost:5002/Turma', json={
+                "Id": 52,
+                "Descrição": "Eng. Requisitos",
+                "Ativa": False,
+                "Professor Id": 10})
+            #print(r1.json())
+            if r1.status_code != 201:  # 201 significa "Created"
+                self.fail(f"Falha ao criar a turma 01. Status code: {r1.status_code}")
 
-    #         # Cria a segunda turma
-    #         r2 = requests.post('http://localhost:5002/Turma', json={
-    #             "Id": 53,
-    #             "Descrição": "Eng. Sistemas",
-    #             "Ativa": True,
-    #             "Professor Id": 11})
+            # Cria a segunda turma
+            r2 = requests.post('http://localhost:5002/Turma', json={
+                "Id": 53,
+                "Descrição": "Eng. Sistemas",
+                "Ativa": True,
+                "Professor Id": 11})
             
-    #         if r2.status_code != 201:
-    #             self.fail(f"Falha ao criar a turma 02. Status code: {r2.status_code}")
+            if r2.status_code != 201:
+                self.fail(f"Falha ao criar a turma 02. Status code: {r2.status_code}")
 
-    #         # Obtém a lista de turmas
-    #         r_list = requests.get('http://localhost:5002/Turma')
-    #         if r_list.status_code != 200:
-    #             self.fail(f"Falha ao obter a lista de turmas. Status code: {r_list.status_code}")
+            # Obtém a lista de turmas
+            r_list = requests.get('http://localhost:5002/Turma')
+            if r_list.status_code != 200:
+                self.fail(f"Falha ao obter a lista de turmas. Status code: {r_list.status_code}")
 
-    #         r_list_return = r_list.json()  # Corrigido: usa json() para obter o conteúdo
+            r_list_return = r_list.json()  # Corrigido: usa json() para obter o conteúdo
 
-    #         # Verifica se as turmas foram criadas corretamente
-    #         turma01_encontrada = False
-    #         turma02_encontrada = False
+            # Verifica se as turmas foram criadas corretamente
+            turma01_encontrada = False
+            turma02_encontrada = False
 
-    #         for turma in r_list_return:
-    #             if turma['Id'] == 52:
-    #                 turma01_encontrada = True
-    #             if turma['Id'] == 53:
-    #                 turma02_encontrada = True
+            for turma in r_list_return:
+                if turma['Id'] == 52:
+                    turma01_encontrada = True
+                if turma['Id'] == 53:
+                    turma02_encontrada = True
 
-    #         if not turma01_encontrada:
-    #             self.fail('Turma 01 não encontrada na lista de turmas')
-    #         if not turma02_encontrada:
-    #             self.fail('Turma 02 não encontrada na lista de turmas')
+            if not turma01_encontrada:
+                self.fail('Turma 01 não encontrada na lista de turmas')
+            if not turma02_encontrada:
+                self.fail('Turma 02 não encontrada na lista de turmas')
 
-    #     except requests.exceptions.RequestException as e:
-    #         self.fail(f"Erro ao fazer requisição: {e}")
+        except requests.exceptions.RequestException as e:
+            self.fail(f"Erro ao fazer requisição: {e}")
  
 
-    # def teste_005_edita(self):
-    #     r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
-    #     self.assertEqual(r_reset.status_code,200)
+    def teste_005_edita(self):
+        r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
+        self.assertEqual(r_reset.status_code,200)
 
-    #     #{"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10}
+        #{"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10}
 
-    #     requests.post('http://localhost:5002/Turma', json={
-    #         "Id": 26,
-    #         "Descrição": "Eng. Software",
-    #         "Ativa": False,
-    #         "Professor Id": 11
-    #     })
+        requests.post('http://localhost:5002/Turma', json={
+            "Id": 26,
+            "Descrição": "Eng. Software",
+            "Ativa": False,
+            "Professor Id": 11
+        })
 
-    #     #print(r_reset.json())      Aqui está resetado
-    #     #print("POST Response:", resp.status_code, resp.json())
-    #     r_antes = requests.get('http://localhost:5002/Turma/26')
-    #     #print(r_antes.json())
-    #     self.assertEqual(r_antes.json()['Descrição'],'Eng. Software')
+        #print(r_reset.json())      Aqui está resetado
+        #print("POST Response:", resp.status_code, resp.json())
+        r_antes = requests.get('http://localhost:5002/Turma/26')
+        #print(r_antes.json())
+        self.assertEqual(r_antes.json()['Descrição'],'Eng. Software')
 
         
-    #     requests.put('http://localhost:5002/Turma/Alterar/26',json={
-    #         "Id": 26,
-    #         "Descrição": "Eng. Dos esquisitos",
-    #         "Ativa": False,
-    #         "Professor Id": 11})
+        requests.put('http://localhost:5002/Turma/Alterar/26',json={
+            "Id": 26,
+            "Descrição": "Eng. Dos esquisitos",
+            "Ativa": False,
+            "Professor Id": 11})
         
-    #     r_depois = requests.get('http://localhost:5002/Turma/26')
-    #     self.assertEqual(r_depois.json()['Descrição'],'Eng. Dos esquisitos')
-    #     #mas o id nao mudou
-    #     self.assertEqual(r_depois.json()['Id'],26)
+        r_depois = requests.get('http://localhost:5002/Turma/26')
+        self.assertEqual(r_depois.json()['Descrição'],'Eng. Dos esquisitos')
+        #mas o id nao mudou
+        self.assertEqual(r_depois.json()['Id'],26)
 
-    # def test_006a_id_inexistente_no_put(self):
-    #     r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
-    #     self.assertEqual(r_reset.status_code,200)
-    #     r = requests.put('http://localhost:5002/Turma/Alterar/11',json={
-    #         "Id": 2222,
-    #         "Descrição": "Eng. Dos esquisitos",
-    #         "Ativa": True,
-    #         "Professor Id": 15
-    #     })
+    def test_006a_id_inexistente_no_put(self):
+        r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
+        self.assertEqual(r_reset.status_code,200)
+        r = requests.put('http://localhost:5002/Turma/Alterar/11',json={
+            "Id": 2222,
+            "Descrição": "Eng. Dos esquisitos",
+            "Ativa": True,
+            "Professor Id": 15
+        })
         
-    #     self.assertIn(r.status_code,[400,404])
+        self.assertIn(r.status_code,[400,404])
 
-    #     #print(r.json()) #
-    #     self.assertEqual(r.json()['Erro'], 'Requisição inválida')
+        #print(r.json()) #
+        self.assertEqual(r.json()['Erro'], 'Requisição inválida')
 
-    # def test_006b_id_inexistente_no_get(self):
-    #     r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
-    #     self.assertEqual(r_reset.status_code,200)
-    #     r = requests.get('http://localhost:5002/Turma/12')
-    #     self.assertIn(r.status_code,[400,404,402])
-    #     # print(r.json())
-    #     self.assertEqual(r.json()['Erro:'],'Erro, Turma não identificada ou inexistente!')
+    def test_006b_id_inexistente_no_get(self):
+        r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
+        self.assertEqual(r_reset.status_code,200)
+        r = requests.get('http://localhost:5002/Turma/12')
+        self.assertIn(r.status_code,[400,404,402])
+        # print(r.json())
+        self.assertEqual(r.json()['Erro:'],'Erro, Turma não identificada ou inexistente!')
 
     def test_007_getProfessor(self):
         r = requests.get('http://localhost:5002/professores')
@@ -427,68 +427,82 @@ class TestStringMethods(unittest.TestCase):
         ##
 
     def teste_015_DELETE_aluno(self):
-        r_reset = requests.delete('http://localhost:5002/alunos/') #ver no código princiapal
+        # Resetar a lista de alunos
+        r_reset = requests.delete('http://localhost:5002/alunos/resetar')
         self.assertEqual(r_reset.status_code, 200, "Falha ao resetar o aluno")
 
-        # Cria aluno
-        requests.post('http://localhost:5002/alunos', json={
-            "Id": 33,
-            "Nome": "Victor",
-            "Idade": 32,
-            "Turma_Id": 80,
-            "Data_nascimento": "04/05/1993",
-            "Nota_Primeiro_Semestre": 2.0,
-            "Nota_Segundo_semestre": 4.0, 
-            "Media_final": 3.0
-        })
+        # Criar aluno
+        try:
+            r_create = requests.post('http://localhost:5002/alunos', json={
+                "Id": 33,
+                "Nome": "Victor",
+                "Idade": 32,
+                "Turma_Id": 80,
+                "Data_nascimento": "04/05/1993",
+                "Nota_Primeiro_Semestre": 2.0,
+                "Nota_Segundo_semestre": 4.0, 
+                "Media_final": 3.0
+            })
+            self.assertEqual(r_create.status_code, 201, "Falha ao criar o aluno")
+        except requests.exceptions.RequestException as e:
+            self.fail(f"Erro ao criar aluno: {e}")
 
-
+        # Verificar se o aluno foi adicionado
         r_list = requests.get('http://localhost:5002/alunos')
         r_return = r_list.json()
-        self.assertEqual(len(r_return), 1, "A lista de aluno deve ter incluido 1 aluno")
+        self.assertEqual(len(r_return), 1, "A lista de alunos deve ter incluído 1 aluno")
 
+        # Deletar o aluno
         requests.delete('http://localhost:5002/alunos/resetar/33')
+
+        # Verificar se o aluno foi deletado
         r2_list = requests.get('http://localhost:5002/alunos')
-        
-      # Verificar se aluno ainda existe
-        r2 = requests.get(f"http://127.0.0.1:5000/api/alunos")
-        self.assertEqual(r2.status_code, 404, "Erro: Aluno ainda existe após deleção")
+        r2_return = r2_list.json()
+        aluno_33 = [aluno for aluno in r2_return if aluno["Id"] == 33]
+        self.assertEqual(len(aluno_33), 0, "Erro: Aluno ainda existe após deleção")
 
 
     def teste_016_aluno_DELETE_EDITA(self):
-        r_reset = requests.delete('http://localhost:5002/alunos/resetar/33')
-        self.assertEqual(r_reset.status_code,200)
+        # Deleta o aluno com ID 55, caso exista
+        r_reset = requests.delete('http://localhost:5002/alunos/55')
+        self.assertIn(r_reset.status_code, [200, 404], "Falha ao resetar o aluno")
 
-        requests.post('http://localhost:5002/alunos', json={
+        # Cria um novo aluno com ID 55
+        r_post = requests.post('http://localhost:5002/alunos', json={
             "Id": 55,
             "Nome": "Thais",
             "Idade": 18,
             "Turma_Id": 16,
             "Data_nascimento": "10/09/2007",
             "Nota_Primeiro_Semestre": 1.0,
-            "Nota_Segundo_semestre": 1.0, 
+            "Nota_Segundo_semestre": 1.0,
             "Media_final": 2.0
         })
+        self.assertEqual(r_post.status_code, 201, "Falha ao criar o aluno")
 
+        # Verifica os dados do aluno antes da edição
         r_antes = requests.get('http://localhost:5002/alunos/55')
-        self.assertEqual(r_antes.json()['Nota_primeiro_semestre'], 1.0)
+        self.assertEqual(r_antes.status_code, 200, "Falha ao obter o aluno antes da edição")
+        self.assertEqual(r_antes.json()['Nota_Primeiro_Semestre'], 1.0, "Nota antes da edição incorreta")
 
-        requests.put('http://localhost:5002/Turma/Alterar/55',json={
-           "Id": 55,
+        # Edita o aluno
+        r_put = requests.put('http://localhost:5002/alunos/55', json={
             "Nome": "Thais",
             "Idade": 18,
             "Turma_Id": 16,
             "Data_nascimento": "10/09/2007",
             "Nota_Primeiro_Semestre": 9.0,
-            "Nota_Segundo_semestre": 1.0, 
+            "Nota_Segundo_semestre": 1.0,
             "Media_final": 2.0
-            })
-        
-        r_depois = requests.get('http://localhost:5002/alunos/55')
+        })
+        self.assertEqual(r_put.status_code, 200, "Falha ao editar o aluno")
 
-        self.assertEqual(r_depois.json()['Descrição'], 9.0)
-        #mas o id nao mudou
-        self.assertEqual(r_depois.json()['Id'],55)
-        
+        # Verifica os dados do aluno após a edição
+        r_depois = requests.get('http://localhost:5002/alunos/55')
+        self.assertEqual(r_depois.status_code, 200, "Falha ao obter o aluno após a edição")
+        self.assertEqual(r_depois.json()['Nota_Primeiro_Semestre'], 9.0, "Nota após a edição incorreta")
+        self.assertEqual(r_depois.json()['Id'], 55, "O ID do aluno foi alterado incorretamente")
+
+
 if __name__ == '__main__':
     unittest.main()

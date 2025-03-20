@@ -272,6 +272,10 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
 def resetar_professores():
     professores["professor"] = []
     return
+
+def deletar_alunos():
+    dados["alunos"] = []
+    return
                 
 # Todas as rotas:
 
@@ -461,13 +465,19 @@ def adicionar_aluno():
         return jsonify({"Erro": str(es)}), 400
 
 
-@app.route("/alunos/resetar/<int:id_aluno>", methods=["DELETE"])
+@app.route("/alunos/deletar/<int:id_aluno>", methods=["DELETE"])
 def deletar_aluno_route(id_aluno):
     try:
         resultado = deletar_aluno_por_id(id_aluno)
         return jsonify(resultado), 200
     except AlunoNaoIdentificado as e:
         return jsonify({"Erro": str(e)}), 404
+    
+@app.route('/alunos/resetar', methods=['DELETE'])
+def resetar_alunoId():
+    deletar_alunos()
+    return jsonify({"mensagem": "Resetado"}), 200
+
 
 @app.route("/alunos/<int:id_aluno>", methods=["PUT"])
 def alterar_aluno_route(id_aluno):
