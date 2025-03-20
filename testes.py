@@ -206,6 +206,51 @@ class TestStringMethods(unittest.TestCase):
             self.fail("O Retorndo deve ser em JSON")
             self.assertEqual(type(obj_return),type([]))
 
-   
+    def test_008_getProfessorId(self):
+        r = requests.post('http://localhost:5002/professores', json={
+            "id": 17,
+            "nome": "Caio00",
+            "idade": 21,
+            "materia": "Banco de Dados",
+            "obs": "Contato com aluno via Chat"
+        })
+        print(r.json())
+        resposta = requests.get('http://localhost:5002/professores/17')
+        dict_return = resposta.json()
+        self.assertEqual(type(dict_return), dict)
+        self.assertIn('id', dict_return['professor'])  # Linha corrigida
+        self.assertEqual(dict_return['professor']['id'], 17)  # Linha corrigida
+
+    def test_009_POSTProfessor(self):
+        try:
+            resp = requests.post('http://localhost:5002/professores', json={
+            "id": 18,
+            "nome": "Caio H.",
+            "idade": 27,
+            "materia": "Dev API E Micros",
+            "obs": "Contato com aluno via Chat"
+            })
+        
+            if resp.status_code != 201:
+                self.fail(f"Falha ao criar Professor. Status code: {resp.status_code}")
+
+            r_list = requests.get('http://localhost:5002/professores')
+            print(r_list.status_code)
+            if r_list.status_code !=201:
+                self.fail(f"Falha ao obter a lista de Professores. Status code: {r_list.status_code}")
+
+            r_list = r_list.json()  # Corrigido: usa json() para obter o conteúdo
+
+            nv_professor = False
+            for professor in r_list:
+                if professor['id'] == 18:
+                    nv_professor = True
+            if not nv_professor:
+                self.fail('Professor não encontrada na lista de professores')
+        except requests.exceptions.RequestException as e:
+            self.fail(f"Erro na requisição: {e}") 
+
+
+        
 if __name__ == '__main__':
     unittest.main()

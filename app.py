@@ -202,11 +202,11 @@ def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
         }), 500
                 
 
-def gerar_novo_id():
-    '''Criação de id, obrigatório'''
-    if not professores["professor"]: # Correção: A verificação deve ser na lista de professores
-        return 1
-    return max(professor["id"] for professor in professores["professor"]) + 1 # Correção: Iterar sobre a lista correta
+# def gerar_novo_id():
+#     '''Criação de id, obrigatório'''
+#     if not professores["professor"]: # Correção: A verificação deve ser na lista de professores
+#         return 1
+#     return max(professor["id"] for professor in professores["professor"]) + 1 # Correção: Iterar sobre a lista correta
 
 
 def procurarProfessorPorId(id_professor):   #def é minúscula
@@ -379,19 +379,22 @@ def pesquisa_professor(id):
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
     except ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
-
+    
+###############################################################################################################
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
     novo_professor = request.json
     if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
         return jsonify({"erro": "Nome e matéria são obrigatórios"}), 400
     try:
-        novo_professor["id"] = gerar_novo_id()
+        if ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
+            raise ProfessorExiste("Professor já existe")
         criarNovoProfessor(novo_professor)
         return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
-
-    except CadastroDeProfessorFalhado as e: # Correção: Capturar a exceção correta
+        #return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
+    except ProfessorExiste as e:
         return jsonify({"erro": str(e)}), 400
+###############################################################################################################
 
 @app.route('/professores/<int:id>', methods=['PUT'])
 def atualizar_professor(id):
