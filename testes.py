@@ -336,6 +336,18 @@ class TestStringMethods(unittest.TestCase):
 
         except requests.exceptions.RequestException as e:
             self.fail(f"Erro na requisição: {e}")
+
+#TESTES ALUNO
+    def teste_012_GET_alunos(self):
+        r = requests.get('http://localhost:5002/alunos')
+        if r.status_code == 404:
+            self.fail("Você não definiu a página/alunos no seu servidor")
+        try:
+            obj_retornado = r.json()
+        except:
+            self.fail("O retorno deve ser em JSON")
+        self.assertEqual(type(obj_retornado), type([]))
+
         
 if __name__ == '__main__':
     unittest.main()
