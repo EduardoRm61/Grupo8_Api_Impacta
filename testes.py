@@ -258,39 +258,55 @@ class TestStringMethods(unittest.TestCase):
             self.fail(f"Erro na requisição: {e}")
 
     def test_010_PUT_Professor(self):
-        r_reset = requests.delete('http://localhost:5002/professores')
+        try:
+            # Resetar a lista de professores
+            r_reset = requests.delete('http://localhost:5002/professores/resetar')
+            self.assertEqual(r_reset.status_code, 200)
 
-    # def teste_005_edita(self):
-    #     r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
-    #     self.assertEqual(r_reset.status_code,200)
+            # Criar um novo professor
+            post_response = requests.post('http://localhost:5002/professores', json={
+                "id": 34,
+                "nome": "Caio",
+                "idade": 27,
+                "materia": "Dev API E Micros",
+                "obs": "Contato com aluno via Chat"
+            })
+            self.assertEqual(post_response.status_code, 201)  # Verifica se o POST foi bem-sucedido
+            #print("POST Response:", post_response.json())  # Depuração
 
-    #     #{"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10}
+            # Consultar o professor criado
+            r_antes = requests.get('http://localhost:5002/professores/34')
+            self.assertEqual(r_antes.status_code, 200)  # Verifica se o GET foi bem-sucedido
+            #print("GET Response (Antes):", r_antes.json())  # Depuração
 
-    #     requests.post('http://localhost:5002/Turma', json={
-    #         "Id": 26,
-    #         "Descrição": "Eng. Software",
-    #         "Ativa": False,
-    #         "Professor Id": 11
-    #     })
+            # Verifica se o nome do professor está correto
+            professor_antes = r_antes.json().get('professor', {})  # Acessa o dicionário 'professor'
+            self.assertEqual(professor_antes['nome'], 'Caio')
 
-    #     #print(r_reset.json())      Aqui está resetado
-    #     #print("POST Response:", resp.status_code, resp.json())
-    #     r_antes = requests.get('http://localhost:5002/Turma/26')
-    #     #print(r_antes.json())
-    #     self.assertEqual(r_antes.json()['Descrição'],'Eng. Software')
+            # Atualizar o professor
+            put_response = requests.put('http://localhost:5002/professores/34', json={
+                "id": 34,
+                "nome": "Caiooo",
+                "idade": 27,
+                "materia": "Dev API E Micros",
+                "obs": "Contato com aluno via Chat" 
+            })
+            self.assertEqual(put_response.status_code, 200)  # Verifica se o PUT foi bem-sucedido
+            #print("PUT Response:", put_response.json())  # Depuração
 
+            # Consultar o professor atualizado
+            r_depois = requests.get('http://localhost:5002/professores/34')
+            self.assertEqual(r_depois.status_code, 200)  # Verifica se o GET foi bem-sucedido
+            #print("GET Response (Depois):", r_depois.json())  # Depuração
+
+            # Verifica se o nome e o ID do professor estão corretos
+            professor_depois = r_depois.json().get('professor', {})  # Acessa o dicionário 'professor'
+            self.assertEqual(professor_depois['nome'], 'Caiooo')
+            self.assertEqual(professor_depois['id'], 34)
+        except requests.exceptions.RequestException as e:
+            self.fail(f"Erro na requisição: {e}")
         
-    #     requests.put('http://localhost:5002/Turma/Alterar/26',json={
-    #         "Id": 26,
-    #         "Descrição": "Eng. Dos esquisitos",
-    #         "Ativa": False,
-    #         "Professor Id": 11})
-        
-    #     r_depois = requests.get('http://localhost:5002/Turma/26')
-    #     self.assertEqual(r_depois.json()['Descrição'],'Eng. Dos esquisitos')
-    #     #mas o id nao mudou
-    #     self.assertEqual(r_depois.json()['Id'],26)
-
+    def test_011_DELETE
         
 if __name__ == '__main__':
     unittest.main()
