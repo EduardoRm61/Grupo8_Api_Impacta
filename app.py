@@ -423,6 +423,11 @@ def delete_professor(id_professor):
     except ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
 
+@app.route('professor/resetar', methods=['DELETE'])
+def resetar_professor():
+    resetar_professores()
+    return jsonify({"mensagem": "Resetado"}), 200
+
 
 @app.route("/alunos", methods=["GET"])
 def listar_alunos_route():

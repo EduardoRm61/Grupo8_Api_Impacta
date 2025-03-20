@@ -257,7 +257,39 @@ class TestStringMethods(unittest.TestCase):
         except requests.exceptions.RequestException as e:
             self.fail(f"Erro na requisição: {e}")
 
-    
+    def test_010_PUT_Professor(self):
+        r_reset = requests.delete('http://localhost:5002/professores')
+
+    # def teste_005_edita(self):
+    #     r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
+    #     self.assertEqual(r_reset.status_code,200)
+
+    #     #{"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10}
+
+    #     requests.post('http://localhost:5002/Turma', json={
+    #         "Id": 26,
+    #         "Descrição": "Eng. Software",
+    #         "Ativa": False,
+    #         "Professor Id": 11
+    #     })
+
+    #     #print(r_reset.json())      Aqui está resetado
+    #     #print("POST Response:", resp.status_code, resp.json())
+    #     r_antes = requests.get('http://localhost:5002/Turma/26')
+    #     #print(r_antes.json())
+    #     self.assertEqual(r_antes.json()['Descrição'],'Eng. Software')
+
+        
+    #     requests.put('http://localhost:5002/Turma/Alterar/26',json={
+    #         "Id": 26,
+    #         "Descrição": "Eng. Dos esquisitos",
+    #         "Ativa": False,
+    #         "Professor Id": 11})
+        
+    #     r_depois = requests.get('http://localhost:5002/Turma/26')
+    #     self.assertEqual(r_depois.json()['Descrição'],'Eng. Dos esquisitos')
+    #     #mas o id nao mudou
+    #     self.assertEqual(r_depois.json()['Id'],26)
 
         
 if __name__ == '__main__':
