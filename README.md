@@ -2,7 +2,7 @@ Este projeto é uma API desenvolvida para realizar o gerenciamento de uma escola
 
 Estamos utilizando o GitHub para versionamento de código e colaboração em equipe, além do Flask como framework para desenvolvimento da aplicação, garantindo simplicidade e flexibilidade na implementação do sistema.
 
-Grupo 8
+Grupo 9
 
  Alessandra F Rigonatti RA: 2401151
  Eduardo Nunes RA:2401234
