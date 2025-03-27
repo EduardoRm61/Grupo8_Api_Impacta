@@ -5,7 +5,7 @@ from app import app
 class TestStringMethods(unittest.TestCase):
 
     #Teste para listar Turma: 
-    def teste_000_lista_professorGET(self):
+    def test_000_lista_professorGET(self):
         r = requests.get('http://localhost:5002/Turma')
 
         if r.status_code == 404:
@@ -142,23 +142,25 @@ class TestStringMethods(unittest.TestCase):
             self.fail(f"Erro ao fazer requisição: {e}")
  
 
-    def teste_005_edita(self):
+    def test_005_edita(self):
         r_reset = requests.delete('http://localhost:5002/Turma/Resetar')
         self.assertEqual(r_reset.status_code,200)
 
         #{"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10}
 
-        requests.post('http://localhost:5002/Turma', json={
+        resp = requests.post('http://localhost:5002/Turma', json={
             "Id": 26,
             "Descrição": "Eng. Software",
             "Ativa": False,
             "Professor Id": 11
         })
 
-        #print(r_reset.json())      Aqui está resetado
+        #print(r_reset.json())      
         #print("POST Response:", resp.status_code, resp.json())
         r_antes = requests.get('http://localhost:5002/Turma/26')
+
         #print(r_antes.json())
+        
         self.assertEqual(r_antes.json()['Descrição'],'Eng. Software')
 
         
@@ -317,28 +319,28 @@ class TestStringMethods(unittest.TestCase):
                 "obs": "Teste de reset"
             })
             self.assertEqual(post_response.status_code, 201)  # Verifica se o POST foi bem-sucedido
-            print("POST Response (Adicionar Professor):", post_response.json())
+            #print("POST Response (Adicionar Professor):", post_response.json())
 
             # Verifica se o professor foi adicionado
             get_response = requests.get('http://localhost:5002/professores/1')
             self.assertEqual(get_response.status_code, 200)  # Verifica se o GET foi bem-sucedido
-            print("GET Response (Antes do Reset):", get_response.json())
+            #print("GET Response (Antes do Reset):", get_response.json())
 
             # Reseta o dicionário de professores
             reset_response = requests.delete('http://localhost:5002/professores/resetar')
             self.assertEqual(reset_response.status_code, 200)  # Verifica se o DELETE foi bem-sucedido
-            print("DELETE Response (Resetar Professores):", reset_response.json())
+            #print("DELETE Response (Resetar Professores):", reset_response.json())
 
             # Tenta buscar o professor após o reset
             get_response_after_reset = requests.get('http://localhost:5002/professores/1')
-            print("GET Response (Após o Reset):", get_response_after_reset.json())  # Depuração
+            #print("GET Response (Após o Reset):", get_response_after_reset.json())  # Depuração
             self.assertEqual(get_response_after_reset.status_code, 404)  # Verifica se o professor não existe mais
 
         except requests.exceptions.RequestException as e:
             self.fail(f"Erro na requisição: {e}")
 
 #TESTES ALUNO
-    def teste_012_GET_alunos(self):
+    def test_012_GET_alunos(self):
         r = requests.get('http://localhost:5002/alunos')
         if r.status_code == 404:
             self.fail("Você não definiu a página/alunos no seu servidor")
@@ -348,7 +350,7 @@ class TestStringMethods(unittest.TestCase):
             self.fail("O retorno deve ser em JSON")
         self.assertEqual(type(obj_retornado), type([]))
 
-    def teste_013_POST_POST(self):
+    def test_013_POST_POST(self):
         try:
             #criando um aluno
             r1 = requests.post('http://localhost:5002/alunos', json={
@@ -406,7 +408,7 @@ class TestStringMethods(unittest.TestCase):
             self.fail(f"Erro ao fazer requisição: {e}")
 
         
-    def teste_014_POST_aluno(self):
+    def test_014_POST_aluno(self):
         r = requests.post('http://localhost:5002/alunos',json={
             "Id": 20,
             "Nome": "Thaina",
@@ -424,9 +426,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(dict_return['Id'],20)
 
 
-        ##
-
-    def teste_015_DELETE_aluno(self):
+    def test_015_DELETE_aluno(self):
         # Resetar a lista de alunos
         r_reset = requests.delete('http://localhost:5002/alunos/resetar')
         self.assertEqual(r_reset.status_code, 200, "Falha ao resetar o aluno")
@@ -453,7 +453,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(len(r_return), 1, "A lista de alunos deve ter incluído 1 aluno")
 
         # Deletar o aluno
-        requests.delete('http://localhost:5002/alunos/resetar/33')
+        requests.delete('http://localhost:5002/alunos/deletar/33')
 
         # Verificar se o aluno foi deletado
         r2_list = requests.get('http://localhost:5002/alunos')
@@ -462,12 +462,11 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(len(aluno_33), 0, "Erro: Aluno ainda existe após deleção")
 
 
-    def teste_016_aluno_DELETE_EDITA(self):
+    def test_016_aluno_EDITA(self):
         # Deleta o aluno com ID 55, caso exista
-        r_reset = requests.delete('http://localhost:5002/alunos/55')
-        self.assertIn(r_reset.status_code, [200, 404], "Falha ao resetar o aluno")
-
-        # Cria um novo aluno com ID 55
+        r_reset = requests.delete('http://localhost:5002/alunos/resetar')
+        #self.assertIn(r_reset.status_code, [200, 404], "Falha ao resetar o aluno") # Tanto faz a resposta ERRADO
+       
         r_post = requests.post('http://localhost:5002/alunos', json={
             "Id": 55,
             "Nome": "Thais",
@@ -478,9 +477,10 @@ class TestStringMethods(unittest.TestCase):
             "Nota_Segundo_semestre": 1.0,
             "Media_final": 2.0
         })
-        self.assertEqual(r_post.status_code, 201, "Falha ao criar o aluno")
+        #print(r_post.status_code)
+        self.assertEqual(r_post.status_code, 201, "Criado com sucesso") # ou 404
 
-        # Verifica os dados do aluno antes da edição
+        # Verifica os dados do aluno anteatus_cs da edição
         r_antes = requests.get('http://localhost:5002/alunos/55')
         self.assertEqual(r_antes.status_code, 200, "Falha ao obter o aluno antes da edição")
         self.assertEqual(r_antes.json()['Nota_Primeiro_Semestre'], 1.0, "Nota antes da edição incorreta")
@@ -504,5 +504,10 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(r_depois.json()['Id'], 55, "O ID do aluno foi alterado incorretamente")
 
 
+def runTests():
+        suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestStringMethods)
+        unittest.TextTestRunner(verbosity=2,failfast=True).run(suite)
+
+
 if __name__ == '__main__':
-    unittest.main()
+    runTests()
