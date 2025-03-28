@@ -51,35 +51,7 @@ professores = {"professor": [
 # ]}
 
 #Criando todas as classes de exceções:
-class TurmaNaoIdentificada(Exception):
-    def __init__(self, msg="Erro, Turma não identificada ou inexistente!"):
-        self.msg = msg
-        super().__init__(self.msg)
 
-class ProfessorNaoIdentificado(Exception):
-    def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
-        self.msg = msg
-        super().__init__(self.msg)
-
-class TurmaExistente(Exception):
-    def __init__(self, msg="Erro, Turma já existente!"):
-        self.msg = msg
-        super().__init__(self.msg)
-
-class CadastroDeTurmaFalhado(Exception):
-     def __init__(self, msg="Erro, Id turma e Id Professor incorretos!"):
-          self.msg = msg
-          super().__init__(self.msg)
-
-class AtualizacaoTurma(Exception):
-    def __init__(self, msg="Erro, Não foi possível atualizar os dados da turma! Reveja os campos e preencha corretamente"):
-        self.msg = msg
-        super().__init__(self.msg)
-
-class ValorBool(Exception):
-    def __init__(self, msg="Erro, valor Booleano incorreto, deigite True ou False"):
-        self.msg = msg
-        super().__init__(self.msg)
 
 class AlunoNaoIdentificado(Exception):
     def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
@@ -125,8 +97,6 @@ def apaga_tudo():
     professores["Professor"] = []
     modTur.dadosTurma["Turma"] = []
 
-
-         
 
 # def gerar_novo_id():
 #     '''Criação de id, obrigatório'''
@@ -219,9 +189,9 @@ def listar_turma():
 @app.route("/Turma/<int:id_turma>", methods=["GET"])            
 def procurarTurma(id_turma):
      try:
-        dados = ProcurarTurmaPorId(id_turma)
+        dados = modTur.ProcurarTurmaPorId(id_turma)
         return jsonify(dados)
-     except TurmaNaoIdentificada as trm:
+     except modTur.TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 402
 
 @app.route("/Turma", methods=["POST"])
@@ -232,21 +202,21 @@ def AddTurma():
 
     try:
          
-        if not ProfessorExistente(nv_dict["Professor Id"]):
+        if not modTur.ProfessorExistente(nv_dict["Professor Id"]):
             return jsonify({
                 "Erro": "Requisição inválida",
                 "Detalhes": "Id do Professor inexistente"
             }), 400
 
-        if TurmaJaExiste(nv_dict["Id"]):
+        if modTur.TurmaJaExiste(nv_dict["Id"]):
             return jsonify({
                 "Erro": "Requisição inválida",
                 "Detalhes": "Id da Turma já existente"
             }), 400
-        CriarNovaTurma(nv_dict)
+        modTur.CriarNovaTurma(nv_dict)
         return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
     
-    except CadastroDeTurmaFalhado as cdtf:
+    except modTur.CadastroDeTurmaFalhado as cdtf:
          return jsonify({
             "Erro": "Falha ao cadastrar turma",
             "detalhes": str(cdtf)
@@ -254,15 +224,15 @@ def AddTurma():
 
 @app.route("/Turma/Resetar", methods=["DELETE"])
 def ResetarTodaTurma():
-     DeletarTurma()
+     modTur.DeletarTurma()
      return jsonify({"mensagem": "Resetado"}), 200
 
 @app.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
 def ResetarTurmaId(id_turma):
      try:
-          DeletarTurmaPorId(id_turma)
+          modTur.DeletarTurmaPorId(id_turma)
           return jsonify(modTur.dadosTurma["Turma"]), 200
-     except TurmaNaoIdentificada as trm:
+     except modTur.TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 404
      
 @app.route("/Turma/Alterar/<int:id_turma>", methods=["PUT"])
@@ -295,7 +265,7 @@ def AlterarInfo(id_turma):
             "Descrição": "O campo Professor Id é obrigatório se preechido"
         }), 400
     
-    resultado, status_code = AlterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
+    resultado, status_code = modTur.AlterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
     return jsonify(resultado), status_code      
 
 
@@ -321,7 +291,7 @@ def cadastrar_professores():
     if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
         return jsonify({"erro": "Nome e matéria são obrigatórios"}), 400
     try:
-        if ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
+        if modTur.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
             raise ProfessorExiste("Professor já existe")
         criarNovoProfessor(novo_professor)
         return jsonify({"mensagem": "Created", "professor": novo_professor}), 201

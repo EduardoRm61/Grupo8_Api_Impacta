@@ -3,6 +3,43 @@ dadosTurma = {"Turma":[
     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}     
 ]}
 
+#Aqui estão todas as classes de exceções:
+
+class ProfessorExiste(Exception):
+    def __init__(self, msg="Professor já existente"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class ProfessorNaoIdentificado(Exception):
+    def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class TurmaExistente(Exception):
+    def __init__(self, msg="Erro, Turma já existente!"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class CadastroDeTurmaFalhado(Exception):
+     def __init__(self, msg="Erro, Id turma e Id Professor incorretos!"):
+          self.msg = msg
+          super().__init__(self.msg)
+
+class AtualizacaoTurma(Exception):
+    def __init__(self, msg="Erro, Não foi possível atualizar os dados da turma! Reveja os campos e preencha corretamente"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class ValorBool(Exception):
+    def __init__(self, msg="Erro, valor Booleano incorreto, deigite True ou False"):
+        self.msg = msg
+        super().__init__(self.msg)
+
+class TurmaNaoIdentificada(Exception):
+    def __init__(self, msg="Erro, Turma não identificada ou inexistente!"):
+        self.msg = msg
+        super().__init__(self.msg)
+
 #Aqui estão as funções auxiliares para Turma em app.py:
 
 def ProcurarTurmaPorId(id_turma):
@@ -66,7 +103,7 @@ def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
         }), 500
     
 def TurmaJaExiste(Id_turma):
-    for turma in modTur.dadosTurma["Turma"]:
+    for turma in dadosTurma["Turma"]:
         if turma["Id"] == Id_turma:
             return True
     return False
