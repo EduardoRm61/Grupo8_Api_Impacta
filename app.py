@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-
+import model_turma as modTur
 app = Flask(__name__)
 
 dados = {
@@ -45,10 +45,7 @@ professores = {"professor": [
 ]}
 
 
-dadosTurma = {"Turma":[
-    {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
-    {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}     
-]}
+
 
 # dadosTurma = {"Turma":[     
 # ]}
@@ -122,31 +119,31 @@ class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava
 #Criando funções para as requisições:
 
 def ProcurarTurmaPorId(id_turma):
-            for dict in dadosTurma["Turma"]:
+            for dict in modTur.dadosTurma["Turma"]:
                 if dict['Id'] == id_turma:
                     return dict
             raise TurmaNaoIdentificada()
 
 def CriarNovaTurma(nv_dict):
-    dadosTurma["Turma"].append(nv_dict)
+    modTur.dadosTurma["Turma"].append(nv_dict)
     return
 
 
 def apaga_tudo():
     dados['alunos'] = []
     professores["Professor"] = []
-    dadosTurma["Turma"] = []
+    modTur.dadosTurma["Turma"] = []
 
 
 def ListarTurma():
-    return dadosTurma["Turma"]
+    return modTur.dadosTurma["Turma"]
 
 def DeletarTurma():
-    dadosTurma["Turma"] = []
+    modTur.dadosTurma["Turma"] = []
 
 
 def DeletarTurmaPorId(id_turma):
-    turmas = dadosTurma["Turma"]
+    turmas = modTur.dadosTurma["Turma"]
 
     for indice, turma in enumerate(turmas):
         if turma["Id"] == id_turma:
@@ -162,7 +159,7 @@ def ProfessorExistente(Id_professor):
     return False
 
 def TurmaJaExiste(Id_turma):
-    for turma in dadosTurma["Turma"]:
+    for turma in modTur.dadosTurma["Turma"]:
         if turma["Id"] == Id_turma:
             return True
     return False
@@ -173,7 +170,7 @@ def ValoorBuleano(valorbool):
     return False
 
 def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
-    nv_dados = dadosTurma["Turma"]
+    nv_dados = modTur.dadosTurma["Turma"]
     try:
         for turma in nv_dados:
             if turma["Id"] == Id_turma:
@@ -335,7 +332,7 @@ def ResetarTodaTurma():
 def ResetarTurmaId(id_turma):
      try:
           DeletarTurmaPorId(id_turma)
-          return jsonify(dadosTurma["Turma"]), 200
+          return jsonify(modTur.dadosTurma["Turma"]), 200
      except TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 404
      
