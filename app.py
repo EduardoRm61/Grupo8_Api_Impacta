@@ -118,15 +118,6 @@ class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava
 
 #Criando funções para as requisições:
 
-def ProcurarTurmaPorId(id_turma):
-            for dict in modTur.dadosTurma["Turma"]:
-                if dict['Id'] == id_turma:
-                    return dict
-            raise TurmaNaoIdentificada()
-
-def CriarNovaTurma(nv_dict):
-    modTur.dadosTurma["Turma"].append(nv_dict)
-    return
 
 
 def apaga_tudo():
@@ -135,69 +126,7 @@ def apaga_tudo():
     modTur.dadosTurma["Turma"] = []
 
 
-def ListarTurma():
-    return modTur.dadosTurma["Turma"]
-
-def DeletarTurma():
-    modTur.dadosTurma["Turma"] = []
-
-
-def DeletarTurmaPorId(id_turma):
-    turmas = modTur.dadosTurma["Turma"]
-
-    for indice, turma in enumerate(turmas):
-        if turma["Id"] == id_turma:
-            turmas.pop(indice)
-            return {"Mensagem": "Turma deletada com sucesso."}
-    raise TurmaNaoIdentificada()
-
-
-def ProfessorExistente(Id_professor):
-    for professor in professores["professor"]:
-        if professor["id"] == Id_professor:
-            return True  
-    return False
-
-def TurmaJaExiste(Id_turma):
-    for turma in modTur.dadosTurma["Turma"]:
-        if turma["Id"] == Id_turma:
-            return True
-    return False
-
-def ValoorBuleano(valorbool):
-    if valorbool is True or valorbool is False:
-        return True
-    return False
-
-def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
-    nv_dados = modTur.dadosTurma["Turma"]
-    try:
-        for turma in nv_dados:
-            if turma["Id"] == Id_turma:
-                if not ProfessorExistente(Id_Pro):
-                    return ({
-                        "Erro": "Requisição inválida",
-                        "Descrição": "Id do Professor inexistente"
-                    }), 400
-                if not ValoorBuleano(Ativa):
-                    return ({
-                        "Erro": "Requisição inválida",
-                        "Descricao": "Valor de Ativa incorreto. Digite True ou False"
-                    }), 400
-                turma["Descrição"] = Descricao
-                turma["Professor Id"] = Id_Pro
-                turma["Ativa"] = Ativa
-                return {"Detalhes":"Turma atualizada com seucesso!"}, 200
-        return ({
-            "Erro": "Requisição inválida",
-            "Descrição": "Id da turma inexistente"
-        }), 400
-    except Exception as e:
-        return({
-            "Erro": "Não foi possível fazer a requisição",
-            "Descrição": str(e)
-        }), 500
-                
+         
 
 # def gerar_novo_id():
 #     '''Criação de id, obrigatório'''
@@ -284,7 +213,7 @@ def reseta():
 
 @app.route("/Turma",methods=["GET"])                              
 def listar_turma():
-    Turmas = ListarTurma()
+    Turmas = modTur.ListarTurma()
     return jsonify(Turmas)
 
 @app.route("/Turma/<int:id_turma>", methods=["GET"])            
