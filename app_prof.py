@@ -20,6 +20,7 @@ def listar_professores():
         return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
     except Exception as e:
         return jsonify({"error": f"Internal Server Error: {str(e)}"}), 500 
+    #posso trocar para 404 not found? 500 é erro interno
 
 @app.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
