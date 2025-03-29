@@ -29,24 +29,23 @@ dados = {
 }
 
 
-# professores = {"professor": [
-#     {
-#     "id": 10,
-#     "nome": "Caio",
-#     "idade": 27,
-#     "materia": "Dev API E Micros",
-#     "obs": "Contato com aluno via Chat"},
+professores = {"professor": [
+    {
+    "id": 10,
+    "nome": "Caio",
+    "idade": 27,
+    "materia": "Dev API E Micros",
+    "obs": "Contato com aluno via Chat"},
 
-#     {"id": 11,
-#     "nome": "Odair",
-#     "idade": 30, 
-#     "materia": "DevOps",
-#     "obs": None}
-# ]}
-# ----- SERIA MODEL - DADOS ----- AQUI É CONTROLLER
+    {"id": 11,
+    "nome": "Odair",
+    "idade": 30, 
+    "materia": "DevOps",
+    "obs": None}
+]}
 
 
-#controller - rotas/endpoint
+#Model
 #Criando todas as classes de exceções:
 
 
@@ -85,16 +84,14 @@ class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava
         self.msg = msg
         super().__init__(self.msg)
 
-
-
 #Criando funções para as requisições:
-
-
+# Ainda são dados e sua manupulação e armazenamento
 
 def apaga_tudo():
     dados['alunos'] = []
     professores["Professor"] = []
     modTur.dadosTurma["Turma"] = []
+
 
 
 def procurarProfessorPorId(id_professor):   #def é minúscula
@@ -165,7 +162,7 @@ def deletar_alunos():
     dados["alunos"] = []
     return
                 
-# Todas as rotas:
+# Todas as rotas: São Controller 
 
 @app.route("/reseta", methods=["POST","DELETE"])
 def reseta():
