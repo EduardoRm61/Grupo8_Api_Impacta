@@ -24,6 +24,9 @@ def listar_professores():
 
 @app.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
+    
+    '''Devolve dict com base no id (chave/pk)'''
+    
     try:
         professor = procurarProfessorPorId(id)
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
@@ -33,9 +36,14 @@ def pesquisa_professor(id):
 ###########################################
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
+    
+    '''Add novo professor a list/dict'''
+    
     novo_professor = request.json
     if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
         return jsonify({"erro": "Nome e matéria são obrigatórios"}), 400
+    #aqui deve ter nome, id e matéria obrigatório
+    
     try:
         if modTur.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
             raise ProfessorExiste("Professor já existe")
