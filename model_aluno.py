@@ -49,4 +49,49 @@ class AtualizacaoAlunoFalhou(Exception):
 
 ###
 
+def procurar_aluno_por_id(id_aluno):
+    for aluno in dados["alunos"]:
+        if aluno["Id"] == id_aluno:
+            return aluno
+    raise AlunoNaoIdentificado()
 
+def criar_novo_aluno(novo_aluno):
+    dados["alunos"].append(novo_aluno)
+    return {"Resposta":"Aluno criando com sucesso"}
+
+def listar_alunos():
+    return dados["alunos"]
+
+def deletar_aluno_por_id(id_aluno):
+    alunos = dados["alunos"]
+    for indice, aluno in enumerate(alunos):
+        if aluno["Id"] == id_aluno:
+            alunos.pop(indice)
+            return {"Mensagem": "Aluno deletado com sucesso."}
+    raise AlunoNaoIdentificado()
+
+def aluno_ja_existe(id_aluno):
+    for aluno in dados["alunos"]:
+        if aluno["Id"] == id_aluno:
+            return True
+    return False
+
+def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, media_final): #NÃO SEI SE VAI PRECISAR
+    try:
+        for aluno in dados["alunos"]:
+            if aluno["Id"] == id_aluno:
+                aluno["Nome"] = nome
+                aluno["Idade"] = idade
+                aluno["Turma_Id"] = turma_id
+                aluno["Data_nascimento"] = data_nascimento
+                aluno["Nota_Primeiro_Semestre"] = nota_primeiro_semestre
+                aluno["Nota_Segundo_semestre"] = nota_segundo_semestre
+                aluno["Media_final"] = media_final
+                return {"Detalhes": "Aluno atualizado com sucesso!"}, 200
+        raise AlunoNaoIdentificado()
+    except Exception as e:
+        return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
+
+def deletar_alunos():
+    dados["alunos"] = []
+    return
