@@ -49,9 +49,11 @@ def cadastrar_professores():
             raise ProfessorExiste("Professor já existe")
         criarNovoProfessor(novo_professor)
         return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
-        #return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
+
     except ProfessorExiste as e:
         return jsonify({"erro": str(e)}), 400
+    #pode ser erro 409 - conflict - conflito entre dados ou dados iguais?
+    
 ###############################################################################################################
 
 @app.route('/professores/<int:id>', methods=['PUT'])
