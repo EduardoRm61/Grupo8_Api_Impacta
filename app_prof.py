@@ -100,6 +100,9 @@ def AlterarInfo(id_turma):
 
 @app.route('/professores', methods=['GET'])
 def listar_professores():
+    
+    '''Devolve list/dict de todos professores'''
+    
     try:
         return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
     except Exception as e:
@@ -113,7 +116,7 @@ def pesquisa_professor(id):
     except ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
     
-###############################################################################################################
+###########################################
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
     novo_professor = request.json
