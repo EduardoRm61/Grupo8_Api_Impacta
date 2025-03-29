@@ -277,6 +277,7 @@ def pesquisa_professor(id):
         return jsonify({"erro": str(e)}), 404
     
 ###############################################################################################################
+
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
     novo_professor = request.json
@@ -290,6 +291,7 @@ def cadastrar_professores():
         #return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
     except ProfessorExiste as e:
         return jsonify({"erro": str(e)}), 400
+    
 ###############################################################################################################
 
 @app.route('/professores/<int:id>', methods=['PUT'])

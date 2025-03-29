@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-import model_turma as modTur
+import model_professor as modProf 
 app = Flask(__name__)
                 
 # Todas as rotas:
