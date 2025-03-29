@@ -24,4 +24,29 @@ dados = {
     ]
 }
 
+###
+
+class AlunoNaoIdentificado(Exception):
+    def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
+        self.msg = msg
+        super()._init_(self.msg)
+
+class AlunoExistente(Exception):
+    def _init_(self, msg="Erro, Aluno já existente!"):
+        self.msg = msg
+        super()._init_(self.msg)
+
+class CadastroDeAlunoFalhado(Exception):
+    def _init_(self, msg="Erro, Id do aluno ou Turma_Id incorretos!"):
+        self.msg = msg
+        super()._init_(self.msg)
+
+class AtualizacaoAlunoFalhou(Exception):
+    def _init_(self, msg="Erro, Não foi possível atualizar os dados do aluno! Reveja os campos e preencha corretamente"):
+        self.msg = msg
+        super()._init_(self.msg)
+
+
+###
+
 
