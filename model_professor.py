@@ -2,32 +2,6 @@ from flask import Flask, jsonify, request
 # import model_turma as modTur - no app.py
 app = Flask(__name__)
 
-dados = {
-    "alunos": [
-        {
-            "Id": 20,
-            "Nome": "Thaina",
-            "Idade": 19,
-            "Turma_Id": 12,
-            "Data_nascimento": "10/08/2005",
-            "Nota_Primeiro_Semestre": 8.0,
-            "Nota_Segundo_semestre": 9.0,
-            "Media_final": 8.5
-        },
-
-        {
-            "Id": 25,
-            "Nome": "Rafaela",
-            "Idade": 25,
-            "Turma_Id": 16,
-            "Data_nascimento": "10/09/2000",
-            "Nota_Primeiro_Semestre": 6.0,
-            "Nota_Segundo_semestre": 9.0, 
-            "Media_final": 7.5
-        }
-    ]
-}
-
 
 professores = {"professor": [
     {
@@ -51,26 +25,33 @@ professores = {"professor": [
 
 class ProfessorNaoIdentificado(Exception):
     def __init__(self, msg="Not Found - Professor inexistente"):
+        
         self.msg = msg
         super().__init__(self.msg)
 
 class ProfessorExiste(Exception):
     def __init__(self, msg="Professor já existente"):
+        
         self.msg = msg
         super().__init__(self.msg)
 
 class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
     def __init__(self, msg="ID, nome e matéria são obrigatórios"):
+        
         self.msg = msg
         super().__init__(self.msg)
 
 #Criando funções para as requisições:
 # Ainda são dados e sua manupulação e armazenamento
 
-def apaga_tudo():
-    dados['alunos'] = []
-    professores["Professor"] = []
-    modTur.dadosTurma["Turma"] = []
+def listar_professores(): #estava sem
+    return professores
+
+# def apaga_tudo():
+#     dados['alunos'] = []
+#     modProf.professores["Professor"] = []
+#     modTur.dadosTurma["Turma"] = []
+#faz parte do turma
 
 
 

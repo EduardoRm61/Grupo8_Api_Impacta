@@ -4,6 +4,12 @@ app = Flask(__name__)
                 
 # Todas as rotas:
 
+def apaga_tudo():
+    dados['alunos'] = []
+    professores["Professor"] = []
+    modTur.dadosTurma["Turma"] = []
+    #já existe, deletar 
+    
 @app.route("/reseta", methods=["POST","DELETE"])
 def reseta():
     apaga_tudo()
@@ -13,6 +19,7 @@ def reseta():
 
 @app.route('/professores', methods=['GET'])
 def listar_professores():
+    professore = modProf.criarNovoProfessor()   #trazendo função criarnovoprof
     
     '''Devolve list/dict de todos professores'''
     

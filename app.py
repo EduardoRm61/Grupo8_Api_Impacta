@@ -170,6 +170,7 @@ def deletar_alunos():
                 
 # Todas as rotas:
 #TODAS ROTAS PROFESSORES DEVEM FICAR APENAS NA APP.PY E RESTO MODEL
+
 @app.route("/reseta", methods=["POST","DELETE"])
 def reseta():
     apaga_tudo()
@@ -263,9 +264,15 @@ def AlterarInfo(id_turma):
     resultado, status_code = modTur.AlterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
     return jsonify(resultado), status_code      
 
+# -------------------------------- PROFESSOR GET----------------------------------------#
 
 @app.route('/professores', methods=['GET'])
 def listar_professores():
+    
+    '''Mostra todos professores - geral'''
+    
+    professores = modProf.listar_professores() #trazendo do import
+    
     try:
         return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
     except Exception as e:
@@ -274,12 +281,12 @@ def listar_professores():
 @app.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
     try:
-        professor = procurarProfessorPorId(id)
+        professor = modProf.procurarProfessorPorId(id) #trazendo do import
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
     except ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
     
-###############################################################################################################
+# ----------------------------------- PROFESSOR POST -----------------------------------#
 
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
@@ -287,21 +294,20 @@ def cadastrar_professores():
     if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
         return jsonify({"erro": "Nome e matéria são obrigatórios"}), 400
     try:
-        if modTur.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
-            raise ProfessorExiste("Professor já existe")
-        criarNovoProfessor(novo_professor)
+        if modProf.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
+            raise modProf.ProfessorExiste("Professor já existe")
+        modProf.criarNovoProfessor(novo_professor)
         return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
-        #return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
-    except ProfessorExiste as e:
+    except modProf.ProfessorExiste as e:
         return jsonify({"erro": str(e)}), 400
     
-###############################################################################################################
+# ----------------------------------- PROFESSOR PUT ---------------------------------------#
 
 @app.route('/professores/<int:id>', methods=['PUT'])
 def atualizar_professor(id):
     atualizado = request.json
     try:
-        professor = procurarProfessorPorId(id) # Correção: Usar a função de procurarProfessorPorId correta
+        professor = modProf.procurarProfessorPorId(id) # Correção: Usar a função de procurarProfessorPorId correta
         if "nome" in atualizado:
             professor['nome'] = atualizado['nome']
         if "idade" in atualizado:
@@ -311,7 +317,7 @@ def atualizar_professor(id):
         if "obs" in atualizado:
             professor['obs'] = atualizado['obs']
         return jsonify({"mensagem": "Atualizado", "professor": professor}), 200
-    except ProfessorNaoIdentificado as e:
+    except modProf.ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
     except Exception as e:
         return jsonify({"erro": f"Internal Server Error: {str(e)}"}) # Correção: Mensagem de erro mais clara
@@ -319,15 +325,19 @@ def atualizar_professor(id):
 @app.route("/professores/deletar/<int:id_professor>", methods=["DELETE"])
 def delete_professor(id_professor):
     try:
-        resultado = deletarProfessorPorId(id_professor)
+        resultado = modProf.deletarProfessorPorId(id_professor)
         return jsonify(resultado), 200
-    except ProfessorNaoIdentificado as e:
+    except modProf.ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
 
 @app.route('/professores/resetar', methods=['DELETE'])
 def resetar_professor():
     resetar_professores()  # Função que reseta o dicionário de professores
     return jsonify({"mensagem": "Resetado"}), 200
+
+# ----------------------------------- # PROFESSOR FIM # -----------------------------------#
+
+# ----------------------------------- INICIO ALUNOS ---------------------------------------#
 
 
 @app.route("/alunos", methods=["GET"])

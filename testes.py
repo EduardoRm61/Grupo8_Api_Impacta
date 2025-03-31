@@ -198,6 +198,7 @@ class TestStringMethods(unittest.TestCase):
         # print(r.json())
         self.assertEqual(r.json()['Erro:'],'Erro, Turma não identificada ou inexistente!')
 
+#--------------------------- PROFESSOR TESTES -------------------------------#
     def test_007_getProfessor(self):
         r = requests.get('http://localhost:5002/professores')
         if r.status_code == 404:
