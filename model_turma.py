@@ -1,3 +1,5 @@
+import model_professor as modPro
+
 dadosTurma = {"Turma":[
     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}     
@@ -109,7 +111,7 @@ def TurmaJaExiste(Id_turma):
     return False
 
 def ProfessorExistente(Id_professor):
-    for professor in professores["professor"]:
+    for professor in modPro.professores["professor"]:
         if professor["id"] == Id_professor:
             return True  
     return False
