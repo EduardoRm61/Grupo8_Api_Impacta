@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import model_turma as modTur
+import model_professor as modProf
 app = Flask(__name__)
 
 dados = {
@@ -166,7 +167,7 @@ def deletar_alunos():
     return
                 
 # Todas as rotas:
-
+#TODAS ROTAS PROFESSORES DEVEM FICAR APENAS NA APP.PY E RESTO MODEL
 @app.route("/reseta", methods=["POST","DELETE"])
 def reseta():
     apaga_tudo()
