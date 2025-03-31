@@ -71,20 +71,22 @@ class AtualizacaoAlunoFalhou(Exception):
         self.msg = msg
         super()._init_(self.msg)
 
-class ProfessorNaoIdentificado(Exception):
-    def __init__(self, msg="Not Found - Professor inexistente"):
-        self.msg = msg
-        super().__init__(self.msg)
+# rodar e ver se deleta
 
-class ProfessorExiste(Exception):
-    def __init__(self, msg="Professor já existente"):
-        self.msg = msg
-        super().__init__(self.msg)
+# class ProfessorNaoIdentificado(Exception):
+#     def __init__(self, msg="Not Found - Professor inexistente"):
+#         self.msg = msg
+#         super().__init__(self.msg)
 
-class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
-    def __init__(self, msg="ID, nome e matéria são obrigatórios"):
-        self.msg = msg
-        super().__init__(self.msg)
+# class ProfessorExiste(Exception):
+#     def __init__(self, msg="Professor já existente"):
+#         self.msg = msg
+#         super().__init__(self.msg)
+
+# class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
+#     def __init__(self, msg="ID, nome e matéria são obrigatórios"):
+#         self.msg = msg
+#         super().__init__(self.msg)
 
 
 
