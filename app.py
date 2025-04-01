@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import model_turma as modTur
 import model_professor as modProf
+<<<<<<< HEAD
 import model_aluno as modAluno
 app = Flask(__name__)
 
@@ -52,6 +53,63 @@ app = Flask(__name__)
 def apaga_tudo():
     modAluno.dados['alunos'] = []
     professores["Professor"] = []
+=======
+import model_aluno as modAlu
+
+app = Flask(__name__)
+
+# dados = {
+#     "alunos": [
+#         {
+#             "Id": 20,
+#             "Nome": "Thaina",
+#             "Idade": 19,
+#             "Turma_Id": 12,
+#             "Data_nascimento": "10/08/2005",
+#             "Nota_Primeiro_Semestre": 8.0,
+#             "Nota_Segundo_semestre": 9.0,
+#             "Media_final": 8.5
+#         },
+
+#         {
+#             "Id": 25,
+#             "Nome": "Rafaela",
+#             "Idade": 25,
+#             "Turma_Id": 16,
+#             "Data_nascimento": "10/09/2000",
+#             "Nota_Primeiro_Semestre": 6.0,
+#             "Nota_Segundo_semestre": 9.0, 
+#             "Media_final": 7.5
+#         }
+#     ]
+# }
+
+
+class AlunoNaoIdentificado(Exception):
+    def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
+        self.msg = msg
+        super()._init_(self.msg)
+
+class AlunoExistente(Exception):
+    def _init_(self, msg="Erro, Aluno já existente!"):
+        self.msg = msg
+        super()._init_(self.msg)
+
+class CadastroDeAlunoFalhado(Exception):
+    def _init_(self, msg="Erro, Id do aluno ou Turma_Id incorretos!"):
+        self.msg = msg
+        super()._init_(self.msg)
+
+class AtualizacaoAlunoFalhou(Exception):
+    def _init_(self, msg="Erro, Não foi possível atualizar os dados do aluno! Reveja os campos e preencha corretamente"):
+        self.msg = msg
+        super()._init_(self.msg)
+
+
+def apaga_tudo():
+    modAlu.dados['alunos'] = []
+    modProf.professores["Professor"] = []
+>>>>>>> 2a454164842bf7987f1c9c3bfe8146633d95054b
     modTur.dadosTurma["Turma"] = []
 
 
@@ -72,15 +130,68 @@ def deletarProfessorPorId(id_professor):
             return {"mensagem": "Professor deletado com sucesso"} # Correção: Retorno estava com ponto final extra
     raise modProf.ProfessorNaoIdentificado()
 
+<<<<<<< HEAD
+=======
+# ..........................
+
+def procurar_aluno_por_id(id_aluno):
+    for aluno in dados["alunos"]:
+        if aluno["Id"] == id_aluno:
+            return aluno
+    raise AlunoNaoIdentificado()
+>>>>>>> 2a454164842bf7987f1c9c3bfe8146633d95054b
 
 
 
+<<<<<<< HEAD
     return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
+=======
+def deletar_aluno_por_id(id_aluno):
+    alunos = dados["alunos"]
+    for indice, aluno in enumerate(alunos):
+        if aluno["Id"] == id_aluno:
+            alunos.pop(indice)
+            return {"Mensagem": "Aluno deletado com sucesso."}
+    raise AlunoNaoIdentificado()
+
+def aluno_ja_existe(id_aluno):
+    for aluno in dados["alunos"]:
+        if aluno["Id"] == id_aluno:
+            return True
+    return False
+
+def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, media_final): #NÃO SEI SE VAI PRECISAR
+    try:
+        for aluno in dados["alunos"]:
+            if aluno["Id"] == id_aluno:
+                aluno["Nome"] = nome
+                aluno["Idade"] = idade
+                aluno["Turma_Id"] = turma_id
+                aluno["Data_nascimento"] = data_nascimento
+                aluno["Nota_Primeiro_Semestre"] = nota_primeiro_semestre
+                aluno["Nota_Segundo_semestre"] = nota_segundo_semestre
+                aluno["Media_final"] = media_final
+                return {"Detalhes": "Aluno atualizado com sucesso!"}, 200
+        raise AlunoNaoIdentificado()
+    except Exception as e:
+        return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
+
+
+# -------------------------- RESET PROF ------------------------------------#
+>>>>>>> 2a454164842bf7987f1c9c3bfe8146633d95054b
     
 def resetar_professores():
-    professores["professor"] = []
+    modProf.professores["professor"] = []
     return
+<<<<<<< HEAD
 
+=======
+#............................................................................
+def deletar_alunos():
+    dados["alunos"] = []
+    return
+                
+>>>>>>> 2a454164842bf7987f1c9c3bfe8146633d95054b
 # Todas as rotas:
 #TODAS ROTAS PROFESSORES DEVEM FICAR APENAS NA APP.PY E RESTO MODEL
 
@@ -187,16 +298,16 @@ def listar_professores():
     professores = modProf.listar_professores() #trazendo do import
     
     try:
-        return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
+        return jsonify({"professor": professores["professor"]}) 
     except Exception as e:
-        return jsonify({"error": f"Not Found: {str(e)}"}), 404 #tirei 500 internal erro e coloquei 404 not found 
+        return jsonify({"error": f"Not Found: {str(e)}"}), 500 #tirei 500 internal erro e coloquei 404 not found 
 
 @app.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
     try:
         professor = modProf.procurarProfessorPorId(id) #trazendo do import
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
-    except ProfessorNaoIdentificado as e:
+    except modProf.ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
     
 # ----------------------------------- PROFESSOR POST -----------------------------------#
@@ -210,7 +321,7 @@ def cadastrar_professores():
         if modProf.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
             raise modProf.ProfessorExiste("Professor já existe")
         modProf.criarNovoProfessor(novo_professor)
-        return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
+        return jsonify({"professor": novo_professor}), 201
     except modProf.ProfessorExiste as e:
         return jsonify({"erro": str(e)}), 400
     
@@ -229,7 +340,7 @@ def atualizar_professor(id):
             professor['materia'] = atualizado['materia']
         if "obs" in atualizado:
             professor['obs'] = atualizado['obs']
-        return jsonify({"mensagem": "Atualizado", "professor": professor}), 200
+        return jsonify({"professor": professor}), 200
     except modProf.ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
     except Exception as e:

@@ -47,14 +47,6 @@ class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava
 def listar_professores(): #estava sem
     return professores
 
-# def apaga_tudo():
-#     dados['alunos'] = []
-#     modProf.professores["Professor"] = []
-#     modTur.dadosTurma["Turma"] = []
-#faz parte do turma
-
-
-
 def procurarProfessorPorId(id_professor):   #def é minúscula
     for professor in professores["professor"]:
         if professor['id'] == id_professor:
