@@ -238,7 +238,7 @@ def listar_professores():
     professores = modProf.listar_professores() #trazendo do import
     
     try:
-        return jsonify({"professores": professores["professor"]}) 
+        return jsonify({"professor": professores["professor"]}) 
     except Exception as e:
         return jsonify({"error": f"Not Found: {str(e)}"}), 404 #tirei 500 internal erro e coloquei 404 not found 
 
