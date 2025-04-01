@@ -247,7 +247,7 @@ def pesquisa_professor(id):
     try:
         professor = modProf.procurarProfessorPorId(id) #trazendo do import
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
-    except ProfessorNaoIdentificado as e:
+    except modProf.ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
     
 # ----------------------------------- PROFESSOR POST -----------------------------------#
@@ -280,7 +280,7 @@ def atualizar_professor(id):
             professor['materia'] = atualizado['materia']
         if "obs" in atualizado:
             professor['obs'] = atualizado['obs']
-        return jsonify({"mensagem": "Atualizado", "professor": professor}), 200
+        return jsonify({"professor": professor}), 200
     except modProf.ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
     except Exception as e:
