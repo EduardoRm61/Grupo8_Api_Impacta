@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 import model_turma as modTur
 import model_professor as modProf
+
+
 app = Flask(__name__)
 
 dados = {
@@ -30,27 +32,6 @@ dados = {
 }
 
 
-# professores = {"professor": [
-#     {
-#     "id": 10,
-#     "nome": "Caio",
-#     "idade": 27,
-#     "materia": "Dev API E Micros",
-#     "obs": "Contato com aluno via Chat"},
-
-#     {"id": 11,
-#     "nome": "Odair",
-#     "idade": 30, 
-#     "materia": "DevOps",
-#     "obs": None}
-# ]}
-# ----- SERIA MODEL - DADOS ----- AQUI É CONTROLLER
-
-
-#controller - rotas/endpoint
-#Criando todas as classes de exceções:
-
-
 class AlunoNaoIdentificado(Exception):
     def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
         self.msg = msg
@@ -70,28 +51,6 @@ class AtualizacaoAlunoFalhou(Exception):
     def _init_(self, msg="Erro, Não foi possível atualizar os dados do aluno! Reveja os campos e preencha corretamente"):
         self.msg = msg
         super()._init_(self.msg)
-
-# rodar e ver se deleta
-
-# class ProfessorNaoIdentificado(Exception):
-#     def __init__(self, msg="Not Found - Professor inexistente"):
-#         self.msg = msg
-#         super().__init__(self.msg)
-
-# class ProfessorExiste(Exception):
-#     def __init__(self, msg="Professor já existente"):
-#         self.msg = msg
-#         super().__init__(self.msg)
-
-# class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
-#     def __init__(self, msg="ID, nome e matéria são obrigatórios"):
-#         self.msg = msg
-#         super().__init__(self.msg)
-
-
-
-#Criando funções para as requisições:
-
 
 
 def apaga_tudo():
