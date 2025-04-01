@@ -1,33 +1,8 @@
 from flask import Flask, jsonify, request
 import model_turma as modTur
 import model_professor as modProf
+import model_aluno as modAluno
 app = Flask(__name__)
-
-dados = {
-    "alunos": [
-        {
-            "Id": 20,
-            "Nome": "Thaina",
-            "Idade": 19,
-            "Turma_Id": 12,
-            "Data_nascimento": "10/08/2005",
-            "Nota_Primeiro_Semestre": 8.0,
-            "Nota_Segundo_semestre": 9.0,
-            "Media_final": 8.5
-        },
-
-        {
-            "Id": 25,
-            "Nome": "Rafaela",
-            "Idade": 25,
-            "Turma_Id": 16,
-            "Data_nascimento": "10/09/2000",
-            "Nota_Primeiro_Semestre": 6.0,
-            "Nota_Segundo_semestre": 9.0, 
-            "Media_final": 7.5
-        }
-    ]
-}
 
 
 # professores = {"professor": [
@@ -50,26 +25,6 @@ dados = {
 #controller - rotas/endpoint
 #Criando todas as classes de exceções:
 
-
-class AlunoNaoIdentificado(Exception):
-    def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
-        self.msg = msg
-        super()._init_(self.msg)
-
-class AlunoExistente(Exception):
-    def _init_(self, msg="Erro, Aluno já existente!"):
-        self.msg = msg
-        super()._init_(self.msg)
-
-class CadastroDeAlunoFalhado(Exception):
-    def _init_(self, msg="Erro, Id do aluno ou Turma_Id incorretos!"):
-        self.msg = msg
-        super()._init_(self.msg)
-
-class AtualizacaoAlunoFalhou(Exception):
-    def _init_(self, msg="Erro, Não foi possível atualizar os dados do aluno! Reveja os campos e preencha corretamente"):
-        self.msg = msg
-        super()._init_(self.msg)
 
 # rodar e ver se deleta
 
@@ -95,7 +50,7 @@ class AtualizacaoAlunoFalhou(Exception):
 
 
 def apaga_tudo():
-    dados['alunos'] = []
+    modAluno.dados['alunos'] = []
     professores["Professor"] = []
     modTur.dadosTurma["Turma"] = []
 
@@ -117,57 +72,15 @@ def deletarProfessorPorId(id_professor):
             return {"mensagem": "Professor deletado com sucesso"} # Correção: Retorno estava com ponto final extra
     raise modProf.ProfessorNaoIdentificado()
 
-def procurar_aluno_por_id(id_aluno):
-    for aluno in dados["alunos"]:
-        if aluno["Id"] == id_aluno:
-            return aluno
-    raise AlunoNaoIdentificado()
 
-def criar_novo_aluno(novo_aluno):
-    dados["alunos"].append(novo_aluno)
-    return {"Resposta":"Aluno criando com sucesso"}
 
-def listar_alunos():
-    return dados["alunos"]
 
-def deletar_aluno_por_id(id_aluno):
-    alunos = dados["alunos"]
-    for indice, aluno in enumerate(alunos):
-        if aluno["Id"] == id_aluno:
-            alunos.pop(indice)
-            return {"Mensagem": "Aluno deletado com sucesso."}
-    raise AlunoNaoIdentificado()
-
-def aluno_ja_existe(id_aluno):
-    for aluno in dados["alunos"]:
-        if aluno["Id"] == id_aluno:
-            return True
-    return False
-
-def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, media_final): #NÃO SEI SE VAI PRECISAR
-    try:
-        for aluno in dados["alunos"]:
-            if aluno["Id"] == id_aluno:
-                aluno["Nome"] = nome
-                aluno["Idade"] = idade
-                aluno["Turma_Id"] = turma_id
-                aluno["Data_nascimento"] = data_nascimento
-                aluno["Nota_Primeiro_Semestre"] = nota_primeiro_semestre
-                aluno["Nota_Segundo_semestre"] = nota_segundo_semestre
-                aluno["Media_final"] = media_final
-                return {"Detalhes": "Aluno atualizado com sucesso!"}, 200
-        raise AlunoNaoIdentificado()
-    except Exception as e:
-        return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
+    return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
     
 def resetar_professores():
     professores["professor"] = []
     return
 
-def deletar_alunos():
-    dados["alunos"] = []
-    return
-                
 # Todas as rotas:
 #TODAS ROTAS PROFESSORES DEVEM FICAR APENAS NA APP.PY E RESTO MODEL
 
@@ -342,15 +255,15 @@ def resetar_professor():
 
 @app.route("/alunos", methods=["GET"])
 def listar_alunos_route():
-    alunos = listar_alunos()
+    alunos = modAluno.listar_alunos()
     return jsonify(alunos)
 
 @app.route("/alunos/<int:id_aluno>", methods=["GET"])
 def procurar_aluno_route(id_aluno):
     try:
-        aluno = procurar_aluno_por_id(id_aluno)
+        aluno = modAluno.procurar_aluno_por_id(id_aluno)
         return jsonify(aluno)
-    except AlunoNaoIdentificado as e:
+    except modAluno.AlunoNaoIdentificado as e:
         return jsonify({"Erro": str(e)}), 404
 
 @app.route("/alunos", methods=["POST"])
@@ -360,25 +273,25 @@ def adicionar_aluno():
     novo_aluno["Turma_Id"] = int(novo_aluno["Turma_Id"])
 
     try:
-        if aluno_ja_existe(novo_aluno["Id"]):
-            raise AlunoExistente()
-        criar_novo_aluno(novo_aluno)
+        if modAluno.aluno_ja_existe(novo_aluno["Id"]):
+            raise modAluno.AlunoExistente()
+        modAluno.criar_novo_aluno(novo_aluno)
         return jsonify({"mensagem": "Aluno criado com sucesso!", "aluno": novo_aluno}), 201
-    except AlunoExistente as es:
+    except modAluno.AlunoExistente as es:
         return jsonify({"Erro": str(es)}), 400
 
 
 @app.route("/alunos/deletar/<int:id_aluno>", methods=["DELETE"])
 def deletar_aluno_route(id_aluno):
     try:
-        resultado = deletar_aluno_por_id(id_aluno)
+        resultado = modAluno.deletar_aluno_por_id(id_aluno)
         return jsonify(resultado), 200
-    except AlunoNaoIdentificado as e:
+    except modAluno.AlunoNaoIdentificado as e:
         return jsonify({"Erro": str(e)}), 404
     
 @app.route('/alunos/resetar', methods=['DELETE'])
 def resetar_alunoId():
-    deletar_alunos()
+    modAluno.deletar_alunos()
     return jsonify({"mensagem": "Resetado"}), 200
 
 
@@ -393,7 +306,7 @@ def alterar_aluno_route(id_aluno):
         }), 400
 
     try:
-        resultado, status_code = alterar_informacoes_aluno(
+        resultado, status_code = modAluno.alterar_informacoes_aluno(
             id_aluno,
             dados_aluno.get("Nome"),
             dados_aluno.get("Idade"),
@@ -404,7 +317,7 @@ def alterar_aluno_route(id_aluno):
             dados_aluno.get("Media_final")
         )
         return jsonify(resultado), status_code
-    except AlunoNaoIdentificado as e:
+    except modAluno.AlunoNaoIdentificado as e:
         return jsonify({"Erro": str(e)}), 404
     except Exception as e:
         return jsonify({"Erro": "Falha ao atualizar aluno", "Detalhes": str(e)}), 500
