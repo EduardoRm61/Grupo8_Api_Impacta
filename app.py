@@ -76,6 +76,8 @@ def deletarProfessorPorId(id_professor):
             return {"mensagem": "Professor deletado com sucesso"} # Correção: Retorno estava com ponto final extra
     raise modProf.ProfessorNaoIdentificado()
 
+# ..........................
+
 def procurar_aluno_por_id(id_aluno):
     for aluno in dados["alunos"]:
         if aluno["Id"] == id_aluno:
@@ -118,11 +120,14 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
         raise AlunoNaoIdentificado()
     except Exception as e:
         return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
+
+
+# -------------------------- RESET PROF ------------------------------------#
     
 def resetar_professores():
-    professores["professor"] = []
+    modProf.professores["professor"] = []
     return
-
+#............................................................................
 def deletar_alunos():
     dados["alunos"] = []
     return
