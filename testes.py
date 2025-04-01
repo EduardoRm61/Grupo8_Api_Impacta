@@ -340,7 +340,8 @@ class TestStringMethods(unittest.TestCase):
         except requests.exceptions.RequestException as e:
             self.fail(f"Erro na requisição: {e}")
 
-#TESTES ALUNO
+#-------------------------- TESTES ALUNO ----------------------------------
+
     def test_012_GET_alunos(self):
         r = requests.get('http://localhost:5002/alunos')
         if r.status_code == 404:

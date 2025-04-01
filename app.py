@@ -202,13 +202,13 @@ def AddTurma():
             return jsonify({
                 "Erro": "Requisição inválida",
                 "Detalhes": "Id do Professor inexistente"
-            }), 400
+            }), 404   #inexistente | estava bad request
 
         if modTur.TurmaJaExiste(nv_dict["Id"]):
             return jsonify({
                 "Erro": "Requisição inválida",
                 "Detalhes": "Id da Turma já existente"
-            }), 400
+            }), 409  #conflict - duplicado ou duplo - estava 400 bad request
         modTur.CriarNovaTurma(nv_dict)
         return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
     
@@ -276,7 +276,7 @@ def listar_professores():
     try:
         return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
     except Exception as e:
-        return jsonify({"error": f"Internal Server Error: {str(e)}"}), 500 
+        return jsonify({"error": f"Not Found: {str(e)}"}), 404 #tirei 500 internal erro e coloquei 404 not found 
 
 @app.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
