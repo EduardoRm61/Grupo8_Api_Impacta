@@ -1,3 +1,6 @@
+from flask import Flask, jsonify, request
+import model_turma as modTur
+
 dados = {
     "alunos": [
         {
