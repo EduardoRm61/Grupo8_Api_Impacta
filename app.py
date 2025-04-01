@@ -240,7 +240,7 @@ def listar_professores():
     try:
         return jsonify({"professor": professores["professor"]}) 
     except Exception as e:
-        return jsonify({"error": f"Not Found: {str(e)}"}), 404 #tirei 500 internal erro e coloquei 404 not found 
+        return jsonify({"error": f"Not Found: {str(e)}"}), 500 #tirei 500 internal erro e coloquei 404 not found 
 
 @app.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
@@ -261,7 +261,7 @@ def cadastrar_professores():
         if modProf.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
             raise modProf.ProfessorExiste("Professor já existe")
         modProf.criarNovoProfessor(novo_professor)
-        return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
+        return jsonify({"professor": novo_professor}), 201
     except modProf.ProfessorExiste as e:
         return jsonify({"erro": str(e)}), 400
     
