@@ -101,21 +101,21 @@ def apaga_tudo():
 
 
 def procurarProfessorPorId(id_professor):   #def é minúscula
-    for professor in professores["professor"]:
+    for professor in modProf.professores["professor"]:
         if professor['id'] == id_professor:
             return professor
-    raise ProfessorNaoIdentificado()
+    raise modProf.ProfessorNaoIdentificado()
 
 def criarNovoProfessor(nv_dict):
-    professores["professor"].append(nv_dict)
+    modProf.professores["professor"].append(nv_dict)
     return
 
 def deletarProfessorPorId(id_professor):
-    for indice, professor in enumerate(professores["professor"]):
+    for indice, professor in enumerate(modProf.professores["professor"]):
         if professor["id"] == id_professor:
-            professores["professor"].pop(indice)
+            modProf.professores["professor"].pop(indice)
             return {"mensagem": "Professor deletado com sucesso"} # Correção: Retorno estava com ponto final extra
-    raise ProfessorNaoIdentificado()
+    raise modProf.ProfessorNaoIdentificado()
 
 def procurar_aluno_por_id(id_aluno):
     for aluno in dados["alunos"]:
