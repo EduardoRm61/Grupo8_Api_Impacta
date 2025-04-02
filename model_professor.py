@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-# import model_turma as modTur - no app.py
+import model_turma as modTur - no app.py
 app = Flask(__name__)
 
 
@@ -18,34 +18,36 @@ professores = {"professor": [
     "obs": None}
 ]}
 
-
-#Model
-#Criando todas as classes de exceções:
-
-
 class ProfessorNaoIdentificado(Exception):
-    def __init__(self, msg="Not Found - Professor inexistente"):
-        
+    def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
         self.msg = msg
         super().__init__(self.msg)
-
+        
+# class ProfessorNaoIdentificado(Exception):
+#     def __init__(self, msg="Not Found - Professor inexistente"):
+#         self.msg = msg
+#         super().__init__(self.msg)
+        
 class ProfessorExiste(Exception):
     def __init__(self, msg="Professor já existente"):
-        
         self.msg = msg
         super().__init__(self.msg)
 
 class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
     def __init__(self, msg="ID, nome e matéria são obrigatórios"):
-        
         self.msg = msg
         super().__init__(self.msg)
 
-#Criando funções para as requisições:
-# Ainda são dados e sua manupulação e armazenamento
-
-def listar_professores(): #estava sem
-    return professores
+def apaga_tudo():
+    # dados['alunos'] = []
+    professores["Professor"] = []
+    # dadosTurma["Turma"] = []
+    
+def ProfessorExistente(Id_professor):
+    for professor in professores["professor"]:
+        if professor["id"] == Id_professor:
+            return True  
+    return False
 
 def procurarProfessorPorId(id_professor):   #def é minúscula
     for professor in professores["professor"]:
@@ -63,13 +65,7 @@ def deletarProfessorPorId(id_professor):
             professores["professor"].pop(indice)
             return {"mensagem": "Professor deletado com sucesso"} # Correção: Retorno estava com ponto final extra
     raise ProfessorNaoIdentificado()
-    
+
 def resetar_professores():
     professores["professor"] = []
     return
-
-
-# Todas as rotas: São Controller 
-
-if __name__ == '__main__':
-        app.run(host = 'localhost', port = 5002, debug = True)
