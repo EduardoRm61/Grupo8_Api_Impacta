@@ -1,9 +1,11 @@
 import model_professor as modPro
+import model_aluno as modAlu
+
 
 dadosTurma = {"Turma":[
     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}     
-]}
+]} 
 
 #Aqui estão todas as classes de exceções:
 
@@ -23,9 +25,9 @@ class TurmaExistente(Exception):
         super().__init__(self.msg)
 
 class CadastroDeTurmaFalhado(Exception):
-     def __init__(self, msg="Erro, Id turma e Id Professor incorretos!"):
-          self.msg = msg
-          super().__init__(self.msg)
+    def __init__(self, msg="Erro, Id turma e Id Professor incorretos!"):
+        self.msg = msg
+        super().__init__(self.msg)
 
 class AtualizacaoTurma(Exception):
     def __init__(self, msg="Erro, Não foi possível atualizar os dados da turma! Reveja os campos e preencha corretamente"):
@@ -43,6 +45,11 @@ class TurmaNaoIdentificada(Exception):
         super().__init__(self.msg)
 
 #Aqui estão as funções auxiliares para Turma em app.py:
+
+def apaga_tudo():
+    modAlu.dados['alunos'] = []
+    modPro.professores["Professor"] = []
+    dadosTurma["Turma"] = []
 
 def ProcurarTurmaPorId(id_turma):
             for dict in dadosTurma["Turma"]:
@@ -115,4 +122,3 @@ def ProfessorExistente(Id_professor):
         if professor["id"] == Id_professor:
             return True  
     return False
-
