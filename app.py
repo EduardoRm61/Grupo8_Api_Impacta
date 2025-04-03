@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+<<<<<<< HEAD
 
 app = Flask(__name__)
 
@@ -83,6 +84,14 @@ class ValorBool(Exception):
     def __init__(self, msg="Erro, valor Booleano incorreto, deigite True ou False"):
         self.msg = msg
         super().__init__(self.msg)
+=======
+import model_turma as modTur
+import model_professor as modProf
+import model_aluno as modAluno
+
+app = Flask(__name__)
+
+>>>>>>> parent of 9f71b98 (revert commit 9b019ea - testes todos ok - git checkout 9b019ea -- app.py)
 
 class AlunoNaoIdentificado(Exception):
     def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
@@ -104,6 +113,7 @@ class AtualizacaoAlunoFalhou(Exception):
         self.msg = msg
         super()._init_(self.msg)
 
+<<<<<<< HEAD
 class ProfessorNaoIdentificado(Exception):
     def __init__(self, msg="Not Found - Professor inexistente"):
         self.msg = msg
@@ -277,12 +287,20 @@ def deletar_alunos():
     dados["alunos"] = []
     return
                 
+=======
+
+def apaga_tudo():
+    modAlu.dados['alunos'] = []
+
+
+>>>>>>> parent of 9f71b98 (revert commit 9b019ea - testes todos ok - git checkout 9b019ea -- app.py)
 # Todas as rotas:
+#TODAS ROTAS PROFESSORES DEVEM FICAR APENAS NA APP.PY E RESTO MODEL
 
 @app.route("/reseta", methods=["POST","DELETE"])
 def reseta():
-    apaga_tudo()
-    return "resetado" 
+    modProf.apaga_tudo()        #1° modprof
+    return "resetado"               
 
 
 @app.route("/Turma",methods=["GET"])                              
@@ -310,14 +328,19 @@ def AddTurma():
             return jsonify({
                 "Erro": "Requisição inválida",
                 "Detalhes": "Id do Professor inexistente"
-            }), 400
+            }), 404   #inexistente | estava bad request
 
         if TurmaJaExiste(nv_dict["Id"]):
             return jsonify({
                 "Erro": "Requisição inválida",
                 "Detalhes": "Id da Turma já existente"
+<<<<<<< HEAD
             }), 400
         CriarNovaTurma(nv_dict)
+=======
+            }), 409  #conflict - duplicado ou duplo - estava 400 bad request
+        modTur.CriarNovaTurma(nv_dict)
+>>>>>>> parent of 9f71b98 (revert commit 9b019ea - testes todos ok - git checkout 9b019ea -- app.py)
         return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
     
     except CadastroDeTurmaFalhado as cdtf:
@@ -372,29 +395,39 @@ def AlterarInfo(id_turma):
     resultado, status_code = AlterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
     return jsonify(resultado), status_code      
 
+# -------------------------------- PROFESSOR GET----------------------------------------#
 
 @app.route('/professores', methods=['GET'])
 def listar_professores():
+    
+    '''Mostra todos professores - geral'''
+    
+    # professores = modProf.listar_professores() #trazendo do import
+    
     try:
-        return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
+        return jsonify({"mensagem": "Ok", "professores": modProf.professores["professor"]})     # mode já existente
     except Exception as e:
-        return jsonify({"error": f"Internal Server Error: {str(e)}"}), 500 
+        return jsonify({"error": f"Internal Serve Error: {str(e)}"}), 500 # mudei de error 404 para internal error
 
 @app.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
     try:
-        professor = procurarProfessorPorId(id)
+        professor = modProf.procurarProfessorPorId(id) #trazendo do import | mod já existente
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
-    except ProfessorNaoIdentificado as e:
-        return jsonify({"erro": str(e)}), 404
+    except modProf.ProfessorNaoIdentificado as e:
+        return jsonify({"erro": str(e)}), 404     #ok
     
-###############################################################################################################
+# ----------------------------------- PROFESSOR POST -----------------------------------#
+
 @app.route('/professores', methods=['POST'])
 def cadastrar_professores():
+    
     novo_professor = request.json
     if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
         return jsonify({"erro": "Nome e matéria são obrigatórios"}), 400
+    
     try:
+<<<<<<< HEAD
         if ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
             raise ProfessorExiste("Professor já existe")
         criarNovoProfessor(novo_professor)
@@ -403,12 +436,26 @@ def cadastrar_professores():
     except ProfessorExiste as e:
         return jsonify({"erro": str(e)}), 400
 ###############################################################################################################
+=======
+        if modProf.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
+            raise modProf.ProfessorExiste("Professor já existe")
+        
+    
+        modProf.criarNovoProfessor(novo_professor)
+     
+        return jsonify({"mensagem": "Created", "professor": novo_professor}), 201   #reorganizando restorno mudado
+    except modProf.ProfessorExiste as e:
+        return jsonify({"erro": str(e)}), 400     #ok
+    
+# ----------------------------------- PROFESSOR PUT ---------------------------------------#
+>>>>>>> parent of 9f71b98 (revert commit 9b019ea - testes todos ok - git checkout 9b019ea -- app.py)
 
 @app.route('/professores/<int:id>', methods=['PUT'])
 def atualizar_professor(id):
     atualizado = request.json
+    
     try:
-        professor = procurarProfessorPorId(id) # Correção: Usar a função de procurarProfessorPorId correta
+        professor = modProf.procurarProfessorPorId(id) # Correção: Usar a função de procurarProfessorPorId correta
         if "nome" in atualizado:
             professor['nome'] = atualizado['nome']
         if "idade" in atualizado:
@@ -417,37 +464,46 @@ def atualizar_professor(id):
             professor['materia'] = atualizado['materia']
         if "obs" in atualizado:
             professor['obs'] = atualizado['obs']
-        return jsonify({"mensagem": "Atualizado", "professor": professor}), 200
-    except ProfessorNaoIdentificado as e:
+        return jsonify({"mensagem": "Atualizado", "professor": professor}), 200   #retornando mensagem original
+    
+    except modProf.ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
     except Exception as e:
         return jsonify({"erro": f"Internal Server Error: {str(e)}"}) # Correção: Mensagem de erro mais clara
 
+# ----------------------------------- PROFESSOR DEL ---------------------------------------#
+
 @app.route("/professores/deletar/<int:id_professor>", methods=["DELETE"])
 def delete_professor(id_professor):
+    
     try:
-        resultado = deletarProfessorPorId(id_professor)
+        resultado = modProf.deletarProfessorPorId(id_professor)
         return jsonify(resultado), 200
-    except ProfessorNaoIdentificado as e:
+    except modProf.ProfessorNaoIdentificado as e:
         return jsonify({"erro": str(e)}), 404
+
 
 @app.route('/professores/resetar', methods=['DELETE'])
 def resetar_professor():
-    resetar_professores()  # Função que reseta o dicionário de professores
-    return jsonify({"mensagem": "Resetado"}), 200
+    modProf.resetar_professores()  # Função que reseta o dicionário de professores
+    return jsonify({"mensagem": "Resetado"}), 200    #OK
+
+# ----------------------------------- # PROFESSOR FIM # -----------------------------------#
+
+# ----------------------------------- INICIO ALUNOS ---------------------------------------#
 
 
 @app.route("/alunos", methods=["GET"])
 def listar_alunos_route():
-    alunos = listar_alunos()
+    alunos = modAluno.listar_alunos()
     return jsonify(alunos)
 
 @app.route("/alunos/<int:id_aluno>", methods=["GET"])
 def procurar_aluno_route(id_aluno):
     try:
-        aluno = procurar_aluno_por_id(id_aluno)
+        aluno = modAluno.procurar_aluno_por_id(id_aluno)
         return jsonify(aluno)
-    except AlunoNaoIdentificado as e:
+    except modAluno.AlunoNaoIdentificado as e:
         return jsonify({"Erro": str(e)}), 404
 
 @app.route("/alunos", methods=["POST"])
@@ -457,25 +513,25 @@ def adicionar_aluno():
     novo_aluno["Turma_Id"] = int(novo_aluno["Turma_Id"])
 
     try:
-        if aluno_ja_existe(novo_aluno["Id"]):
-            raise AlunoExistente()
-        criar_novo_aluno(novo_aluno)
+        if modAluno.aluno_ja_existe(novo_aluno["Id"]):
+            raise modAluno.AlunoExistente()
+        modAluno.criar_novo_aluno(novo_aluno)
         return jsonify({"mensagem": "Aluno criado com sucesso!", "aluno": novo_aluno}), 201
-    except AlunoExistente as es:
+    except modAluno.AlunoExistente as es:
         return jsonify({"Erro": str(es)}), 400
 
 
 @app.route("/alunos/deletar/<int:id_aluno>", methods=["DELETE"])
 def deletar_aluno_route(id_aluno):
     try:
-        resultado = deletar_aluno_por_id(id_aluno)
+        resultado = modAluno.deletar_aluno_por_id(id_aluno)
         return jsonify(resultado), 200
-    except AlunoNaoIdentificado as e:
+    except modAluno.AlunoNaoIdentificado as e:
         return jsonify({"Erro": str(e)}), 404
     
 @app.route('/alunos/resetar', methods=['DELETE'])
 def resetar_alunoId():
-    deletar_alunos()
+    modAluno.deletar_alunos()
     return jsonify({"mensagem": "Resetado"}), 200
 
 
@@ -490,7 +546,7 @@ def alterar_aluno_route(id_aluno):
         }), 400
 
     try:
-        resultado, status_code = alterar_informacoes_aluno(
+        resultado, status_code = modAluno.alterar_informacoes_aluno(
             id_aluno,
             dados_aluno.get("Nome"),
             dados_aluno.get("Idade"),
@@ -501,7 +557,7 @@ def alterar_aluno_route(id_aluno):
             dados_aluno.get("Media_final")
         )
         return jsonify(resultado), status_code
-    except AlunoNaoIdentificado as e:
+    except modAluno.AlunoNaoIdentificado as e:
         return jsonify({"Erro": str(e)}), 404
     except Exception as e:
         return jsonify({"Erro": "Falha ao atualizar aluno", "Detalhes": str(e)}), 500
