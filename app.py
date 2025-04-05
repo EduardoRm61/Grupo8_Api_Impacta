@@ -5,13 +5,14 @@
 #recebe as configurações do arquivo (entendi que é do config)
 # registro dos bluprints
 import os
+from flask import Flask, jsonify, request
 from config_prof import app
-from route_prof import #nome da blueprint professor
+# from route_prof import #nome da blueprint professor
 #from professor.index import professor - ver de onde vem e se é esta fase 
 
-app.register_blueprint(#nome blueprint professor)
-# estou importando as blueprints para app
-#app.register_blueprint(professor)
+# app.register_blueprint(#nome blueprint professor)
+# # estou importando as blueprints para app
+# #app.register_blueprint(professor)
 
 if __name__ == "__main__":
     app.run(host = app.config["HOST"], port = app.config["PORT"], debug = app.config["DEBUG"])
