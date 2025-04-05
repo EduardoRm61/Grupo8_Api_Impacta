@@ -1,6 +1,26 @@
-from flask import Flask, jsonify, request
+# inicia a aplicação
+# entrada principal para app, entrada do flask
+#render sobe aplicação por este arquivo
+#não possui rotas
+#recebe as configurações do arquivo (entendi que é do config)
+# registro dos bluprints
+import os
+from config_prof import app
+from route_prof import #nome da blueprint professor
+#from professor.index import professor - ver de onde vem e se é esta fase 
 
-app = Flask(__name__)
+app.register_blueprint(#nome blueprint professor)
+# estou importando as blueprints para app
+#app.register_blueprint(professor)
+
+if __name__ == "__main__":
+    app.run(host = app.config["HOST"], port = app.config["PORT"], debug = app.config["DEBUG"])
+
+
+# from flask import Flask, jsonify, request
+
+app = Flask(__name__)  #fica
+
 
 dados = {
     "alunos": [
@@ -28,21 +48,21 @@ dados = {
     ]
 }
 
+# .....deletar.................
+# professores = {"professor": [
+#     {
+#     "id": 10,
+#     "nome": "Caio",
+#     "idade": 27,
+#     "materia": "Dev API E Micros",
+#     "obs": "Contato com aluno via Chat"},
 
-professores = {"professor": [
-    {
-    "id": 10,
-    "nome": "Caio",
-    "idade": 27,
-    "materia": "Dev API E Micros",
-    "obs": "Contato com aluno via Chat"},
-
-    {"id": 11,
-    "nome": "Odair",
-    "idade": 30, 
-    "materia": "DevOps",
-    "obs": None}
-]}
+#     {"id": 11,
+#     "nome": "Odair",
+#     "idade": 30, 
+#     "materia": "DevOps",
+#     "obs": None}
+# ]}
 
 
 dadosTurma = {"Turma":[
@@ -59,10 +79,11 @@ class TurmaNaoIdentificada(Exception):
         self.msg = msg
         super().__init__(self.msg)
 
-class ProfessorNaoIdentificado(Exception):
-    def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
-        self.msg = msg
-        super().__init__(self.msg)
+# .....................................................deletar
+# class ProfessorNaoIdentificado(Exception):
+#     def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
+#         self.msg = msg
+#         super().__init__(self.msg)
 
 class TurmaExistente(Exception):
     def __init__(self, msg="Erro, Turma já existente!"):
@@ -104,20 +125,22 @@ class AtualizacaoAlunoFalhou(Exception):
         self.msg = msg
         super()._init_(self.msg)
 
-class ProfessorNaoIdentificado(Exception):
-    def __init__(self, msg="Not Found - Professor inexistente"):
-        self.msg = msg
-        super().__init__(self.msg)
+# deletar - considero igual ao 1°
+# class ProfessorNaoIdentificado(Exception):
+#     def __init__(self, msg="Not Found - Professor inexistente"):
+#         self.msg = msg
+#         super().__init__(self.msg)
 
-class ProfessorExiste(Exception):
-    def __init__(self, msg="Professor já existente"):
-        self.msg = msg
-        super().__init__(self.msg)
+# .............................................deletar
+# class ProfessorExiste(Exception):
+#     def __init__(self, msg="Professor já existente"):
+#         self.msg = msg
+#         super().__init__(self.msg)
+# class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
+#     def __init__(self, msg="ID, nome e matéria são obrigatórios"):
+#         self.msg = msg
+#         super().__init__(self.msg)
 
-class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
-    def __init__(self, msg="ID, nome e matéria são obrigatórios"):
-        self.msg = msg
-        super().__init__(self.msg)
 
 #Criando funções para as requisições:
 
@@ -131,10 +154,10 @@ def CriarNovaTurma(nv_dict):
     dadosTurma["Turma"].append(nv_dict)
     return
 
-
+#....................................................apagar
 def apaga_tudo():
     dados['alunos'] = []
-    professores["Professor"] = []
+    # professores["Professor"] = []
     dadosTurma["Turma"] = []
 
 
@@ -154,12 +177,12 @@ def DeletarTurmaPorId(id_turma):
             return {"Mensagem": "Turma deletada com sucesso."}
     raise TurmaNaoIdentificada()
 
-
-def ProfessorExistente(Id_professor):
-    for professor in professores["professor"]:
-        if professor["id"] == Id_professor:
-            return True  
-    return False
+#..................................................deletar
+# def ProfessorExistente(Id_professor):
+#     for professor in professores["professor"]:
+#         if professor["id"] == Id_professor:
+#             return True  
+#     return False
 
 def TurmaJaExiste(Id_turma):
     for turma in dadosTurma["Turma"]:
@@ -202,29 +225,25 @@ def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
         }), 500
                 
 
-# def gerar_novo_id():
-#     '''Criação de id, obrigatório'''
-#     if not professores["professor"]: # Correção: A verificação deve ser na lista de professores
-#         return 1
-#     return max(professor["id"] for professor in professores["professor"]) + 1 # Correção: Iterar sobre a lista correta
 
 
-def procurarProfessorPorId(id_professor):   #def é minúscula
-    for professor in professores["professor"]:
-        if professor['id'] == id_professor:
-            return professor
-    raise ProfessorNaoIdentificado()
+#..............................................................deletar
+# def procurarProfessorPorId(id_professor):   #def é minúscula
+#     for professor in professores["professor"]:
+#         if professor['id'] == id_professor:
+#             return professor
+#     raise ProfessorNaoIdentificado()
 
-def criarNovoProfessor(nv_dict):
-    professores["professor"].append(nv_dict)
-    return
+# def criarNovoProfessor(nv_dict):
+#     professores["professor"].append(nv_dict)
+#     return
 
-def deletarProfessorPorId(id_professor):
-    for indice, professor in enumerate(professores["professor"]):
-        if professor["id"] == id_professor:
-            professores["professor"].pop(indice)
-            return {"mensagem": "Professor deletado com sucesso"} # Correção: Retorno estava com ponto final extra
-    raise ProfessorNaoIdentificado()
+# def deletarProfessorPorId(id_professor):
+#     for indice, professor in enumerate(professores["professor"]):
+#         if professor["id"] == id_professor:
+#             professores["professor"].pop(indice)
+#             return {"mensagem": "Professor deletado com sucesso"} # Correção: Retorno estava com ponto final extra
+#     raise ProfessorNaoIdentificado()
 
 def procurar_aluno_por_id(id_aluno):
     for aluno in dados["alunos"]:
@@ -268,10 +287,11 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
         raise AlunoNaoIdentificado()
     except Exception as e:
         return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
-    
-def resetar_professores():
-    professores["professor"] = []
-    return
+
+#.........................................deletar    
+# def resetar_professores():
+#     professores["professor"] = []
+#     return
 
 def deletar_alunos():
     dados["alunos"] = []
@@ -507,5 +527,5 @@ def alterar_aluno_route(id_aluno):
         return jsonify({"Erro": "Falha ao atualizar aluno", "Detalhes": str(e)}), 500
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':   #fica
         app.run(host = 'localhost', port = 5002, debug = True)
