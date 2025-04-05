@@ -6,7 +6,7 @@ from model_prof import professores, ProfessorNaoIdentificado, ProfessorExiste, C
 # se não importar separadamnete dá reportUndefineVariable - variável não definida | melhor não por import model_prof
 
 
-bluep_professor = Blueprint("professores", __name__)
+bp_professor = Blueprint("professores", __name__)
 
 # blueprint = estrutura flask que organiza rotas, templates e conf em partes separadas
 # a variável bluep_professor receberá o blueprint do flask, terá nome de professor/ usado no url e totas
@@ -16,7 +16,7 @@ bluep_professor = Blueprint("professores", __name__)
 # ____________________________________________ GET GERAL _______________________________________________________
 
 
-@bluep_professor.route('/professores', methods=['GET'])
+@bp_professor.route('/professores', methods=['GET'])
 def listar_professores():
     try:
         return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
@@ -27,7 +27,7 @@ def listar_professores():
 # ____________________________________________ GET ID ___________________________________________________________
 
 
-@bluep_professor.route("/professores/<int:id>", methods=["GET"])
+@bp_professor.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
     try:
         professor = procurarProfessorPorId(id)
@@ -39,7 +39,7 @@ def pesquisa_professor(id):
 # ____________________________________________ POST ______________________________________________________________
 
 
-@bluep_professor.route('/professores', methods=['POST'])
+@bp_professor.route('/professores', methods=['POST'])
 def cadastrar_professores():
     novo_professor = request.json
     if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
@@ -57,7 +57,7 @@ def cadastrar_professores():
 # ____________________________________________ PUT _______________________________________________________________
 
 
-@bluep_professor.route('/professores/<int:id>', methods=['PUT'])
+@bp_professor.route('/professores/<int:id>', methods=['PUT'])
 def atualizar_professor(id):
     atualizado = request.json
     try:
@@ -80,7 +80,7 @@ def atualizar_professor(id):
 # ____________________________________________ DELETE ID __________________________________________________________
 
 
-@bluep_professor.route("/professores/deletar/<int:id_professor>", methods=["DELETE"])
+@bp_professor.route("/professores/deletar/<int:id_professor>", methods=["DELETE"])
 def delete_professor(id_professor):
     try:
         resultado = deletarProfessorPorId(id_professor)
@@ -92,7 +92,7 @@ def delete_professor(id_professor):
 # ____________________________________________ DELETE ______________________________________________________________
 
 
-@bluep_professor.route('/professores/resetar', methods=['DELETE'])
+@bp_professor.route('/professores/resetar', methods=['DELETE'])
 def resetar_professor():
     resetar_professores()  # Função que reseta o dicionário de professores
     return jsonify({"mensagem": "Resetado"}), 200
