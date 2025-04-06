@@ -9,10 +9,10 @@ import os
 from flask import Flask, jsonify, request
 from config_prof import app
 from route_prof import bp_professor
-from index_professor import profes
+
 
 app.register_blueprint(bp_professor)
-app.register_blueprint(profes)
+
 # app.register_blueprint(#nome blueprint professor)
 # # estou importando as blueprints para app
 # #app.register_blueprint(professor)
