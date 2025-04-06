@@ -21,7 +21,7 @@ def listar_professores():
     try:
         return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
     except Exception as e:
-        return jsonify({"error": f"Internal Server Error: {str(e)}"}), 500 
+        return jsonify({"mensagem": "error", "professor": f"Internal Server Error: {str(e)}"}), 500 
     
 
 # ____________________________________________ GET ID ___________________________________________________________
@@ -33,7 +33,7 @@ def pesquisa_professor(id):
         professor = procurarProfessorPorId(id)
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
     except ProfessorNaoIdentificado as e:
-        return jsonify({"erro": str(e)}), 404
+        return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404 # trocar por 400 Bad Request
     
     
 # ____________________________________________ POST ______________________________________________________________
@@ -43,7 +43,7 @@ def pesquisa_professor(id):
 def cadastrar_professores():
     novo_professor = request.json
     if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
-        return jsonify({"erro": "Nome e matéria são obrigatórios"}), 400
+        return jsonify({"mensagem": "error", "professor": f"Bad Request: {str(e)}"}), 400    #talvez seja melhor 
     try:
         if ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
             raise ProfessorExiste("Professor já existe")
@@ -51,7 +51,7 @@ def cadastrar_professores():
         return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
         #return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
     except ProfessorExiste as e:
-        return jsonify({"erro": str(e)}), 400
+        return jsonify({"mensagem": "error", "professor": f"Bad Request: {str(e)}"}), 400
     
     
 # ____________________________________________ PUT _______________________________________________________________
@@ -72,9 +72,9 @@ def atualizar_professor(id):
             professor['obs'] = atualizado['obs']
         return jsonify({"mensagem": "Atualizado", "professor": professor}), 200
     except ProfessorNaoIdentificado as e:
-        return jsonify({"erro": str(e)}), 404
+        return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404
     except Exception as e:
-        return jsonify({"erro": f"Internal Server Error: {str(e)}"}) # Correção: Mensagem de erro mais clara
+        return jsonify({"mensagem": "erro", "professor": f"Internal Server Error: {str(e)}"}) # Correção: Mensagem de erro mais clara
 
 
 # ____________________________________________ DELETE ID __________________________________________________________
@@ -84,9 +84,9 @@ def atualizar_professor(id):
 def delete_professor(id_professor):
     try:
         resultado = deletarProfessorPorId(id_professor)
-        return jsonify(resultado), 200
+        return jsonify({"mensagem": "Ok", "professor": {resultado}}), 200
     except ProfessorNaoIdentificado as e:
-        return jsonify({"erro": str(e)}), 404
+        return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404
 
 
 # ____________________________________________ DELETE ______________________________________________________________
@@ -95,4 +95,4 @@ def delete_professor(id_professor):
 @bp_professor.route('/professores/resetar', methods=['DELETE'])
 def resetar_professor():
     resetar_professores()  # Função que reseta o dicionário de professores
-    return jsonify({"mensagem": "Resetado"}), 200
+    return jsonify({"mensagem": "Ok", "professor": "Resetado"}), 200
