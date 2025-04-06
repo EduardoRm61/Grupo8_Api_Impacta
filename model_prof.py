@@ -1,4 +1,5 @@
 # classes, funções e list/dict
+# apenas classe que representesm dados (entidades, tabelas bd ...) 
 
 professores = {"professor": [
     {
