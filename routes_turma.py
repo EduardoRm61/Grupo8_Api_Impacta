@@ -1,4 +1,4 @@
-import model_professor as modPro
+import model_prof as modPro
 import model_aluno as modAlu
 
 
