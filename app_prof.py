@@ -8,8 +8,7 @@
 import os
 from flask import Flask, jsonify, request
 from config_prof import app
-from route_prof import bp_professor
-
+from route_prof import bp_professor 
 
 app.register_blueprint(bp_professor)
 

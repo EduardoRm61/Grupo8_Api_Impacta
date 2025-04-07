@@ -2,8 +2,10 @@
 # lembrar que agora não tem app e sim blueprint
 
 from flask import Blueprint, request, jsonify
-from model_prof import professores, ProfessorNaoIdentificado, ProfessorExiste, CadastroDeProfessorFalhado, apaga_tudo, ProfessorExistente, procurarProfessorPorId, criarNovoProfessor, deletarProfessorPorId, resetar_professores
-# se não importar separadamnete dá reportUndefineVariable - variável não definida | melhor não por import model_prof
+# from model_prof import professores, ProfessorNaoIdentificado, ProfessorExiste, CadastroDeProfessorFalhado, apaga_tudo, ProfessorExistente, procurarProfessorPorId, criarNovoProfessor, deletarProfessorPorId, resetar_professores
+# forma feita pelo professor
+import model_prof as modf
+# dica do Edu
 
 
 bp_professor = Blueprint("professores", __name__)
@@ -19,7 +21,7 @@ bp_professor = Blueprint("professores", __name__)
 @bp_professor.route('/professores', methods=['GET'])
 def listar_professores():
     try:
-        return jsonify({"mensagem": "Ok", "professores": professores["professor"]}) 
+        return jsonify({"mensagem": "Ok", "professores": modf.professores["professor"]}) 
     except Exception as e:
         return jsonify({"mensagem": "error", "professor": f"Internal Server Error: {str(e)}"}), 500 
     
@@ -30,9 +32,9 @@ def listar_professores():
 @bp_professor.route("/professores/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
     try:
-        professor = procurarProfessorPorId(id)
+        professor = modf.procurarProfessorPorId(id)
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
-    except ProfessorNaoIdentificado as e:
+    except modf.ProfessorNaoIdentificado as e:
         return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404 # trocar por 400 Bad Request
     
     
@@ -45,12 +47,12 @@ def cadastrar_professores():
     if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
         return jsonify({"mensagem": "error", "professor": f"Bad Request: {str(e)}"}), 400    #talvez seja melhor 
     try:
-        if ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
-            raise ProfessorExiste("Professor já existe")
-        criarNovoProfessor(novo_professor)
+        if modf.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
+            raise modf.ProfessorExiste("Professor já existe")
+        modf.criarNovoProfessor(novo_professor)
         return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
         #return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
-    except ProfessorExiste as e:
+    except modf.ProfessorExiste as e:
         return jsonify({"mensagem": "error", "professor": f"Bad Request: {str(e)}"}), 400
     
     
@@ -61,7 +63,7 @@ def cadastrar_professores():
 def atualizar_professor(id):
     atualizado = request.json
     try:
-        professor = procurarProfessorPorId(id) # Correção: Usar a função de procurarProfessorPorId correta
+        professor = modf.procurarProfessorPorId(id) # Correção: Usar a função de procurarProfessorPorId correta
         if "nome" in atualizado:
             professor['nome'] = atualizado['nome']
         if "idade" in atualizado:
@@ -71,7 +73,7 @@ def atualizar_professor(id):
         if "obs" in atualizado:
             professor['obs'] = atualizado['obs']
         return jsonify({"mensagem": "Atualizado", "professor": professor}), 200
-    except ProfessorNaoIdentificado as e:
+    except modf.ProfessorNaoIdentificado as e:
         return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404
     except Exception as e:
         return jsonify({"mensagem": "erro", "professor": f"Internal Server Error: {str(e)}"}) # Correção: Mensagem de erro mais clara
@@ -83,9 +85,9 @@ def atualizar_professor(id):
 @bp_professor.route("/professores/deletar/<int:id_professor>", methods=["DELETE"])
 def delete_professor(id_professor):
     try:
-        resultado = deletarProfessorPorId(id_professor)
+        resultado = modf.deletarProfessorPorId(id_professor)
         return jsonify({"mensagem": "Ok", "professor": {resultado}}), 200
-    except ProfessorNaoIdentificado as e:
+    except modf.ProfessorNaoIdentificado as e:
         return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404
 
 
@@ -94,7 +96,7 @@ def delete_professor(id_professor):
 
 @bp_professor.route('/professores/resetar', methods=['DELETE'])
 def resetar_professor():
-    resetar_professores()  # Função que reseta o dicionário de professores
+    modf.resetar_professores()  # Função que reseta o dicionário de professores
     return jsonify({"mensagem": "Ok", "professor": "Resetado"}), 200
 
 
