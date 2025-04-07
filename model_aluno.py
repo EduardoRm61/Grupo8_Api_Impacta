@@ -26,8 +26,6 @@ dados = {
     ]
 }
 
-###
-
 class AlunoNaoIdentificado(Exception):
     def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
         self.msg = msg
@@ -48,8 +46,6 @@ class AtualizacaoAlunoFalhou(Exception):
         self.msg = msg
         super()._init_(self.msg)
 
-
-###
 
 def procurar_aluno_por_id(id_aluno):
     for aluno in dados["alunos"]:
