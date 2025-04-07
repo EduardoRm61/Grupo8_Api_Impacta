@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 from config import app
-from rout_prof import bp_professor
+from route_prof import bp_professor
 
 app.register_blueprint(bp_professor)
 
