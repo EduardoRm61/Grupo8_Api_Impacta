@@ -18,3 +18,5 @@ app.config["DEBUG"] = True
 # debug ativa o modo de depuração (identificar, analizar e corrigir erros/bugd) | faz recarga automática | erros - mostra linha, tipo e caminho | em true é porque está ativo
 
 #aqui entra configuração de sql, pelo que entendi
+
+# +++++++++++++++++++++++++++++++++++++ ok ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

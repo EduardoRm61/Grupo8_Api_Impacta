@@ -61,3 +61,6 @@ def deletarProfessorPorId(id_professor):
 def resetar_professores():
     professores["professor"] = []
     return
+
+
+# ++++++++++++++++++++++++++++++++++++++ ok ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

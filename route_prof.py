@@ -96,3 +96,7 @@ def delete_professor(id_professor):
 def resetar_professor():
     resetar_professores()  # Função que reseta o dicionário de professores
     return jsonify({"mensagem": "Ok", "professor": "Resetado"}), 200
+
+
+
+# ++++++++++++++++++++++++++++++++++++++ ok ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

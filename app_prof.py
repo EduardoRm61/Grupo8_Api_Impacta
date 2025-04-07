@@ -22,3 +22,5 @@ if __name__ == "__main__":
 
 # se o nome do arquivo for igual ao app, inicialize o app sendo host(computador/posso dizer domínio?) a porta e debug importados do file configurações
 
+
+# +++++++++++++++++++++++++++++++++++++ ok ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

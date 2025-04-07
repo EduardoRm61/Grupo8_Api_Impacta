@@ -6,3 +6,5 @@
 # tem módulos independentes - desacopla das aplicações as rotas e as torna independentes (tira do app) | pode usar em várias aplicações diferentes
 # manutenção de cód, se torna fácil de achar e atualizar partes específicas
 # teremos que fazer uma instãncia (classe - objeto) - cria rota - valida - registra no aplicativo (acho que app)
+
+#ver como fica aqui
