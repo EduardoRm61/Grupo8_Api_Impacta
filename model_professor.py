@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-import model_turma as modTur - no app.py
+import model_turma as modTur 
 app = Flask(__name__)
 
 

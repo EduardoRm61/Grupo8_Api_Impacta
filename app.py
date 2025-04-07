@@ -5,47 +5,7 @@ import model_aluno as modAluno
 app = Flask(__name__)
 
 
-# professores = {"professor": [
-#     {
-#     "id": 10,
-#     "nome": "Caio",
-#     "idade": 27,
-#     "materia": "Dev API E Micros",
-#     "obs": "Contato com aluno via Chat"},
 
-#     {"id": 11,
-#     "nome": "Odair",
-#     "idade": 30, 
-#     "materia": "DevOps",
-#     "obs": None}
-# ]}
-# ----- SERIA MODEL - DADOS ----- AQUI É CONTROLLER
-
-
-#controller - rotas/endpoint
-#Criando todas as classes de exceções:
-
-
-# rodar e ver se deleta
-
-# class ProfessorNaoIdentificado(Exception):
-#     def __init__(self, msg="Not Found - Professor inexistente"):
-#         self.msg = msg
-#         super().__init__(self.msg)
-
-# class ProfessorExiste(Exception):
-#     def __init__(self, msg="Professor já existente"):
-#         self.msg = msg
-#         super().__init__(self.msg)
-
-# class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
-#     def __init__(self, msg="ID, nome e matéria são obrigatórios"):
-#         self.msg = msg
-#         super().__init__(self.msg)
-
-
-
-#Criando funções para as requisições:
 
 
 
