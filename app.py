@@ -1,5 +1,5 @@
 import os
-from flask import flask, jsoify, request
+from flask import Flask, jsonify, request
 from config import app
 from rout_prof import bp_professor
 
