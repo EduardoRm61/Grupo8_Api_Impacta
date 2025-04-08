@@ -58,7 +58,7 @@ def ResetarTodaTurma():
     except modTur.TurmaJaDeletada as Trm:
         return jsonify ({"Requisção Inválida": str(Trm)}), 400 
     
-@app.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
+@Blueprint.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
 def ResetarTurmaId(id_turma):
      try:
           modTur.DeletarTurmaPorId(id_turma)
