@@ -10,7 +10,7 @@ def listar_turma():
         Turmas = modTur.ListarTurma()
         return jsonify(Turmas)
     except modTur.TurmaNaoIdentificada as Tr:
-        return {"Requisição inválida":str(Tr)}, 400
+        return jsonify ({"Requisição inválida":str(Tr)}), 400
     
 @Blueprint.route("/Turma/<int:id_turma>", methods=["GET"])            
 def procurarTurma(id_turma):
@@ -50,7 +50,10 @@ def AddTurma():
          }), 400    
 
 
-@app.route("/Turma/Resetar", methods=["DELETE"])
+@Blueprint.route("/Turma/Resetar", methods=["DELETE"])
 def ResetarTodaTurma():
-     modTur.DeletarTurma()
-     return jsonify({"mensagem": "Resetado"}), 200
+    try:
+        modTur.DeletarTurma()
+        return jsonify({"mensagem": "Resetado"}), 200
+    except modTur.TurmaJaDeletada as Trm:
+        return jsonify ({"Requisção Inválida": str(Trm)}), 400 
