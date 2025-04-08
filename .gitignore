@@ -2,10 +2,10 @@ __pycache__/
 *.pyc
 
 # estes arquivos não devem ser comitados
-git reset HEAD __pycache__/  && git reset HEAD *.pyc      - remove os arquivos do stagin(já rastreavel , sem deletar localmente)
-git status para verificar
-ou
-git reset HEAD **/__pycache__/ && git reset HEAD **/*.pyc    - remover tudo de uma vez
+# git reset HEAD __pycache__/  && git reset HEAD *.pyc      - remove os arquivos do stagin(já rastreavel , sem deletar localmente)
+# git status para verificar
+# ou
+# git reset HEAD **/__pycache__/ && git reset HEAD **/*.pyc    - remover tudo de uma vez
 # para evitar novos ratreamentos adicione 
 # echo "__pycache__/" >> .gitignore
 # echo "*.pyc" >> .gitignore
