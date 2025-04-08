@@ -1,5 +1,5 @@
-import model_prof as modPro
-import model_aluno as modAlu
+import professores.model_prof as modPro
+import model_turma as modAlu
 
 
 dadosTurma = {"Turma":[

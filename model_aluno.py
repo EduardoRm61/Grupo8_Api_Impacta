@@ -1,4 +1,4 @@
-import model_turma as modTur
+# import alunos.model_turma as modTur
 
 dados = {
     "alunos": [
@@ -25,6 +25,7 @@ dados = {
         }
     ]
 }
+
 
 class AlunoNaoIdentificado(Exception):
     def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):

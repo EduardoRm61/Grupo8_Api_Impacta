@@ -4,8 +4,8 @@
 from flask import Blueprint, request, jsonify
 # from model_prof import professores, ProfessorNaoIdentificado, ProfessorExiste, CadastroDeProfessorFalhado, apaga_tudo, ProfessorExistente, procurarProfessorPorId, criarNovoProfessor, deletarProfessorPorId, resetar_professores
 # forma feita pelo professor
-import model_prof as modf
-# dica do Edu
+import professores.model_prof as modf
+# dica do Edu,
 
 
 bp_professor = Blueprint("professores", __name__)
