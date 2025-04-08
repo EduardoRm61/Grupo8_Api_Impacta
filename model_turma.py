@@ -44,6 +44,11 @@ class TurmaNaoIdentificada(Exception):
         self.msg = msg
         super().__init__(self.msg)
 
+class TurmaJaDeletada(Exception):
+    def __init__(self, msg= "Erro, Turma já deletada ou inexistente!!"):
+        self.msg = msg
+        super().__init__(msg)
+
 #Aqui estão as funções auxiliares para Turma em app.py:
 
 def apaga_tudo():
