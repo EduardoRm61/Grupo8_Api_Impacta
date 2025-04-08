@@ -49,3 +49,8 @@ def AddTurma():
             "detalhes": str(cdtf)
          }), 400    
 
+
+@app.route("/Turma/Resetar", methods=["DELETE"])
+def ResetarTodaTurma():
+     modTur.DeletarTurma()
+     return jsonify({"mensagem": "Resetado"}), 200
