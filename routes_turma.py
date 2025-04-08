@@ -66,3 +66,35 @@ def ResetarTurmaId(id_turma):
      except modTur.TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 404
 
+@Blueprint.route("/Turma/Alterar/<int:id_turma>", methods=["PUT"])
+def AlterarInfo(id_turma):
+    dados = request.json
+    
+    #dict['id'] = int (dict['id'])
+
+    if not dados:
+        return jsonify({
+            "Erro": "Requisição inválida",
+            "Descrição": "O corpo da requisição está vazio, preencha todos os campos"
+        }), 400
+    
+    if "Descrição" not in dados:
+        return jsonify({
+            "Erro": "Não foi possível fazer a requisição",
+            "Dscrição": "O campo Descrição da turma é obrigatório ser preenchido"
+        }), 400
+    
+    if "Ativa" not in dados:
+        return jsonify({
+            "Erro": "Não foi possível fazer a requisição",
+            "Descrição": "O campo Ativa é obrigatório ser preenchido "
+        }), 400
+    
+    if "Professor Id" not in dados:
+        return jsonify({
+            "Erro": "Não foi possível fazer a requisição",
+            "Descrição": "O campo Professor Id é obrigatório se preechido"
+        }), 400
+    
+    resultado, status_code = modTur.AlterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
+    return jsonify(resultado), status_code  
