@@ -11,7 +11,7 @@ def listar_alunos_route():
 @bp_aluno.route("/alunos/<int:id_aluno>", methods=["GET"])
 def procurar_aluno_route(id_aluno):
     try:
-        aluno = modAl.modprocurar_aluno_por_id(id_aluno)
+        aluno = modAl.procurar_aluno_por_id(id_aluno)
         return jsonify(aluno)
     except modAl.AlunoNaoIdentificado as e:
         return jsonify({"Erro": str(e)}), 404
