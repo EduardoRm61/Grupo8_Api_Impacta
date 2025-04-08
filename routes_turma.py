@@ -4,7 +4,7 @@ import model_turma as modTur
 
 Bd_Turma = Blueprint('Turma', __name__ )
 
-@Blueprint.route("/Turma",methods=["GET"])                              
+@Bd_Turma.route("/Turma",methods=["GET"])                              
 def listar_turma():
     try:
         Turmas = modTur.ListarTurma()
@@ -12,7 +12,7 @@ def listar_turma():
     except modTur.TurmaNaoIdentificada as Tr:
         return jsonify ({"Requisição inválida":str(Tr)}), 400
     
-@Blueprint.route("/Turma/<int:id_turma>", methods=["GET"])            
+@Bd_Turma.route("/Turma/<int:id_turma>", methods=["GET"])            
 def procurarTurma(id_turma):
      try:
         dados = modTur.ProcurarTurmaPorId(id_turma)
@@ -21,7 +21,7 @@ def procurarTurma(id_turma):
           return jsonify({"Erro:": str(trm)}), 402  #Isso precisa ser alterado
 
 
-@Blueprint.route("/Turma", methods=["POST"])
+@Bd_Turma.route("/Turma", methods=["POST"])
 def AddTurma():
     nv_dict = request.json
     nv_dict['Id'] = int(nv_dict['Id'])
@@ -50,7 +50,7 @@ def AddTurma():
          }), 400    
 
 
-@Blueprint.route("/Turma/Resetar", methods=["DELETE"])
+@Bd_Turma.route("/Turma/Resetar", methods=["DELETE"])
 def ResetarTodaTurma():
     try:
         modTur.DeletarTurma()
@@ -58,7 +58,7 @@ def ResetarTodaTurma():
     except modTur.TurmaJaDeletada as Trm:
         return jsonify ({"Requisção Inválida": str(Trm)}), 400 
     
-@Blueprint.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
+@Bd_Turma.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
 def ResetarTurmaId(id_turma):
      try:
           modTur.DeletarTurmaPorId(id_turma)
@@ -66,7 +66,7 @@ def ResetarTurmaId(id_turma):
      except modTur.TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 404
 
-@Blueprint.route("/Turma/Alterar/<int:id_turma>", methods=["PUT"])
+@Bd_Turma.route("/Turma/Alterar/<int:id_turma>", methods=["PUT"])
 def AlterarInfo(id_turma):
     dados = request.json
     
