@@ -6,7 +6,10 @@ Bd_Turma = Blueprint('Turma', __name__ )
 
 @Blueprint.route("/Turma",methods=["GET"])                              
 def listar_turma():
-    Turmas = modTur.ListarTurma()
-    return jsonify(Turmas)
+    try:
+        Turmas = modTur.ListarTurma()
+        return jsonify(Turmas)
+    except modTur.TurmaNaoIdentificada as Tr:
+        return {"Requisição inválida":str(Tr)}, 400
 
 
