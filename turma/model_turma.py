@@ -56,24 +56,24 @@ def apaga_tudo():
     modPro.professores["Professor"] = []
     dadosTurma["Turma"] = []
 
-def ProcurarTurmaPorId(id_turma):
+def procurarTurmaPorId(id_turma):
             for dict in dadosTurma["Turma"]:
                 if dict['Id'] == id_turma:
                     return dict
             raise TurmaNaoIdentificada()
 
-def CriarNovaTurma(nv_dict):
+def criarNovaTurma(nv_dict):
     dadosTurma["Turma"].append(nv_dict)
     return
 
-def ListarTurma():
+def listarTurma():
     return dadosTurma["Turma"]
 
-def DeletarTurma():
+def deletarTurma():
     dadosTurma["Turma"] = []
 
 
-def DeletarTurmaPorId(id_turma):
+def deletarTurmaPorId(id_turma):
     turmas = dadosTurma["Turma"]
 
     for indice, turma in enumerate(turmas):
@@ -82,22 +82,22 @@ def DeletarTurmaPorId(id_turma):
             return {"Mensagem": "Turma deletada com sucesso."}
     raise TurmaNaoIdentificada()
 
-def ValoorBuleano(valorbool):
+def valoorBuleano(valorbool):
     if valorbool is True or valorbool is False:
         return True
     return False
 
-def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
+def alterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
     nv_dados = dadosTurma["Turma"]
     try:
         for turma in nv_dados:
             if turma["Id"] == Id_turma:
-                if not ProfessorExistente(Id_Pro):
+                if not professorExistente(Id_Pro):
                     return ({
                         "Erro": "Requisição inválida",
                         "Descrição": "Id do Professor inexistente"
                     }), 400
-                if not ValoorBuleano(Ativa):
+                if not valoorBuleano(Ativa):
                     return ({
                         "Erro": "Requisição inválida",
                         "Descricao": "Valor de Ativa incorreto. Digite True ou False"
@@ -116,13 +116,13 @@ def AlterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
             "Descrição": str(e)
         }), 500
     
-def TurmaJaExiste(Id_turma):
+def turmaJaExiste(Id_turma):
     for turma in dadosTurma["Turma"]:
         if turma["Id"] == Id_turma:
             return True
     return False
 
-def ProfessorExistente(Id_professor):
+def professorExistente(Id_professor):
     for professor in modPro.professores["professor"]:
         if professor["id"] == Id_professor:
             return True  
