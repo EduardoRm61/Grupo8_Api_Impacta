@@ -1,5 +1,3 @@
-# import alunos.model_turma as modTur
-
 dados = {
     "alunos": [
         {
