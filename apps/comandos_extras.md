@@ -1,3 +1,5 @@
+ ### <center>Comandos extras<center/>
+ &nbsp;
  - <b>erro na porta do local para remoto </b>
 &nbsp;
     antes deve Executar o script de entrada da aplicação/ run the application entry script/ Subir a aplicação 
@@ -78,5 +80,31 @@ Resultado -  config.py mudou de ao rodar a  1° vez apareceu mensagem de que se 
 
     <span style="color:rgb(35, 59, 14); background-color:rgb(248, 252, 213);">git push -u origin nomeBranch</span>
 &nbsp;
-    força a criação do branch remoto, caso seja novo (aqui não é o caso)
-
+    força a criação do branch remoto, caso seja novo (aqui não é o caso) - só curiosidade mesmo
+&nbsp;
+    - <b><span style="color: #bc4b51;">volta para estatus/commit anterior</span></b>
+    Dei um git pull e desarrumou tudo, então resolvi voltar para o último commit feito e arrumado
+&nbsp;
+    <span style="color:rgb(35, 59, 14); background-color:rgb(248, 252, 213);">git reflog</span>
+&nbsp;
+    verifica histórico de commit, mostra todas ações recentes do git
+    retorna algo assim:
+    4396e26 (HEAD -> professor) HEAD@{0}: commit: fix config branch professor
+    c4dbcde HEAD@{1}: commit: fix na branch professor
+    38aca36 (develop) HEAD@{2}: checkout: moving from develop to professor
+    .....
+    obsrvar 4396e26 (HEAD -> professor) <u><i><b> HEAD@{0} </u></i></b> - é este que deverá analisar e por no comando no terminal, meu caso foi {0}
+    obs: para sair apertar <b>q</b>
+&nbsp;
+    <span style="color:rgb(35, 59, 14); background-color:rgb(248, 252, 213);">git reset --hard HEAD@{N° QUE QUER VOLTAR DO COMMIT}</span>
+&nbsp;
+    retonou assim:
+    <u>HEAD is now at 4396e26 </u>fix config branch professor config.py - troca de localhost para 0.0.0.0 trocando e arrumando .txt para .md
+    voltou para o que eu queria
+    detalhe, não fiz push dele, só existia no local
+&nbsp;
+    - <b>forçando envio para remoto</b>
+&nbsp;
+    <span style="color:rgb(35, 59, 14); background-color:rgb(248, 252, 213);">git push -f origin professor</span>
+&nbsp;
+    Como minha branch está atrás do remoto, teria de fazer o pull, mas ele está muito desatualizado (fiz push que não foram), então resolvi forçar
