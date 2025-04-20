@@ -1,37 +1,37 @@
-# ------------------------ CONFIGURAÇÃO DO CONTÊINER ------------------------------------------
+------------------------ CONFIGURAÇÃO DO CONTÊINER ------------------------------------------
 
-#                           DOCKER DEVE ESTAR RUNNIG
+                           DOCKER DEVE ESTAR RUNNIG
 
 
-# por conversão, o nome do file é com D maiúsculo mesmo
-# Docker vai ler e vai criar imagem
-# imagem = pacote imutável que tem camadas leves de dependências, bibliotecas, configurações | cód de aplicações ex file.py | instruções
-# em imagem não tem Kernel(seria o "núcleo da máquina que está rodando") completo do os
-# contêiner é a instância/objeto da imagem(pacote) em execcução
+ por conversão, o nome do file é com D maiúsculo mesmo
+ Docker vai ler e vai criar imagem
+ imagem = pacote imutável que tem camadas leves de dependências, bibliotecas, configurações | cód de aplicações ex file.py | instruções
+ em imagem não tem Kernel(seria o "núcleo da máquina que está rodando") completo do os
+ contêiner é a instância/objeto da imagem(pacote) em execcução
 
-# criar um folder e deixar fora apenas arquivo Dockerfile e requirements.txt
+ criar um folder e deixar fora apenas arquivo Dockerfile e requirements.txt
 
 FROM python:3.9
-# do python:3 pegue sua imagem
+ do python:3 pegue sua imagem
 
 WORKDIR /app
-#defina o diretório de trabalho dentro do contêiner , colocando apenas nome da pasta
-# ex C:\Users\ar\deletarr\Grupo8_Api_Impacta - ficaria apenas Grupo8_Api_Impacta
+defina o diretório de trabalho dentro do contêiner , colocando apenas nome da pasta
+ ex C:\Users\ar\deletarr\Grupo8_Api_Impacta - ficaria apenas Grupo8_Api_Impacta
  
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-# ESTAVA ASSIM RUN pip install -r requirementes.txt OBSERVAR FINAL COM TES, MAS O CORRETO É NTS
-# copiando e instalando todas bibliotecas entre outros, na versão usada
-# ponto no final está relacionado a pasta raiz
-# pasta raiz = devo analisar os files que serão rodados/principais como dockerfile e app.py, se está na filha a filha é raiz (pouco confuso para mim, entendi levemente) 
+ ESTAVA ASSIM RUN pip install -r requirementes.txt OBSERVAR FINAL COM TES, MAS O CORRETO É NTS
+ copiando e instalando todas bibliotecas entre outros, na versão usada
+ ponto no final está relacionado a pasta raiz
+ pasta raiz = devo analisar os files que serão rodados/principais como dockerfile e app.py, se está na filha a filha é raiz (pouco confuso para mim, entendi levemente) 
 
 
 COPY . .
-#copiar tudo que está na pasta e leve ao destino, raiz do docker, por exemplo
+copiar tudo que está na pasta e leve ao destino, raiz do docker, por exemplo
 
 CMD ["python", "apps/app.py"]
 
-# define o comando que será executado ao iniciar o contêiner | roda
+ define o comando que será executado ao iniciar o contêiner | roda
 
 
 # -------------------------------------- RODAR E CRIAR IMAGEM - TERMINAL bash ------------------------------

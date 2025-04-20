@@ -15,6 +15,8 @@ RUN pip install -r requirements.txt
 COPY . .
 #copiar tudo que está na pasta e leve ao destino, raiz do docker, por exemplo
 
+EXPOSE 5002
+
 CMD ["python", "apps/app.py"]
 
 # define o comando que será executado ao iniciar o contêiner | roda
