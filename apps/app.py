@@ -1,6 +1,6 @@
 import os
 from flask import Flask, jsonify, request
-from apps.config import app
+from config import app
 from professores.route_prof import bp_professor
 from turma.routes_turma import Bd_Turma
 from alunos.route_aluno import bp_aluno

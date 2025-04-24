@@ -1,6 +1,6 @@
 import unittest
 import requests
-from apps.app import app
+from app import app
 
 class TestStringMethods(unittest.TestCase):
 
