@@ -1,5 +1,3 @@
-
-
 FROM python:3.9
 # do python:3 pegue sua imagem
 
@@ -18,10 +16,6 @@ COPY . .
 CMD ["python", "apps/app.py"]
 
 # define o comando que será executado ao iniciar o contêiner | roda
-
-
-
-
 
 # -----------------------------------------------------------------------------------#
 #      comando ( comando 1, ir para dockerdesktop, play na imagem, volta 2°)         #
