@@ -1,0 +1,17 @@
+services:
+  api: 
+    build: .
+    ports:
+      - 5002:5002
+  db:
+  image: mysql:8.0
+  restart: always
+  environment:
+    MYSQL_ROOT_PASSWORD: admin
+    MYSQL_DATABASE: SistemaEscolar
+    MYSQL_USER: adm
+    MYSQL_PASSWORD: admin
+  ports:
+    - "5002:5002"
+  volumes:
+  - db_data:/var/lib/mysql
