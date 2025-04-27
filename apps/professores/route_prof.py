@@ -1,7 +1,7 @@
 # rotas apenas
 # lembrar que agora não tem app e sim blueprint
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, redirect, url_for
 # from model_prof import professores, ProfessorNaoIdentificado, ProfessorExiste, CadastroDeProfessorFalhado, apaga_tudo, ProfessorExistente, procurarProfessorPorId, criarNovoProfessor, deletarProfessorPorId, resetar_professores
 # forma feita pelo professor
 import professores.model_prof as modf

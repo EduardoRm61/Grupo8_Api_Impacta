@@ -139,6 +139,8 @@ usaremos docker
 &nbsp;
     <span style="color:rgb(245, 57, 104); background-color: #d8e2dc;">docker pull mysql</span>
 &nbsp;
+    
+&nbsp;
     retorno esperado:
     ...
     Status: Downloaded newer image for mysql:latest
