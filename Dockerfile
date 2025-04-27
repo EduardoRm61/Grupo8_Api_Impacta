@@ -1,6 +1,6 @@
 
 
-FROM python:3.9
+FROM python:3.9-slim
 # do python:3 pegue sua imagem
 
 WORKDIR /app
@@ -8,7 +8,8 @@ WORKDIR /app
 # ex C:\Users\ar\deletarr\Grupo8_Api_Impacta - ficaria apenas Grupo8_Api_Impacta
  
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --user -r requirements.txt
+# --user é para evitar conflitos ao instalar a dependência
 # copiando e instalando todas bibliotecas entre outros, na versão usada
 # ponto no final está relacionado a pasta raiz
 
@@ -30,6 +31,6 @@ CMD ["python", "apps/app.py"]
 #                                                                                    #
 #                                                                                    #
 #                         docker build -t grup9-api .                                #
-#                      docker run -p 5002:5002 grup9-api    (rodar o compose, não este)                            #
+#      docker run -p 5002:5002 grup9-api    (rodar o compose, não este)              #
 #                                                                                    #
 # -----------------------------------------------------------------------------------#

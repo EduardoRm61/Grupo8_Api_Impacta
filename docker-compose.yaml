@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: 12345 #senha do usuário
       #TZ: America/São Paulo     # time zone, isso tem haver com aws 
     ports:
-      - "5002:5002"  # deve ser assim - "5002:5002" que é formato de lista
+      - "3306:3306"  # padrão mysql
     volumes:
       - mysql_data:/var/lib/mysql #local onde serão guardados os dados, assim não serão perdidios ao encerrar o contêiner
     restart: always  #sempre restartar/iniciar automaticamente o contêiner
@@ -38,7 +38,7 @@ services:
   app:
     build: .
     ports:
-      - "5002:5002"  #mater acessível as rotas
+      - "5002:5002"  #manter acessível as rotas
     depends_on:
       db:
         condition: service_healthy
