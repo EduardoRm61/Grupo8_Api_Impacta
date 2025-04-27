@@ -30,6 +30,6 @@ CMD ["python", "apps/app.py"]
 #                                                                                    #
 #                                                                                    #
 #                         docker build -t grup9-api .                                #
-#                      docker run -p 5002:5002 grup9-api                             #
+#                      docker run -p 5002:5002 grup9-api    (rodar o compose, não este)                            #
 #                                                                                    #
 # -----------------------------------------------------------------------------------#
