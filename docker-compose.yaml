@@ -1,17 +1,20 @@
 services:
+# Minha Api
   api: 
-    build: .
+    build: ./app #./app
     ports:
       - 5002:5002
+
+# Banco de Dados
   db:
-  image: mysql:8.0
-  restart: always
-  environment:
-    MYSQL_ROOT_PASSWORD: admin
-    MYSQL_DATABASE: SistemaEscolar
-    MYSQL_USER: adm
-    MYSQL_PASSWORD: admin
+    image: mysql:8.0 
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: SistemaEscolar
+      MYSQL_USER: adm # Ajustar
+      MYSQL_PASSWORD: admin
   ports:
-    - "5002:5002"
+    - "5002:5002" # Diferente
   volumes:
-  - db_data:/var/lib/mysql
+  - db_data:/var/lib/mysql # Colocar endereço
