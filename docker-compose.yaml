@@ -1,20 +1,36 @@
 services:
-# Minha Api
-  api: 
-    build: ./app #./app
-    ports:
-      - 5002:5002
-
 # Banco de Dados
   db:
     image: mysql:8.0 
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: 12345
       MYSQL_DATABASE: SistemaEscolar
       MYSQL_USER: adm # Ajustar
-      MYSQL_PASSWORD: admin
-  ports:
-    - "5002:5002" # Diferente
-  volumes:
-  - db_data:/var/lib/mysql # Colocar endereço
+      MYSQL_PASSWORD: 12345
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306" # Diferente
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u adm -p12345"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# Minha Api
+  api: 
+    build: ./apps
+    container_name: aplicacao-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+        - DATABASE_URL=mysql+pymysql://adm:12345@db:3306/SistemaEscolar
+    ports:
+      - 5002:5002
+    volumes:
+      - ./apps:/app
+
+volumes:
+  mysql_data: {}

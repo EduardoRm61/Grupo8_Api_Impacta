@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 import turma.model_turma as modTur
+import os
+
 
 
 Bd_Turma = Blueprint('Turma', __name__ )
