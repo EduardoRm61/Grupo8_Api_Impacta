@@ -5,26 +5,38 @@ from config import db_serv
 
    
 class Professor(db_serv.Model):
+    
+    '''Criando Mysql/classe professor com suas variáveis separadas em colunas, com tipo, referêncoia de chave e nulabilidade '''
+    
     id = db_serv.Column(db_serv.Integer, primary_key=True, NotNullable=False)
     nome = db_serv.Column(db_serv.String (100), NotNullable=False)
     idade = db_serv.Column(db_serv.Integer)
-    materia = db_serv.Column(db_serv.String (150), NotNullable=False)
-    idade = db_serv.Column(db_serv.Integer)
+    materia = db_serv.Column(db_serv.String (100), NotNullable=False)
+    obs = db_serv.Column(db_serv.String (200))
     
-professores = {"professor": [
-    {
-    "id": 10,
-    "nome": "Caio",
-    "idade": 27,
-    "materia": "Dev API E Micros",
-    "obs": "Contato com aluno via Chat"},
+    def __init__(self, id, nome, materia, idade=None, obs=None):
+        
+        '''função para instanciar este objeto professor, com seus parametro
+        #lembrando que none é vazia, sendo assim não obrigatório'''
+        
+        self.id = id
+        self.nome = nome
+        self.idade = idade
+        self.materia = materia
+        self.obs = obs
+    
+    def direcionar (self):
+        
+        '''função que relaciona a chave com dados, formando retorno de um dicinário'''
+        
+        return {
+            "id" : self.id,
+            "nome" : self.nome,
+            "idade" : self.idade,
+            "materia" : self.materia,
+            "obs" : self.obs
+        }
 
-    {"id": 11,
-    "nome": "Odair",
-    "idade": 30, 
-    "materia": "DevOps",
-    "obs": None}
-]}
 
 class ProfessorNaoIdentificado(Exception):
     def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
