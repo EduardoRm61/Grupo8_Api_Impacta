@@ -8,10 +8,10 @@ class Professor(db_serv.Model):
     
     '''Criando Mysql/classe professor com suas variáveis separadas em colunas, com tipo, referêncoia de chave e nulabilidade '''
     
-    id = db_serv.Column(db_serv.Integer, primary_key=True, NotNullable=False)
-    nome = db_serv.Column(db_serv.String (100), NotNullable=False)
+    id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False)
+    nome = db_serv.Column(db_serv.String (100), nullabe=False)
     idade = db_serv.Column(db_serv.Integer)
-    materia = db_serv.Column(db_serv.String (100), NotNullable=False)
+    materia = db_serv.Column(db_serv.String (100), nullable=False)
     obs = db_serv.Column(db_serv.String (200))
     
     def __init__(self, id, nome, materia, idade=None, obs=None):
@@ -87,7 +87,7 @@ def criarNovoProfessor(new_direcionar):
         
     db_serv.session.add(novo_professor)  # add o objeto à sessão do banco de dados
     db_serv.session.commit()             # confirma a transação, grava o objeto no banco de dados mysql
-    return novo_professor.to_dict()      # converte em diconário
+    return novo_professor.direcionar()      # converte em diconário
     
     #cuidado com identação e abrir e fechar ( )
 def atualizarProfessor(id_professor, novo_dado ):
@@ -97,9 +97,9 @@ def atualizarProfessor(id_professor, novo_dado ):
     
     professor.id = novo_dado["id"]
     professor.nome = novo_dado["nome"]
-    professor.data = novo_dado["data"]
+    professor.idade = novo_dado["idade"]
     professor.materia = novo_dado["materia"]
-    professor.obs = novo_dado["ob"]
+    professor.obs = novo_dado["obs"]
     
     db_serv.session.commit()
    
