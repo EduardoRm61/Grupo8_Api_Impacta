@@ -51,9 +51,57 @@ todos os registros da tabela
 <span style=" color:#003f88; background-color: #cdb4db;">
 SELECT * FROM Professor;</span>
 
+vê se a tabela existe,  no caso professor
+<span style=" color:#003f88; background-color: #cdb4db;">
+SHOW TABLES LIKE 'Professor';</span>
+
+deve ser ' ' e não " "
+
++-----------------------------------+
+| Tables_in_dados_mysql (Professor) |
++-----------------------------------+
+| Professor                         |
++-----------------------------------+
+1 row in set (0.00 sec)
+
+listar id e nome
+
+<span style=" color:#003f88; background-color: #cdb4db;">
+SELECT id, nome FROM Professor;</span>
+
++----+-----------+
+| id | nome      |
++----+-----------+
+| 10 | Caio      |
+| 11 | Odair     |
+| 12 | Gustavooo |
+| 13 | Evandro   |
++----+-----------+
+4 rows in set (0.00 sec)
+
+&nbsp;
+especificar id
+SELECT * FROM Professor WHERE id = [ID_PARA_TESTAR];
+<span style=" color:#003f88; background-color: #cdb4db;">
+SELECT * FROM Professor WHERE id = 10;</span>
+
+ver estrutura da tabela pelo id
+<span style=" color:#003f88; background-color: #cdb4db;">
+DESCRIBE Professor;</span>
+
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| id      | int          | NO   | PRI | NULL    |       |
+| nome    | varchar(100) | NO   |     | NULL    |       |
+| idade   | int          | YES  |     | NULL    |       |
+| materia | varchar(100) | NO   |     | NULL    |       |
+| obs     | varchar(200) | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+5 rows in set (0.03 sec)
+
 
 contagem de registros
-
 <span style=" color:#003f88; background-color: #cdb4db;">
 SELECT COUNT(*) FROM Professor;</span>
 
