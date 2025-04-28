@@ -59,11 +59,11 @@ class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava
 # def apaga_tudo():
 #      professores["Professor"] = []
 
-def ProfessorExistente(Id_professor):
+def ProfessorExistente(Id_professor):   
     return Professor.query.get(Id_professor) is not None
 
 
-def procurarProfessorPorId(id_professor):   #def é minúscula
+def procurarProfessorPorId(id_professor):   # listar aluno
     professor = Professor.query.get(id_professor)
     if not professor:
         raise ProfessorNaoIdentificado()
@@ -90,17 +90,35 @@ def criarNovoProfessor(new_direcionar):
     return novo_professor.to_dict()      # converte em diconário
     
     #cuidado com identação e abrir e fechar ( )
-
-def deletarProfessorPorId(id_professor):
+def atualizarProfessor(id_professor, novo_dado ):
     professor = Professor.query.get(id_professor)
     if not professor:
         raise ProfessorNaoIdentificado
     
+    professor.id = novo_dado["id"]
+    professor.nome = novo_dado["nome"]
+    professor.data = novo_dado["data"]
+    professor.materia = novo_dado["materia"]
+    professor.obs = novo_dado["ob"]
+    
+    db_serv.session.commit()
+   
+    
+def deletarProfessorPorId(id_professor): #excluir aluno
+    professor = Professor.query.get(id_professor)
+    if not professor:
+        raise ProfessorNaoIdentificado()
+    
+    # variável para receber quem será deletado e guardar informação
+    nome_del = professor.nome
+    
     db_serv.session.delete(professor)
     db_serv.session.commit()
+    return {"mensagem": f"Professor {nome_del} eletado com sucesso"}
 
 def resetar_professores():
-    professores["professor"] = []
+    Professor.query.delete()
+    db_serv.session.commit()
     return
 
 
