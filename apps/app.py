@@ -12,7 +12,7 @@ app.register_blueprint(bp_professor, url_prefix="/professores" )
 app.register_blueprint(Bd_Turma, url_prefix="/Turma")
 app.register_blueprint(bp_aluno, url_for="/alunos")
 
-# _________________________________________REDIRECIONAMENTO_____________________________________________________
+# _________________________________________REDIRECIONAMENTO__________________________________________________
 
 
 # @app.route("/")
