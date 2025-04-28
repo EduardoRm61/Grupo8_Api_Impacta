@@ -1,18 +1,18 @@
-version: "3.8"   
+#version: "3.8"   
 #versão do arquivo compose - para saber sobre versões é só entrar na https://docs.docker.com/reference/compose-file/legacy-versions/
 services:
 # cria a configuração do contêiner ser criado
   db:      # por convenção colocam para referenciar database
-    image: mysql:latest
+    image: mysql:8.0   #tirei latest porque deu erro
     container_name: cont_mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ro0ts # senha do usuário root que é r+o+zero+t+s
+      MYSQL_ROOT_PASSWORD: ro0ots # senha do usuário root que é r+o+zero+o+t+s
       MYSQL_DATABASE: dados_mysql # banco de dados criado automaticamente -  com volume os dados não serão perdidios
       MYSQL_USER: adm #nome do usuário
       MYSQL_PASSWORD: 12345 #senha do usuário
       #TZ: America/São Paulo     # time zone, isso tem haver com aws 
     ports:
-      - "3306:3306"  # padrão mysql
+      - "3306:3306"  # padrão mysql ---  deu erro então coloqeui 5002 na frente, tirando 3306
     volumes:
       - mysql_data:/var/lib/mysql #local onde serão guardados os dados, assim não serão perdidios ao encerrar o contêiner
     restart: always  #sempre restartar/iniciar automaticamente o contêiner
@@ -20,8 +20,8 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-pros"]
       interval: 10s     # verifica de 5 em 5 segundos se está saudável
-      timeout: 3s   # tempo de espera
-      retries: 3    # numeros de vezes que será verificado antes de considerar doente
+      timeout: 10s   # tempo de espera
+      retries: 5    # numeros de vezes que será verificado antes de considerar doente
 
       # teste = para verificar
       # mysqladmin", "ping"= se está respondendo
@@ -60,6 +60,13 @@ volumes:
   ##########################################################
 
 
-# ___________________________________________________________ #
+# _______________rodar tudo - compose ____________________ #
 
 # docker-compose up -d
+
+
+# _______________acessar myql-contêiner___________________ #
+
+# docker exec -it cont_mysql mysql -u root -p
+
+# docker exec -it cont_mysql mysql -u adm -p
