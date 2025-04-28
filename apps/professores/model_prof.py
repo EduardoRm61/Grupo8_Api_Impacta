@@ -59,67 +59,108 @@ class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava
 # def apaga_tudo():
 #      professores["Professor"] = []
 
-def ProfessorExistente(Id_professor):   
-    return Professor.query.get(Id_professor) is not None
+def ProfessorExistente(Id_professor): 
+    try:  
+        return Professor.query.get(Id_professor) is not None
+    except Exception as e:
+        raise Exception (f"Erro, Professor não indentificado ou existente!: {str(e)}")
 
+# sem esquecer que str(e) é transformar em string o objeto/mensagem exeção 2° tipo de erro (classe+mensagem do .py), 1° mesagem do erro personalizada
 
-def procurarProfessorPorId(id_professor):   # listar aluno
-    professor = Professor.query.get(id_professor)
-    if not professor:
-        raise ProfessorNaoIdentificado()
-    return professor.direcionar()
+def procurarProfessorPorId(id_professor):   
+    try:
+        professor = Professor.query.get(id_professor)
+        if not professor:
+            raise ProfessorNaoIdentificado()
+        return professor.direcionar()
+    
+    except ProfessorNaoIdentificado:
+        raise
+    except Exception as e:
+        raise Exception(f"Erro, Professor não indentificado ou existente: {str(e)}")
+
 
 def criarNovoProfessor(new_direcionar):
-    if not new_direcionar.get("id") or not new_direcionar.get("nome") or not new_direcionar.get("materia"):
-    # se não tiver 1 ou 2 ou todos, falha
-        raise CadastroDeProfessorFalhado()
-    
-    if ProfessorExistente(new_direcionar["id"]):
-        raise ProfessorExiste()
-    
-    novo_professor = Professor (
-        id=new_direcionar["id"],
-        nome=new_direcionar["nome"],
-        materia=new_direcionar["materia"],
-        idade=new_direcionar.get("idade"),
-        obs=new_direcionar.get("obs")
-    )
+    try:
+        if not new_direcionar.get("id") or not new_direcionar.get("nome") or not new_direcionar.get("materia"):
+        # se não tiver 1 ou 2 ou todos, falha
+            raise CadastroDeProfessorFalhado()
         
-    db_serv.session.add(novo_professor)  # add o objeto à sessão do banco de dados
-    db_serv.session.commit()             # confirma a transação, grava o objeto no banco de dados mysql
-    return novo_professor.direcionar()      # converte em diconário
+        if ProfessorExistente(new_direcionar["id"]):
+            raise ProfessorExiste()
+        
+        novo_professor = Professor (
+            id=new_direcionar["id"],
+            nome=new_direcionar["nome"],
+            materia=new_direcionar["materia"],
+            idade=new_direcionar.get("idade"),
+            obs=new_direcionar.get("obs")
+        )
+            
+        db_serv.session.add(novo_professor)  # add o objeto à sessão do banco de dados
+        db_serv.session.commit()             # confirma a transação, grava o objeto no banco de dados mysql
+        return novo_professor.direcionar()      # converte em diconário
     
-    #cuidado com identação e abrir e fechar ( )
+    except (CadastroDeProfessorFalhado, ProfessorExiste):
+        raise
+    except Exception as e:
+        db_serv.session.rollback()
+        # sessão do banco de dados/zona de trabalho - db_serv.session
+        # evitar dados inconsistentes no banco, desfazendo operações realizadas no último commit
+        raise Exception(f"{str(e)}: Erro ao criar o professor")
+        
+        #cuidado com identação e abrir e fechar ( )
+        
 def atualizarProfessor(id_professor, novo_dado ):
-    professor = Professor.query.get(id_professor)
-    if not professor:
-        raise ProfessorNaoIdentificado
+    try:
+        professor = Professor.query.get(id_professor)
+        if not professor:
+            raise ProfessorNaoIdentificado
+        
+        professor.id = novo_dado["id"]
+        professor.nome = novo_dado["nome"]
+        professor.idade = novo_dado["idade"]
+        professor.materia = novo_dado["materia"]
+        professor.obs = novo_dado["obs"]
+        
+        db_serv.session.commit()
     
-    professor.id = novo_dado["id"]
-    professor.nome = novo_dado["nome"]
-    professor.idade = novo_dado["idade"]
-    professor.materia = novo_dado["materia"]
-    professor.obs = novo_dado["obs"]
+        return professor.direcionar()
     
-    db_serv.session.commit()
-   
+    except (ProfessorNaoIdentificado, CadastroDeProfessorFalhado):
+        raise
+    except Exception as e:
+        db_serv.session.rollback()
+        raise Exception(f"{str(e)}: Falha ao atualizar professor")
     
 def deletarProfessorPorId(id_professor): #excluir aluno
-    professor = Professor.query.get(id_professor)
-    if not professor:
-        raise ProfessorNaoIdentificado()
+    try:
+        professor = Professor.query.get(id_professor)
+        if not professor:
+            raise ProfessorNaoIdentificado()
+        
+        # variável para receber quem será deletado e guardar informação
+        nome_del = professor.nome
+        
+        db_serv.session.delete(professor)
+        db_serv.session.commit()
+        return {"mensagem": f"Professor {nome_del} eletado com sucesso"}
     
-    # variável para receber quem será deletado e guardar informação
-    nome_del = professor.nome
-    
-    db_serv.session.delete(professor)
-    db_serv.session.commit()
-    return {"mensagem": f"Professor {nome_del} eletado com sucesso"}
+    except ProfessorNaoIdentificado:
+        raise
+    except Exception as e:
+        db_serv.session.rollback()
+        raise Exception(f"{str(e)}: Erro ao deletar professor {nome_del}")
 
 def resetar_professores():
-    Professor.query.delete()
-    db_serv.session.commit()
-    return
+    try:
+        Professor.query.delete()
+        db_serv.session.commit()
+        return
+    
+    except Exception as e:
+        db_serv.session.rollback()
+        raise Exception(f"{str(e)}: Erro ao resetar professor")
 
 
 # ++++++++++++++++++++++++++++++++++++++ ok ++++++++++++++++++++++++++++++++++++++++++++++++++++++++

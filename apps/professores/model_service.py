@@ -16,20 +16,20 @@ professores = {"professor": [
     "obs": None}
 ]}
 
-# class ProfessorNaoIdentificado(Exception):
-#     def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
-#         self.msg = msg
-#         super().__init__(self.msg)
+class ProfessorNaoIdentificado(Exception):
+    def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
+        self.msg = msg
+        super().__init__(self.msg)
 
-# class ProfessorExiste(Exception):
-#     def __init__(self, msg="Professor já existente"):
-#         self.msg = msg
-#         super().__init__(self.msg)
+class ProfessorExiste(Exception):
+    def __init__(self, msg="Professor já existente"):
+        self.msg = msg
+        super().__init__(self.msg)
 
-# class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
-#     def __init__(self, msg="ID, nome e matéria são obrigatórios"):
-#         self.msg = msg
-#         super().__init__(self.msg)
+class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
+    def __init__(self, msg="ID, nome e matéria são obrigatórios"):
+        self.msg = msg
+        super().__init__(self.msg)
 
 def apaga_tudo():
      professores["Professor"] = []

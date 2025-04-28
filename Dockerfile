@@ -2,7 +2,7 @@
 
 FROM python:3.9-slim
 # do python:3 pegue sua imagem
-
+# IMAGEM REDUZIDA COM BÁSICO DO PYTHON, MAIS LEVE, PROJETOS MENORES
 WORKDIR /app
 #defina o diretório de trabalho dentro do contêiner , colocando apenas nome da pasta
 # ex C:\Users\ar\deletarr\Grupo8_Api_Impacta - ficaria apenas Grupo8_Api_Impacta

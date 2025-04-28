@@ -2,35 +2,44 @@ docker-compose up -d
 
 docker ps
 
-docker exec -it cont_mysql mysql -u adm -p
+<span style ="color: #003f88; background-color: #cdb4db;">docker exec -it cont_mysql mysql -u adm -p</span>
 
 USE nome_do_banco_de_dados;
 
-USE dados_mysql;
+<span style ="color: #003f88; background-color: #cdb4db;">USE dados_mysql;</span>
 
-SHOW TABLES;
+<span style ="color: #003f88; background-color: #cdb4db;">SHOW TABLES;</span>
 
 Empty set (0.01 sec)
 
 CREATE TABLE Professor (
+
     id INT PRIMARY KEY NOT NULL,
+
     nome VARCHAR(100) NOT NULL,
+
     idade INT,
+
     materia VARCHAR(100) NOT NULL,
+
     obs VARCHAR(200)
 );
 
-CREATE TABLE Professor (    id INT PRIMARY KEY NOT NULL,    nome VARCHAR(100) NOT NULL,    idade INT,    materia VARCHAR(100) NOT NULL,    obs VARCHAR(200));
+<span style = "color: #003f88; background-color: #cdb4db">
+CREATE TABLE Professor (    id INT PRIMARY KEY NOT NULL,    nome VARCHAR(100) NOT NULL,    idade INT,    materia VARCHAR(100) NOT NULL,    obs VARCHAR(200));</span>
 
+&nbsp;
 retorno
 
 Query OK, 0 rows affected (0.05 sec)
 
-
+<span style=" color:#003f88; background-color: #cdb4db;">
 INSERT INTO Professor (id, nome, materia, idade, obs) 
-VALUES (1, 'João Silva', 'Matemática', 45, 'Professor titular');
+VALUES (1, 'João Silva', 'Matemática', 45, 'Professor titular');</span>
+&nbsp;
 
 retorno
+
 ERROR 1146 (42S02): Table 'dados_mysql.Professor' doesn't exist
 
 retorno após criar tabela
@@ -39,10 +48,16 @@ Query OK, 0 rows affected (0.05 sec)
 ver se tudo foi salvo
 
 todos os registros da tabela
-SELECT * FROM Professor;
+<span style=" color:#003f88; background-color: #cdb4db;">
+SELECT * FROM Professor;</span>
+
 
 contagem de registros
-SELECT COUNT(*) FROM Professor;
+
+<span style=" color:#003f88; background-color: #cdb4db;">
+SELECT COUNT(*) FROM Professor;</span>
+
+&nbsp;
 +----------+
 | COUNT(*) |
 +----------+
@@ -53,20 +68,30 @@ SELECT COUNT(*) FROM Professor;
 
 
 Verificar se o autocommit está ativado (deve estar ON)
-SELECT @@autocommit;
+<span style=" color:#003f88; background-color: #cdb4db;">
+SELECT @@autocommit;</span>
+&nbsp;
+
 +--------------+
 | @@autocommit |
 +--------------+
 |            1 |
 +--------------+
+
 1 row in set (0.01 sec)
 Autocommit ligado (1): Todas as alterações são confirmadas (committed) automaticamente após cada comando SQL
 Garantia de persistência: Quando você faz INSERT, UPDATE ou DELETE, as mudanças são imediatamente gravadas no disco
 
 fechar total mysql
-EXIT;
+
+<span style=" color:#003f88; background-color: #cdb4db;">
+EXIT;</span>
+&nbsp;
+
+refazer
 
 docker exec -it cont_mysql mysql -u adm -p dados_mysql -e 
+
 "SELECT * FROM Professor;"
 +----+-----------+-------+---------+-----------------------+
 | id | nome      | idade | materia | obs                   |
@@ -77,9 +102,16 @@ docker exec -it cont_mysql mysql -u adm -p dados_mysql -e
 | 13 | Evandro   |    30 |         |                       |
 +----+-----------+-------+---------+-----------------------+
 
-docker stop cont_mysql
+<span style=" color:#003f88; background-color: #cdb4db;">
+docker stop cont_mysql</span>
 
-docker start cont_mysql
+&nbsp;
+
+<span style=" color:#003f88; background-color: #cdb4db;">
+docker start cont_mysql</span>
+
+&nbsp;
+
 
 docker exec -it cont_mysql mysql -u adm -p dados_mysql -e 
 "SELECT * FROM Professor;"
@@ -96,7 +128,8 @@ Persistência efetiva: Os dados sobreviveram ao reinício do container
 
 Volume Docker funcionando: Seu container está corretamente configurado com armazenamento persistente
 
-docker inspect cont_mysql | grep -A 10 Mounts
+<span style = "color: #9b5de5">docker inspect cont_mysql | grep -A 10 Mounts</span>
+
             "Mounts": [
                 {
                     "Type": "volume",
@@ -122,3 +155,4 @@ docker inspect cont_mysql | grep -A 10 Mounts
             }
 
             deveria mostrar este mapeamento mesmo
+
