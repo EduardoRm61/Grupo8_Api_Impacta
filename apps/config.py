@@ -1,5 +1,6 @@
-import os
+import os   #porque impostar os se não estou usando?
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
@@ -21,3 +22,5 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # DB_PASSWORD: 12345
 # "mysql+pymysql://DB_USER:DB_PASSWORD@DB_HOST/DB_NAME"
 # ESTÁ EM APP: ENVIRONMENT
+
+db_serv = SQLAlchemy(app)   #instanciando/criando objeto do SQLAlchemy vinculado ao app/flask

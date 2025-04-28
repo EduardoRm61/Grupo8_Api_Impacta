@@ -1,6 +1,16 @@
-# classes, funções e list/dict
-# apenas classe que representesm dados (entidades, tabelas bd ...) 
+# msysql
 
+from config import db_serv
+
+
+   
+class Professor(db_serv.Model):
+    id = db_serv.Column(db_serv.Integer, primary_key=True, NotNullable=False)
+    nome = db_serv.Column(db_serv.String (100), NotNullable=False)
+    idade = db_serv.Column(db_serv.Integer)
+    materia = db_serv.Column(db_serv.String (150), NotNullable=False)
+    idade = db_serv.Column(db_serv.Integer)
+    
 professores = {"professor": [
     {
     "id": 10,
