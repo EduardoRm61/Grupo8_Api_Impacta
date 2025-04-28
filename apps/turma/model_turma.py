@@ -1,11 +1,45 @@
 import professores.model_prof as modPro
 import turma.model_turma as modAlu
-
+from datetime import datetime, date
+from config import db
+from flask_sqlalchemy import SQLAlchemy
 
 dadosTurma = {"Turma":[
     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}     
 ]} 
+
+def turmaJaExiste(Id_turma):
+    for turma in dadosTurma["Turma"]:
+        if turma["Id"] == Id_turma:
+            return True
+    return False
+
+def professorExistente(Id_professor):
+    for professor in modPro.professores["professor"]:
+        if professor["id"] == Id_professor:
+            return True  
+    return False
+
+# Aqui estão todas as classes para o Banco de Dados
+
+class Turma(db.Model):
+    __tablename__ = "turmas"
+
+    id = db.Column(db.Integer, primary_key=True)
+    descricao = db.Column(db.String(30),nullable=False)
+    ativa = db.Column(db.Boolean,nullable=False)
+    professor_id = db.Column(db.Integer, db.ForeignKey("professor.id"),nullable=False)
+
+    def __init__(self, id, descricao, ativa, professor_id):
+        self.id = id
+        self.descricao = descricao
+        self.ativa = ativa
+        self.professor_id = professor_id
+
+    def to_dict(self):
+        return {"id":self.id, "descricao":self.descricao,"ativa":self.ativa, "professor_id":self.professor_id}
+
 
 #Aqui estão todas as classes de exceções:
 
@@ -51,79 +85,126 @@ class TurmaJaDeletada(Exception):
 
 #Aqui estão as funções auxiliares para Turma em app.py:
 
-def apaga_tudo():
-    modAlu.dados['alunos'] = []
-    modPro.professores["Professor"] = []
-    dadosTurma["Turma"] = []
+# def apaga_tudo():
+#     modAlu.dados['alunos'] = []
+#     modPro.professores["Professor"] = []
+#     dadosTurma["Turma"] = []
 
+# def procurarTurmaPorId(id_turma):
+#     for dict in dadosTurma["Turma"]:
+#         if dict['Id'] == id_turma:
+#                     return dict
+#         raise TurmaNaoIdentificada()
+    
 def procurarTurmaPorId(id_turma):
-            for dict in dadosTurma["Turma"]:
-                if dict['Id'] == id_turma:
-                    return dict
-            raise TurmaNaoIdentificada()
+    turma = Turma.query.get(id)
+    if not turma:
+        raise TurmaNaoIdentificada()
+    return turma.to_dict()
+
+
+# def criarNovaTurma(nv_dict):
+#     dadosTurma["Turma"].append(nv_dict)
+#     return
 
 def criarNovaTurma(nv_dict):
-    dadosTurma["Turma"].append(nv_dict)
-    return
+    db.session.add(nv_dict)
+    db.session.commit()
+    return {"Descrição":"Turma criada com êxito! "},200
+
+# def listarTurma():
+#     return dadosTurma["Turma"]
 
 def listarTurma():
-    return dadosTurma["Turma"]
+    turmas = Turma.query.all()
+    print(turmas)
+    return [turma.to_dict() for turma in turmas]
+
+
+# def deletarTurma():
+#     dadosTurma["Turma"] = []
 
 def deletarTurma():
-    dadosTurma["Turma"] = []
+    db.session.delete()
+    db.session.commit()
 
+
+# def deletarTurmaPorId(id_turma):
+#     turmas = dadosTurma["Turma"]
+
+#     for indice, turma in enumerate(turmas):
+#         if turma["Id"] == id_turma:
+#             turmas.pop(indice)
+#             return {"Mensagem": "Turma deletada com sucesso."}
+#     raise TurmaNaoIdentificada()
 
 def deletarTurmaPorId(id_turma):
-    turmas = dadosTurma["Turma"]
-
-    for indice, turma in enumerate(turmas):
-        if turma["Id"] == id_turma:
-            turmas.pop(indice)
-            return {"Mensagem": "Turma deletada com sucesso."}
-    raise TurmaNaoIdentificada()
+    db.session.delete(id_turma)
+    db.session.commit()
 
 def valoorBuleano(valorbool):
     if valorbool is True or valorbool is False:
         return True
     return False
 
+# def alterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
+#     nv_dados = dadosTurma["Turma"]
+#     try:
+#         for turma in nv_dados:
+#             if turma["Id"] == Id_turma:
+#                 if not professorExistente(Id_Pro):
+#                     return ({
+#                         "Erro": "Requisição inválida",
+#                         "Descrição": "Id do Professor inexistente"
+#                     }), 400
+#                 if not valoorBuleano(Ativa):
+#                     return ({
+#                         "Erro": "Requisição inválida",
+#                         "Descricao": "Valor de Ativa incorreto. Digite True ou False"
+#                     }), 409 
+#                 turma["Descrição"] = Descricao
+#                 turma["Professor Id"] = Id_Pro
+#                 turma["Ativa"] = Ativa
+#                 return {"Detalhes":"Turma atualizada com seucesso!"}, 200
+#         return ({
+#             "Erro": "Requisição inválida",
+#             "Descrição": "Id da turma inexistente"
+#         }), 400
+#     except Exception as e:
+#         return({
+#             "Erro": "Não foi possível fazer a requisição",
+#             "Descrição": str(e)
+#         }), 500
+
 def alterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
-    nv_dados = dadosTurma["Turma"]
+    nv_dados = Turma.query.get(Id_turma)
     try:
-        for turma in nv_dados:
-            if turma["Id"] == Id_turma:
-                if not professorExistente(Id_Pro):
-                    return ({
-                        "Erro": "Requisição inválida",
-                        "Descrição": "Id do Professor inexistente"
-                    }), 400
-                if not valoorBuleano(Ativa):
-                    return ({
-                        "Erro": "Requisição inválida",
-                        "Descricao": "Valor de Ativa incorreto. Digite True ou False"
-                    }), 409 
-                turma["Descrição"] = Descricao
-                turma["Professor Id"] = Id_Pro
-                turma["Ativa"] = Ativa
-                return {"Detalhes":"Turma atualizada com seucesso!"}, 200
-        return ({
-            "Erro": "Requisição inválida",
-            "Descrição": "Id da turma inexistente"
-        }), 400
+        if not nv_dados:
+            raise TurmaNaoIdentificada()
+        
+        if not professorExistente(Id_Pro):
+            return ({
+                "Erro": "Requisição inválida",
+                "Descrição": "Id do Professor inexistente"
+                }), 400
+        
+        if not valoorBuleano(Ativa):
+            return ({
+                "Erro": "Requisição inválida",
+                "Descricao": "Valor de Ativa incorreto. Digite True ou False"
+                    }), 409
+        
+        
+        nv_dados["Descrição"] = Descricao
+        nv_dados["Professor Id"] = Id_Pro
+        nv_dados["Ativa"] = Ativa
+        db.session.commit()
+        return {"Detalhes":"Turma atualizada com seucesso!"}, 200
+    
     except Exception as e:
-        return({
-            "Erro": "Não foi possível fazer a requisição",
+        return ({
+            "Erro":"Não foi possível fazer a requisição",
             "Descrição": str(e)
         }), 500
-    
-def turmaJaExiste(Id_turma):
-    for turma in dadosTurma["Turma"]:
-        if turma["Id"] == Id_turma:
-            return True
-    return False
 
-def professorExistente(Id_professor):
-    for professor in modPro.professores["professor"]:
-        if professor["id"] == Id_professor:
-            return True  
-    return False
+        
