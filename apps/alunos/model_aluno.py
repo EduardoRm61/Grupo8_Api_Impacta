@@ -1,3 +1,5 @@
+from config import db
+from turma.model_turma import Turma
 dados = {
     "alunos": [
         {
@@ -24,6 +26,19 @@ dados = {
     ]
 }
 
+class Aluno(db.Model):
+    __tablename__ = "alunos"
+
+    id = db.Column(db.Interger, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    idade = db.Column(db.Interger, nullabe=False)
+    data_nascimento = db.Column(db.Date, nullable=False)
+    nota_primeiro_semestre = db.Column(db.Float, nullable=False)
+    nota_segundo_semestre = db.Column(db.Float, nullable=False)
+    media_final = db.Column(db.Float, nullable=False)
+
+    turma_id = db.Column(db.Integer, db.ForeignKey(turma.id), nullable=False)
+    turma = db.relationship("Turma", back_populates="alunos")
 
 class AlunoNaoIdentificado(Exception):
     def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
