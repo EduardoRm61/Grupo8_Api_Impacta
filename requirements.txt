@@ -12,7 +12,12 @@
 # et_xmlfile==2.0.0
 # exceptiongroup==1.2.2
 # executing==2.1.0
+<<<<<<< HEAD
  Flask==3.1.0
+=======
+gunicorn
+Flask==3.1.0
+>>>>>>> b696fcb0f1065e7aae06659f3bc701c3aff7a977
 # greenlet==3.1.1
 # idna==3.10
 # importlib_metadata==8.5.0
@@ -54,7 +59,12 @@
 # python-dotenv==1.0.0
 # pytweening==1.2.0
 # pytz==2024.2
+<<<<<<< HEAD
 # pywin32==306
+=======
+pywin32==306; sys_platform == 'win32'
+
+>>>>>>> b696fcb0f1065e7aae06659f3bc701c3aff7a977
 # pyzmq==26.2.0
 # requests==2.32.3
 # six==1.16.0

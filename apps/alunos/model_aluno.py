@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 dados = {
     "alunos": [
         {
@@ -92,3 +95,8 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
 def deletar_alunos():
     dados["alunos"] = []
     return
+
+def calcular_media( nota_primeiro_semestre, nota_segundo_semestre):
+    media = (nota_primeiro_semestre + nota_segundo_semestre) / 2
+    mediaFim = f"{media:.1f}"
+    return mediaFim
