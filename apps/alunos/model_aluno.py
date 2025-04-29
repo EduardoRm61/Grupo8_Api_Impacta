@@ -1,5 +1,6 @@
-from config import db
-# from turma.model_turma import 
+from datetime import datetime
+
+
 dados = {
     "alunos": [
         {
@@ -25,40 +26,6 @@ dados = {
         }
     ]
 }
-
-# class Aluno(db.Model):
-#     __tablename__ = "alunos"
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     nome = db.Column(db.String(100), nullable=False)
-#     idade = db.Column(db.Integer, nullable=False)
-#     data_nascimento = db.Column(db.Date, nullable=False)
-#     nota_primeiro_semestre = db.Column(db.Float, nullable=False)
-#     nota_segundo_semestre = db.Column(db.Float, nullable=False)
-#     media_final = db.Column(db.Float, nullable=False)
-
-# #RELAÇÃO DA CHAVE ESTRANGEIRA
-#     turma_id = db.Column(db.Integer, db.ForeignKey('turma.id'), nullable=False) #CHAVE ESTRANGEIRA --não sei se tenho que colocar id_turma como está em model_turma
-#     turma = db.relationship("Turma", back_populates="alunos") 
-#     #foreignKey = cria o vínculo no BANCO DE DADOS
-#     #relationship = cria vínculo no CÓGIDO PYTHON
-#     #back_populates = torna o RELACIONAMENTO BIDERICIONAL
-
-#     def __init__(self, nome, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, turma_id):
-#         self.nome = nome
-#         self.data_nascimento = data_nascimento
-#         self.nota_primeiro_semestre = nota_primeiro_semestre
-#         self.nota_segundo_semestre = nota_segundo_semestre
-#         self.media_final = self.calcular_media()
-#         # self.idade = 
-#         self.turma_id = turma_id
-
-
-#     def calcular_media( nota_primeiro_semestre, nota_segundo_semestre):
-#         media = (nota_primeiro_semestre + nota_segundo_semestre) / 2
-#         mediaFim = f"{media:.1f}"
-#         return mediaFim
-
 
 
 class AlunoNaoIdentificado(Exception):
@@ -128,3 +95,8 @@ def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, 
 def deletar_alunos():
     dados["alunos"] = []
     return
+
+def calcular_media( nota_primeiro_semestre, nota_segundo_semestre):
+    media = (nota_primeiro_semestre + nota_segundo_semestre) / 2
+    mediaFim = f"{media:.1f}"
+    return mediaFim
