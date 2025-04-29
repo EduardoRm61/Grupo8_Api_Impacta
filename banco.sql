@@ -1,0 +1,7 @@
+CREATE TABLE turma(
+    id INT PRIMARY KEY, -- id INT AUTO_INCREMENT PRIMARY KEY
+    descricao VARCHAR(30) NOT NULL,
+    ativa BOOLEAN NOT NULL,
+    professor_id INT NOT NULL
+);
+
