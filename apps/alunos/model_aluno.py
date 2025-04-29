@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from config import db_serv
 
 dados = {
     "alunos": [
@@ -26,6 +26,53 @@ dados = {
         }
     ]
 }
+
+class Aluno(db_serv.Model):
+    __tablename__ = "alunos"
+
+    id = db_serv.Column(db_serv.Integer, primary_key=True)
+    nome = db_serv.Column(db_serv.String(100), nullable=False)
+    idade = db_serv.Column(db_serv.Integer, nullable=False)
+    data_nascimento = db_serv.Column(db_serv.Date, nullable=False)
+    nota_primeiro_semestre = db_serv.Column(db_serv.Float, nullable=False)
+    nota_segundo_semestre = db_serv.Column(db_serv.Float, nullable=False)
+    media_final = db_serv.Column(db_serv.Float, nullable=False)
+
+#RELAÇÃO DA CHAVE ESTRANGEIRA
+    turma_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey('turma.id'), nullable=False) #CHAVE ESTRANGEIRA --não sei se tenho que colocar id_turma como está em model_turma
+    turma = db_serv.relationship("Turma", back_populates="alunos") 
+    #foreignKey = cria o vínculo no BANCO DE DADOS
+    #relationship = cria vínculo no CÓGIDO PYTHON
+    #back_populates = torna o RELACIONAMENTO BIDERICIONAL
+
+    def __init__(self, nome, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, turma_id):
+        self.nome = nome
+        self.data_nascimento = data_nascimento
+        self.nota_primeiro_semestre = nota_primeiro_semestre
+        self.nota_segundo_semestre = nota_segundo_semestre
+        self.media_final = self.calcular_media()
+        self.idade = self.calcular_idade()
+        self.turma_id = turma_id
+
+##
+def calcular_media(self):
+    media = (self.nota_primeiro_semestre + self.nota_segundo_semestre) / 2
+    mediaFim = f"{media:.1f}"
+    return mediaFim
+   
+
+def calcular_idade(self):
+    if not self.data_nascimento:  
+        return None
+    try:
+        data_nasc = datetime.strptime(self.data_nascimento, '%d/%m/%Y')
+        data_atual = datetime.today()
+        idade = data_atual.year - data_nasc.year - ((data_atual.month, data_atual.day) < (data_nasc.month, data_nasc.day))
+        return idade
+    except ValueError:
+        return None
+
+##
 
 
 class AlunoNaoIdentificado(Exception):
@@ -96,7 +143,3 @@ def deletar_alunos():
     dados["alunos"] = []
     return
 
-def calcular_media( nota_primeiro_semestre, nota_segundo_semestre):
-    media = (nota_primeiro_semestre + nota_segundo_semestre) / 2
-    mediaFim = f"{media:.1f}"
-    return mediaFim
