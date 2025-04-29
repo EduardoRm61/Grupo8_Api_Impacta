@@ -21,7 +21,20 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-pros"]
       interval: 10s     # verifica de 5 em 5 segundos se está saudável
       timeout: 10s   # tempo de espera
-      retries: 5    # numeros de vezes que será verificado 
+      retries: 5    # numeros de vezes que será verificado antes de considerar doente
+
+      # teste = para verificar
+      # mysqladmin", "ping"= se está respondendo
+      # "-h", "localhost" = verifica servidor dentro do contêiner
+      # "-u", "root" = usa usuário root para teste
+      # "-pros" = senha
+
+      # estava asim test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pros"]
+      # segundo pesquisa deve tirar localhost e por 127.0.0.1 que irá verificar, dentro do contêiner mysql, se ele está ok, é teste interno, é o tipo um "ip local privado", que roda apenas dentro do docker para vericar, deixa mais seguro
+      # tem nada haver com ip do api/rotas
+
+
+#  ------- para rodar flask corretamnete, fiquei na dúvida de coloco ou não - qualquer coisa é só comentar
   app:     # serviço de aplicação
     build: .
     ports:
