@@ -23,9 +23,11 @@ CMD ["python", "apps/app.py"]
 # define o comando que será executado ao iniciar o contêiner | roda
 
 
-
-
-
+# -----------------------------------------------------------------------------------#
+#                                                                                    #
+#      DEVIDO DOCKER-COMPOSE TERÃO COMANDOS QUE NÃO SERÃO USADOS NESTE PROJETO       #
+#                IR PARA FINAL DO FILE docker-compose.yaml                           #
+#                                                                                    #
 # -----------------------------------------------------------------------------------#
 #      comando ( comando 1, ir para dockerdesktop, play na imagem, volta 2°)         #
 #                                                                                    #
@@ -33,4 +35,4 @@ CMD ["python", "apps/app.py"]
 #                         docker build -t grup9-api .                                #
 #      docker run -p 5002:5002 grup9-api    (rodar o compose, não este)              #
 #                                                                                    #
-# -------------------------------------------------------------------------------#
+# -----------------------------------------------------------------------------------#

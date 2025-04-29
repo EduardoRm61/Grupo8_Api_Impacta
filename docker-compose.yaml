@@ -2,14 +2,14 @@
 services:
 
   db:      
-    image: mysql:8.0   
-    container_name: cont_mysql
+    image: mysql:8.0   # o que roda é o 8.0.42-debian ()
+    container_name: cont_mysql  
     environment:
       MYSQL_ROOT_PASSWORD: ro0ots 
-      MYSQL_DATABASE: dados_mysql s
+      MYSQL_DATABASE: dados_mysql
       MYSQL_USER: adm 
       MYSQL_PASSWORD: 12345 
-      #TZ: America/São Paulo     # time zone, isso tem haver com aws 
+     
     ports:
       - "3306:3306"  
     volumes:
@@ -18,11 +18,10 @@ services:
 
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-pros"]
-      interval: 10s     
+      interval: 10s    
       timeout: 10s   
-      retries: 5    
-
-  app:
+      retries: 5   
+  app:     
     build: .
     ports:
       - "5002:5002"  
@@ -36,21 +35,24 @@ services:
       DB_USER: adm
       DB_PASSWORD: 12345
 
+  # ------------ volume --------------
+
 volumes:
     mysql_data:
+
+
 
   ##########################################################
   #                                                        #
   #                  comandos terminal                     #
   #                                                        #
-  #######################################################
+  # ORDEM DA CRIAÇÃO DA IMAGE                              #
+  # TODOS CONTÊINER                                        #
+  # ENTRAR NO MYSQL PARA CRUED                             #
+  #                                                        #
+  #             docker build -t nomeImagem .               #
+  #                docker-compose up -d                    #
+  #     docker exec -it cont_mysql mysql -u adm -p         #
+  #                                                        #
+  ##########################################################
 
-
-# _______________rodar tudo - compose ____________________ #
-
-# docker-compose up -d
-
-
-# _______________acessar myql-contêiner___________________ #
-
-# docker exec -it cont_mysql mysql -u adm -p
