@@ -1,8 +1,7 @@
 import professores.model_prof as modPro
 import turma.model_turma as modAlu
-from datetime import datetime, date
-from config import db
-from flask_sqlalchemy import SQLAlchemy
+from config import db_serv
+
 
 dadosTurma = {"Turma":[
     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
@@ -23,13 +22,13 @@ def professorExistente(Id_professor):
 
 # Aqui estão todas as classes para o Banco de Dados
 
-class Turma(db.Model):
+class Turma(db_serv.Model):
     __tablename__ = "turmas"
 
-    id = db.Column(db.Integer, primary_key=True)
-    descricao = db.Column(db.String(30),nullable=False)
-    ativa = db.Column(db.Boolean,nullable=False)
-    professor_id = db.Column(db.Integer, db.ForeignKey("professor.id"),nullable=False)
+    id = db_serv.Column(db_serv.Integer, primary_key=True)
+    descricao = db_serv.Column(db_serv.String(30),nullable=False)
+    ativa = db_serv.Column(db_serv.Boolean,nullable=False)
+    professor_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey("professor.id"),nullable=False)
 
     def __init__(self, id, descricao, ativa, professor_id):
         self.id = id
@@ -108,8 +107,8 @@ def procurarTurmaPorId(id_turma):
 #     return
 
 def criarNovaTurma(nv_dict):
-    db.session.add(nv_dict)
-    db.session.commit()
+    db_serv.session.add(nv_dict)
+    db_serv.session.commit()
     return {"Descrição":"Turma criada com êxito! "},200
 
 # def listarTurma():
@@ -125,8 +124,8 @@ def listarTurma():
 #     dadosTurma["Turma"] = []
 
 def deletarTurma():
-    db.session.delete()
-    db.session.commit()
+    db_serv.session.delete()
+    db_serv.session.commit()
 
 
 # def deletarTurmaPorId(id_turma):
@@ -139,8 +138,8 @@ def deletarTurma():
 #     raise TurmaNaoIdentificada()
 
 def deletarTurmaPorId(id_turma):
-    db.session.delete(id_turma)
-    db.session.commit()
+    db_serv.session.delete(id_turma)
+    db_serv.session.commit()
 
 def valoorBuleano(valorbool):
     if valorbool is True or valorbool is False:
@@ -198,7 +197,7 @@ def alterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
         nv_dados["Descrição"] = Descricao
         nv_dados["Professor Id"] = Id_Pro
         nv_dados["Ativa"] = Ativa
-        db.session.commit()
+        db_serv.session.commit()
         return {"Detalhes":"Turma atualizada com seucesso!"}, 200
     
     except Exception as e:

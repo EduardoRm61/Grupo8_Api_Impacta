@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.11-slim
 
 # Definindo o diretório de trabalho no container
 WORKDIR /app
@@ -7,10 +7,10 @@ WORKDIR /app
 COPY requirements.txt .  
 
 # Instala as dependências
-RUN pip install -r requirements.txt
+RUN pip install --user -r requirements.txt
 
 # Copia todos os arquivos do diretório 'apps' para dentro do diretório de trabalho no container
-COPY apps/ .  
+COPY . .
 
 # Expõe a porta que o Flask vai usar
 EXPOSE 5002

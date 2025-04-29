@@ -3,6 +3,7 @@ services:
   db:
     image: mysql:8.0 
     restart: always
+    container_name: cont_mysql
     environment:
       MYSQL_ROOT_PASSWORD: 12345
       MYSQL_DATABASE: SistemaEscolar
@@ -20,19 +21,18 @@ services:
 
 # Minha Api
   api: 
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    container_name: aplicacao-app
+    build: .
+    ports:
+      - 5002:5002
     depends_on:
       db:
         condition: service_healthy
     environment:
-        - DATABASE_URL=mysql+pymysql://adm:12345@db:3306/SistemaEscolar
-    ports:
-      - 5002:5002
-    volumes:
-      - ./apps:/app
+      DB_HOST: db  # Nome do serviço MySQL no compose
+      DB_PORT: 3306
+      DB_NAME: SistemaEscolar
+      DB_USER: adm
+      DB_PASSWORD: 12345
 
 volumes:
   mysql_data: {}
