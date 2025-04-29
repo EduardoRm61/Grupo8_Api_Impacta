@@ -1,40 +1,40 @@
-#version: "3.8"   
-#versão do arquivo compose - para saber sobre versões é só entrar na https://docs.docker.com/reference/compose-file/legacy-versions/
+
 services:
-# cria a configuração do contêiner ser criado
-  db:      # por convenção colocam para referenciar database / criando serviço de dados
-    image: mysql:8.0   #tirei latest porque deu erro = o que roda é o 8.0.42-debian ()
-    container_name: cont_mysql  # nome contêiner
+
+  db:      
+    image: mysql:8.0   # o que roda é o 8.0.42-debian ()
+    container_name: cont_mysql  
     environment:
-      MYSQL_ROOT_PASSWORD: ro0ots # senha do usuário root que é r+o+zero+o+t+s
-      MYSQL_DATABASE: dados_mysql # banco de dados criado automaticamente -  com volume os dados não serão perdidios
-      MYSQL_USER: adm #nome do usuário
-      MYSQL_PASSWORD: 12345 #senha do usuário
-      #TZ: America/São Paulo     # time zone, isso tem haver com aws 
+      MYSQL_ROOT_PASSWORD: ro0ots 
+      MYSQL_DATABASE: dados_mysql
+      MYSQL_USER: adm 
+      MYSQL_PASSWORD: 12345 
+     
     ports:
-      - "3306:3306"  # padrão mysql ---  deu erro então coloqeui 5002 na frente, tirando 3306
+      - "3306:3306"  
     volumes:
-      - mysql_data:/var/lib/mysql #local onde serão guardados os dados, assim não serão perdidios ao encerrar o contêiner
-    restart: always  #sempre restartar/iniciar automaticamente o contêiner
-#--------- para que só rode depois que estiver totalmente ok
+      - mysql_data:/var/lib/mysql 
+    restart: always  
+
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-pros"]
-      interval: 10s     # verifica de 5 em 5 segundos se está saudável
-      timeout: 10s   # tempo de espera
-      retries: 5    # numeros de vezes que será verificado 
-  app:     # serviço de aplicação
+      interval: 10s    
+      timeout: 10s   
+      retries: 5   
+  app:     
     build: .
     ports:
-      - "5002:5002"  #manter acessível as rotas
+      - "5002:5002"  
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DB_HOST: db  # Nome do serviço MySQL no compose
+      DB_HOST: db  
       DB_PORT: 3306
       DB_NAME: dados_mysql
       DB_USER: adm
       DB_PASSWORD: 12345
+
   # ------------ volume --------------
 
 volumes:
@@ -56,18 +56,5 @@ volumes:
 
 # _______________acessar myql-contêiner___________________ #
 
-# docker exec -it cont_mysql mysql -u root -p
-
 # docker exec -it cont_mysql mysql -u adm -p
 
-
-# _______________verão usada do mysql___________________ #
-
-# bash
-# docker exec cont_mysql mysql --version
-
-# _______________onde achar dados como versão e seu nome___________________ #
-
-# https://hub.docker.com/_/mysql/tags
-
-# lts-oraclelinux9 é menos vulnerável
