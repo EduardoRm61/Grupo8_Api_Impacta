@@ -8,7 +8,7 @@ class Professor(db_serv.Model):
     
     '''Criando Mysql/classe professor com suas variáveis separadas em colunas, com tipo, referêncoia de chave e nulabilidade '''
     
-    id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False)
+    id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False) # devo por nulo?
     nome = db_serv.Column(db_serv.String (100), nullabe=False)
     idade = db_serv.Column(db_serv.Integer)
     materia = db_serv.Column(db_serv.String (100), nullable=False)

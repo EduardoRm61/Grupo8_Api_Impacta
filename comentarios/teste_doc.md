@@ -85,6 +85,18 @@ SELECT * FROM Professor WHERE id = [ID_PARA_TESTAR];
 <span style=" color:#003f88; background-color: #cdb4db;">
 SELECT * FROM Professor WHERE id = 10;</span>
 
++----+------+-------+---------+-----------------------+
+| id | nome | idade | materia | obs                   |
++----+------+-------+---------+-----------------------+
+| 10 | Caio |    23 | Api     | Reponsvel pelo deploy |
++----+------+-------+---------+-----------------------+
+1 row in set (0.01 sec)
+
+coloquei id não existente
+
+SELECT * FROM Professor WHERE id = 19;
+Empty set (0.00 sec)
+
 ver estrutura da tabela pelo id
 <span style=" color:#003f88; background-color: #cdb4db;">
 DESCRIBE Professor;</span>
@@ -203,4 +215,29 @@ Volume Docker funcionando: Seu container está corretamente configurado com arma
             }
 
             deveria mostrar este mapeamento mesmo
+
+atualizar
+<span style="color:#003f88; background-color: #cdb4db;">
+SELECT * FROM Professor WHERE id = 10;
+UPDATE Professor 
+SET nome = ' arruma '
+WHERE id = 10;
+</span>
+aqui quis apenas o nome
+pode fazer com todos juntos
+ex:
+SET 
+    nome = 'Maria Oliveira',
+    idade = 50,
+    materia = 'Matemática',
+    obs = 'Atualização feita hoje'
+
+&nbsp;
+deletar
+
+1° verifica se existe
+
+<span style="color:#003f88;">
+SELECT * FROM Professor WHERE id = 13;
+</span>
 
