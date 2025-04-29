@@ -1,54 +1,40 @@
-#version: "3.8"   
-#versão do arquivo compose - para saber sobre versões é só entrar na https://docs.docker.com/reference/compose-file/legacy-versions/
+
 services:
-# cria a configuração do contêiner ser criado
-  db:      # por convenção colocam para referenciar database
-    image: mysql:8.0   #tirei latest porque deu erro
+
+  db:      
+    image: mysql:8.0   
     container_name: cont_mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ro0ots # senha do usuário root que é r+o+zero+o+t+s
-      MYSQL_DATABASE: dados_mysql # banco de dados criado automaticamente -  com volume os dados não serão perdidios
-      MYSQL_USER: adm #nome do usuário
-      MYSQL_PASSWORD: 12345 #senha do usuário
+      MYSQL_ROOT_PASSWORD: ro0ots 
+      MYSQL_DATABASE: dados_mysql s
+      MYSQL_USER: adm 
+      MYSQL_PASSWORD: 12345 
       #TZ: America/São Paulo     # time zone, isso tem haver com aws 
     ports:
-      - "3306:3306"  # padrão mysql ---  deu erro então coloqeui 5002 na frente, tirando 3306
+      - "3306:3306"  
     volumes:
-      - mysql_data:/var/lib/mysql #local onde serão guardados os dados, assim não serão perdidios ao encerrar o contêiner
-    restart: always  #sempre restartar/iniciar automaticamente o contêiner
-#--------- para que só rode depois que estiver totalmente ok
+      - mysql_data:/var/lib/mysql 
+    restart: always  
+
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-pros"]
-      interval: 10s     # verifica de 5 em 5 segundos se está saudável
-      timeout: 10s   # tempo de espera
-      retries: 5    # numeros de vezes que será verificado antes de considerar doente
+      interval: 10s     
+      timeout: 10s   
+      retries: 5    
 
-      # teste = para verificar
-      # mysqladmin", "ping"= se está respondendo
-      # "-h", "localhost" = verifica servidor dentro do contêiner
-      # "-u", "root" = usa usuário root para teste
-      # "-pros" = senha
-
-      # estava asim test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pros"]
-      # segundo pesquisa deve tirar localhost e por 127.0.0.1 que irá verificar, dentro do contêiner mysql, se ele está ok, é teste interno, é o tipo um "ip local privado", que roda apenas dentro do docker para vericar, deixa mais seguro
-      # tem nada haver com ip do api/rotas
-
-
-#  ------- para rodar flask corretamnete, fiquei na dúvida de coloco ou não - qualquer coisa é só comentar
   app:
     build: .
     ports:
-      - "5002:5002"  #manter acessível as rotas
+      - "5002:5002"  
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DB_HOST: db  # Nome do serviço MySQL no compose
+      DB_HOST: db  
       DB_PORT: 3306
       DB_NAME: dados_mysql
       DB_USER: adm
       DB_PASSWORD: 12345
-  # ------------ volume --------------
 
 volumes:
     mysql_data:
@@ -66,7 +52,5 @@ volumes:
 
 
 # _______________acessar myql-contêiner___________________ #
-
-# docker exec -it cont_mysql mysql -u root -p
 
 # docker exec -it cont_mysql mysql -u adm -p
