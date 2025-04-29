@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import os   #porque impostar os se não estou usando?
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -25,13 +24,3 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # ESTÁ EM APP: ENVIRONMENT
 
 db_serv = SQLAlchemy(app)   #instanciando/criando objeto do SQLAlchemy vinculado ao app/flask
-=======
-import os
-from flask import Flask
-
-app = Flask(__name__)
-
-app.config['HOST'] = '0.0.0.0'
-app.config['PORT']= 5002
-app.config['DEBUG'] = True
->>>>>>> b696fcb0f1065e7aae06659f3bc701c3aff7a977
