@@ -17,7 +17,6 @@ api = Api(
   doc = "/docs"  # Habilita a documentação Swagger/Open/Api. Define o endpoint onde Swaegger ui estará
 )
 # atenção com vírgula no final
-
 if __name__ == '__main__':
   app.run(host=app.config["HOST"], port = app.config['PORT'],debug=app.config['DEBUG'] )
 

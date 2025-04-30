@@ -1,11 +1,11 @@
 from config import db_serv
 
-class Professor (db.Model):
-    id = db_serv.Column(db.Integer, primary_key=True, nullable=False)       # cuidado estava column
-    nome = db_serv.Column(db.String (100), nullable=False)
-    idade = db_serv.Column(db.Integer)  # cuidado estava nullabe
-    materia = db_serv.Column(db.String (100), nullable=False)
-    obs = db_serv.Column(db.String (200))   
+class Professor (db_serv.Model):
+    id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False)       # cuidado estava column
+    nome = db_serv.Column(db_serv.String (100), nullable=False)
+    idade = db_serv.Column(db_serv.Integer)  # cuidado estava nullabe
+    materia = db_serv.Column(db_serv.String (100), nullable=False)
+    obs = db_serv.Column(db_serv.String (200))   
 
     def __init__(self, id, nome, materia, idade=None, obs=None):
         

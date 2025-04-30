@@ -1,11 +1,11 @@
 
 from flask import Blueprint, request, jsonify
 import professores.model_prof as modf
-from flask_restx import Resource, Namespace, fields
+from flask_restx import  Namespace, fields, Resource
 
 bp_professor = Blueprint("professores", __name__)
 
-ns = Namespace("professores", description="Gerenciamênto de dados dos professor da faculdade Impacta")
+ns = Namespace("professores", description="Gerenciamento de dados dos professores da faculdade Impacta")
 
 #____________________________________________DOC SWAGGER_______________________________________________________
 
