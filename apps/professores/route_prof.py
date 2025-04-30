@@ -2,17 +2,11 @@
 # lembrar que agora não tem app e sim blueprint
 
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for
-# from model_prof import professores, ProfessorNaoIdentificado, ProfessorExiste, CadastroDeProfessorFalhado, apaga_tudo, ProfessorExistente, procurarProfessorPorId, criarNovoProfessor, deletarProfessorPorId, resetar_professores
-# forma feita pelo professor
+
 import professores.model_prof as modf
-# dica do Edu,
 
 
 bp_professor = Blueprint("professores", __name__)
-
-# blueprint = estrutura flask que organiza rotas, templates e conf em partes separadas
-# a variável bluep_professor receberá o blueprint do flask, terá nome de professor/ usado no url e totas
-# name indicará o módulo atual (neste caso arquivo  route_prof.py), assim o flask poderá localizar templates, arquivos estáticos e blueprint - seu valor é automático
 
 
 # ____________________________________________ GET GERAL _______________________________________________________
