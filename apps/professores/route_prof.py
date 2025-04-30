@@ -12,9 +12,9 @@ ns = Namespace("professores", description="Gerenciamênto de dados dos professor
 model_prof = ns.model( "Professor", {
     "id" : fields.Integer(required=True, description="Identificação (id) do professor - pk"),
     "nome" : fields.String(required=True, description="Nome do professor - obrigatório"),
-    "idade" : fields.Integer(required=True, description="Idade do professor "),
+    "idade" : fields.Integer(required=False, description="Idade do professor "),
     "materia" : fields.String(required=True, description="Matéria aplicada pelo professor- obrigatória"),
-    "obs" : fields.String(required=True, description="Observações, informações extras sobre o professor")
+    "obs" : fields.String(required=False, description="Observações, informações extras sobre o professor")
 })
 
 # ____________________________________________ GET GERAL _______________________________________________________

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: grupo8-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: FLASK_ENV
+        value: production
+    plan: free
