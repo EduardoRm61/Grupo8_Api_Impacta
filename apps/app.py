@@ -11,12 +11,13 @@ app.register_blueprint(bp_professor)
 
 api = Api(
   app, # instância/obj da aplicação Flask, criada com Flask(__name__)
-  version= "1.0" # posso encontrar informações no fork >> Flask-RESTX Documentation << 
-  title= "Grupo8_Api_Impacta"  # título da api
-  description= "Aplicativo de gerenciamênto de dados de turmas, professor e alunos da faculdade Impacta" # descrição do app
+  version= "1.0", # posso encontrar informações no fork >> Flask-RESTX Documentation << 
+  title= "Grupo8_Api_Impacta",  # título da api
+  description= "Aplicativo de gerenciamênto de dados de turmas, professor e alunos da faculdade Impacta", # descrição do app
   doc = "/docs"  # Habilita a documentação Swagger/Open/Api. Define o endpoint onde Swaegger ui estará
 )
-  
+# atenção com vírgula no final
+
 if __name__ == '__main__':
   app.run(host=app.config["HOST"], port = app.config['PORT'],debug=app.config['DEBUG'] )
 
