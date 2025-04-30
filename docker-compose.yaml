@@ -1,14 +1,14 @@
 
 services:
 
-  db:      
+  db:                   # usualmente escolhem este
     image: mysql:8.0   # o que roda é o 8.0.42-debian ()
-    container_name: cont_mysql  
+    container_name: cont_mysql  #colocar nome do seu conteiner
     environment:
-      MYSQL_ROOT_PASSWORD: ro0ots 
-      MYSQL_DATABASE: dados_mysql
-      MYSQL_USER: adm 
-      MYSQL_PASSWORD: 12345 
+      MYSQL_ROOT_PASSWORD: ro0ots #escolher sua senha
+      MYSQL_DATABASE: dados_mysql # esoclher nome database que quiser
+      MYSQL_USER: adm             # vc escolhe
+      MYSQL_PASSWORD: 12345       #vc escolhe
      
     ports:
       - "3306:3306"  
@@ -24,14 +24,14 @@ services:
   app:     
     build: .
     ports:
-      - "5002:5002"  
+      - "5002:5002"  #pegar sua porta do app
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DB_HOST: db  
+      DB_HOST: db  # nome da linha 4
       DB_PORT: 3306
-      DB_NAME: dados_mysql
+      DB_NAME: dados_mysql  # linha 9
       DB_USER: adm
       DB_PASSWORD: 12345
 

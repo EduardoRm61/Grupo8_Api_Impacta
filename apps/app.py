@@ -1,31 +1,41 @@
-<<<<<<< HEAD
 import os
 from flask import Flask, jsonify, request
 from config import app                                      # estava apps.config import ...
-=======
 from swagger.swagger_config import configure_swagger
 import os
 from flask import Flask, jsonify, request
 from config import app
->>>>>>> b696fcb0f1065e7aae06659f3bc701c3aff7a977
 from professores.route_prof import bp_professor
 from turma.routes_turma import Bd_Turma
 from alunos.route_aluno import bp_aluno
+from flask_sqlalchemy import SQLAlchemy
+from flask import redirect, url_for
 
-
-<<<<<<< HEAD
 app.register_blueprint(bp_professor)
 app.register_blueprint(Bd_Turma)
 app.register_blueprint(bp_aluno)
-=======
 app.register_blueprint(bp_professor, url_prefix='/api')
 app.register_blueprint(Bd_Turma, url_prefix='/api')
 app.register_blueprint(bp_aluno, url_prefix='/api')
 
+
+# app.register_blueprint(bp_professor, url_prefix="/professores" )
+# app.register_blueprint(Bd_Turma, url_prefix="/Turma")
+# app.register_blueprint(bp_aluno, url_for="/alunos")
+# para url vir com a rota professor, sem precisar escrever,<status falhou>
+
+# _________________________________________REDIRECIONAMENTO__________________________________________________
+
+# @app.route("/")
+# def redirecionamento():
+#     return redirect(url_for("professores.listar_professores"))
+
+#rafa, vc tirou este ou vc não o tinha?
+
+
 swagger_url ='/docs' #url aonde o swagger estará disponivel
 API_URL = '/static/swagger.json' #ccaminho para o arquvio json
 configure_swagger(app)
->>>>>>> b696fcb0f1065e7aae06659f3bc701c3aff7a977
 
 
 if __name__ == '__main__':
