@@ -1,12 +1,11 @@
 from flask import Blueprint, request, jsonify
 import turma.model_turma as modTur
-import os
 
 
 
-Bd_Turma = Blueprint('Turma', __name__ )
+bd_Turma = Blueprint('Turma', __name__ )
 
-@Bd_Turma.route("/Turma",methods=["GET"])                              
+@bd_Turma.route("/Turma",methods=["GET"])                              
 def listar_turma():
     try:
         Turmas = modTur.listarTurma()
@@ -14,7 +13,7 @@ def listar_turma():
     except modTur.TurmaNaoIdentificada as Tr:
         return jsonify ({"Requisição inválida":str(Tr)}), 400
     
-@Bd_Turma.route("/Turma/<int:id_turma>", methods=["GET"])            
+@bd_Turma.route("/Turma/<int:id_turma>", methods=["GET"])            
 def procurarTurma(id_turma):
      try:
         dados = modTur.procurarTurmaPorId(id_turma)
@@ -23,7 +22,7 @@ def procurarTurma(id_turma):
           return jsonify({"Erro:": str(trm)}), 402  #Isso precisa ser alterado
 
 
-@Bd_Turma.route("/Turma", methods=["POST"])
+@bd_Turma.route("/Turma", methods=["POST"])
 def AddTurma():
     nv_dict = request.json
     nv_dict['Id'] = int(nv_dict['Id'])
@@ -52,7 +51,7 @@ def AddTurma():
          }), 400    
 
 
-@Bd_Turma.route("/Turma/Resetar", methods=["DELETE"])
+@bd_Turma.route("/Turma/Resetar", methods=["DELETE"])
 def ResetarTodaTurma():
     try:
         modTur.deletarTurma()
@@ -60,7 +59,7 @@ def ResetarTodaTurma():
     except modTur.TurmaJaDeletada as Trm:
         return jsonify ({"Requisção Inválida": str(Trm)}), 400 
     
-@Bd_Turma.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
+@bd_Turma.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
 def ResetarTurmaId(id_turma):
      try:
           modTur.deletarTurmaPorId(id_turma)
@@ -68,7 +67,7 @@ def ResetarTurmaId(id_turma):
      except modTur.TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 404
 
-@Bd_Turma.route("/Turma/Alterar/<int:id_turma>", methods=["PUT"])
+@bd_Turma.route("/Turma/Alterar/<int:id_turma>", methods=["PUT"])
 def AlterarInfo(id_turma):
     dados = request.json
     

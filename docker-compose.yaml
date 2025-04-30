@@ -1,7 +1,7 @@
 services:
 # Banco de Dados
   db:
-    image: mysql:8.0 
+    image: mysql:8.0
     restart: always
     container_name: cont_mysql
     environment:
@@ -35,4 +35,4 @@ services:
       DB_PASSWORD: 12345
 
 volumes:
-  mysql_data: {}
+  mysql_data: 

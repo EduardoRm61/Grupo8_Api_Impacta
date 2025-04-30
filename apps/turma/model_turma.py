@@ -5,8 +5,8 @@ from config import db_serv
 
 dadosTurma = {"Turma":[
     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
-    {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}     
-]} 
+    {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}
+]}
 
 def turmaJaExiste(Id_turma):
     for turma in dadosTurma["Turma"]:
@@ -17,7 +17,7 @@ def turmaJaExiste(Id_turma):
 def professorExistente(Id_professor):
     for professor in modPro.professores["professor"]:
         if professor["id"] == Id_professor:
-            return True  
+            return True
     return False
 
 # Aqui estão todas as classes para o Banco de Dados
