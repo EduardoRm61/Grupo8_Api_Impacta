@@ -146,14 +146,13 @@ def atualizarProfessor(id_professor, novo_dado ):
     
 def deletarProfessorPorId(id_professor): #excluir aluno
     try:
-        nome_del = professor.nome
-        
         professor = Professor.query.get(id_professor)
         if not professor:
             raise ProfessorNaoIdentificado()
         
         # variável para receber quem será deletado e guardar informação
         
+        nome_del = professor.nome
         
         db_serv.session.delete(professor)
         db_serv.session.commit()
