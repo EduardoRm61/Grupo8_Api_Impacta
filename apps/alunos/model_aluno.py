@@ -73,8 +73,65 @@ def calcular_idade(self):
         return None
 
 ##
+def procurar_aluno_por_id(id_aluno):
+    aluno = Aluno.query.get(id_aluno) 
+    if aluno:
+        return aluno
+    raise AlunoNaoIdentificado()
+
+def listar_aluno():
+    alunos = Aluno.query.all()
+    print(alunos)
+
+def criar_novo_aluno(novo_aluno):
+    #verifica se turma existe, se não existir vai aparecer o erro 404, se existir o código continua
+    turma = Turma.query.get(novo_aluno['turma_id'])
+    if(turma is None):
+        return {"Turma não encontrada"}, 404
+
+    adc_aluno = Aluno(
+        nome = novo_aluno['nome'],
+        data_nascimento = datetime.strftime(novo_aluno['data_nascimento'], "%d/%m/%Y"),
+        nota_primeiro_semestre = float(novo_aluno['nota_primeiro_semestre']),
+        nota_segundo_semestre = float(novo_aluno['nota_segundo_semestre']),
+        turma_id = int(novo_aluno['turma_id'])
+    )
+
+    db_serv.session.add(adc_aluno)  
+    db_serv.session.commit()            
+    return {"Resposta":"Aluno criado com sucesso!"}, 201
 
 
+def deletar_aluno_por_id(id_aluno):
+    aluno = db_serv.session.get(Aluno, id_aluno) 
+    if not aluno:
+        raise AlunoNaoIdentificado()
+    
+    db_serv.session.delete(aluno)  
+    db_serv.session.commit()      
+    return {"Mensagem": "Aluno deletado com sucesso."}
+
+def alterar_informacoes_aluno(id_aluno, novo_aluno):
+    aluno = Aluno.query.get(id_aluno)
+    if not aluno:
+        raise AlunoNaoIdentificado()
+    
+    aluno.nome = novo_aluno['nome']
+    aluno.idade = aluno.calcular_idade()
+    aluno.data_nascimento = novo_aluno['data_nascimento']
+    aluno.nota_primeiro_semestre = novo_aluno['nota_primeiro_semestre']
+    aluno.nota_segundo_semestre = novo_aluno['nota_segundo_semestre']
+    aluno.media = novo_aluno.calcular_media()
+    aluno.turma.id = novo_aluno['turma_id']
+
+    db_serv.session.commit()
+
+def aluno_ja_existe(id_aluno):
+    aluno = Aluno.query.get(id_aluno)
+    if aluno: #se o aluno existir, levanta a exceção
+        raise AlunoExistente()
+
+##
 class AlunoNaoIdentificado(Exception):
     def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
         self.msg = msg
@@ -95,21 +152,22 @@ class AtualizacaoAlunoFalhou(Exception):
         self.msg = msg
         super()._init_(self.msg)
 
+##
 
-def procurar_aluno_por_id(id_aluno):
+def procurar_aluno_por_id(id_aluno): #ok
     for aluno in dados["alunos"]:
         if aluno["Id"] == id_aluno:
             return aluno
     raise AlunoNaoIdentificado()
 
-def criar_novo_aluno(novo_aluno):
+def criar_novo_aluno(novo_aluno): #ok
     dados["alunos"].append(novo_aluno)
     return {"Resposta":"Aluno criando com sucesso"}
 
-def listar_alunos():
+def listar_alunos(): #ok
     return dados["alunos"]
 
-def deletar_aluno_por_id(id_aluno):
+def deletar_aluno_por_id(id_aluno): #ok
     alunos = dados["alunos"]
     for indice, aluno in enumerate(alunos):
         if aluno["Id"] == id_aluno:
@@ -117,14 +175,14 @@ def deletar_aluno_por_id(id_aluno):
             return {"Mensagem": "Aluno deletado com sucesso."}
     raise AlunoNaoIdentificado()
 
-def aluno_ja_existe(id_aluno):
+def aluno_ja_existe(id_aluno): #ok
     for aluno in dados["alunos"]:
         if aluno["Id"] == id_aluno:
             return True
     return False
 
 def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, media_final): #NÃO SEI SE VAI PRECISAR
-    try:
+    try: #ok
         for aluno in dados["alunos"]:
             if aluno["Id"] == id_aluno:
                 aluno["Nome"] = nome
