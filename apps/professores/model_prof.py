@@ -112,6 +112,17 @@ def atualizarProfessor(id_professor, novo_dado ):
         if not professor:
             raise ProfessorNaoIdentificado
         
+        if "id" in novo_dado:
+            professor.id = novo_dado["id"]
+        if "nome" in novo_dado:
+            professor.nome = novo_dado["nome"]
+        if "idade" in novo_dado:
+            professor.idade = novo_dado["idade"]
+        if "materia" in novo_dado:
+            professor.materia = novo_dado["materia"]
+        if "obs" in novo_dado:
+            professor.obs = novo_dado["obs"]
+        
         # professor.id = novo_dado["id"]
         # professor.nome = novo_dado["nome"]
         # professor.idade = novo_dado["idade"]
