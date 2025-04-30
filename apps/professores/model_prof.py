@@ -1,19 +1,12 @@
-# msysql
-
 from config import db_serv
 
-# __________________INSTÂNCIANDO________________________________________
-   
-class Professor(db_serv.Model):
-    
-    '''Criando Mysql/classe professor com suas variáveis separadas em colunas, com tipo, referêncoia de chave e nulabilidade '''
-    
-    id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False) # devo por nulo?
-    nome = db_serv.Column(db_serv.String (100), nullabe=False)
-    idade = db_serv.Column(db_serv.Integer)
-    materia = db_serv.Column(db_serv.String (100), nullable=False)
-    obs = db_serv.Column(db_serv.String (200))
-    
+class Professor (db.Model):
+    id = db_serv.Column(db.Integer, primary_key=True, nullable=False)       # cuidado estava column
+    nome = db_serv.Column(db.String (100), nullable=False)
+    idade = db_serv.Column(db.Integer)  # cuidado estava nullabe
+    materia = db_serv.Column(db.String (100), nullable=False)
+    obs = db_serv.Column(db.String (200))   
+
     def __init__(self, id, nome, materia, idade=None, obs=None):
         
         '''função para instanciar este objeto professor, com seus parametro
@@ -35,7 +28,9 @@ class Professor(db_serv.Model):
             "idade" : self.idade,
             "materia" : self.materia,
             "obs" : self.obs
-        }
+        }    
+
+
 
 # ____________ CLASSE DE EXCEÇÃO NÃO É DADOS- DEIXAR________________________
 
@@ -117,11 +112,16 @@ def atualizarProfessor(id_professor, novo_dado ):
         if not professor:
             raise ProfessorNaoIdentificado
         
-        professor.id = novo_dado["id"]
-        professor.nome = novo_dado["nome"]
-        professor.idade = novo_dado["idade"]
-        professor.materia = novo_dado["materia"]
-        professor.obs = novo_dado["obs"]
+        # professor.id = novo_dado["id"]
+        # professor.nome = novo_dado["nome"]
+        # professor.idade = novo_dado["idade"]
+        # professor.materia = novo_dado["materia"]
+        # professor.obs = novo_dado["obs"]
+        # estava nesta forma mas ela é um bloco fechado e inflexível, então se não add qualquer um deles dará retorno de erro de KeyError e quebra o cód
+        # aqui não vê linha por linhas, não é unidade, é grupo 
+        
+        # aforma posta/ corrigida é flexível, e corre de linha em linha, se não for da chave, passa para próxima, se for, atua e vai para próxima ou sai e segue o cód. Então se não tem uma informação, ele não quebra, ele pula e segue
+        # é algo unitário, diferente da forma posta antes
         
         db_serv.session.commit()
     
@@ -135,12 +135,14 @@ def atualizarProfessor(id_professor, novo_dado ):
     
 def deletarProfessorPorId(id_professor): #excluir aluno
     try:
+        nome_del = professor.nome
+        
         professor = Professor.query.get(id_professor)
         if not professor:
             raise ProfessorNaoIdentificado()
         
         # variável para receber quem será deletado e guardar informação
-        nome_del = professor.nome
+        
         
         db_serv.session.delete(professor)
         db_serv.session.commit()
