@@ -3,22 +3,22 @@ import turma.model_turma as modAlu
 from config import db_serv
 
 
-dadosTurma = {"Turma":[
-    {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
-    {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}
-]}
+# dadosTurma = {"Turma":[
+#     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
+#     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}
+# ]}
 
-def turmaJaExiste(Id_turma):
-    for turma in dadosTurma["Turma"]:
-        if turma["Id"] == Id_turma:
-            return True
-    return False
+# def turmaJaExiste(Id_turma):
+#     for turma in dadosTurma["Turma"]:
+#         if turma["Id"] == Id_turma:
+#             return True
+#     return False
 
-def professorExistente(Id_professor):
-    for professor in modPro.professores["professor"]:
-        if professor["id"] == Id_professor:
-            return True
-    return False
+# def professorExistente(Id_professor):
+#     for professor in modPro.professores["professor"]:
+#         if professor["id"] == Id_professor:
+#             return True
+#     return False
 
 # Aqui estão todas as classes para o Banco de Dados
 
