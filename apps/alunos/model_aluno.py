@@ -1,5 +1,6 @@
 from datetime import datetime
 from config import db_serv
+from turma.model_turma as modTur 
 
 dados = {
     "alunos": [
