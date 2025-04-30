@@ -1,8 +1,14 @@
+
+import sys
+
 import os
 from flask import Flask, jsonify, request
 from config import app                                      # estava apps.config import ...
 from swagger.swagger_config import configure_swagger
-import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from swagger.swagger_config import configure_swagger
 from flask import Flask, jsonify, request
 from config import app
 from professores.route_prof import bp_professor
