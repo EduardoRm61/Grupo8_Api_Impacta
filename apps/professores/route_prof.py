@@ -1,13 +1,21 @@
-# rotas apenas
-# lembrar que agora não tem app e sim blueprint
 
-from flask import Blueprint, request, jsonify, render_template, redirect, url_for
-
+from flask import Blueprint, request, jsonify
 import professores.model_prof as modf
-
+from flask_restx import Resource, Namespace, fields
 
 bp_professor = Blueprint("professores", __name__)
 
+ns = Namespace("professores", description="Gerenciamênto de dados dos professor da faculdade Impacta")
+
+#____________________________________________DOC SWAGGER_______________________________________________________
+
+model_prof = ns.model( "Professor", {
+    "id" : fields.Integer(required=True, description="Identificação (id) do professor - pk"),
+    "nome" : fields.String(required=True, description="Nome do professor - obrigatório"),
+    "idade" : fields.Integer(required=True, description="Idade do professor "),
+    "materia" : fields.String(required=True, description="Matéria aplicada pelo professor- obrigatória"),
+    "obs" : fields.String(required=True, description="Observações, informações extras sobre o professor")
+})
 
 # ____________________________________________ GET GERAL _______________________________________________________
 
