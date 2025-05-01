@@ -58,7 +58,7 @@ def ProfessorExistente(Id_professor):
     try:  
         return Professor.query.get(Id_professor) is not None
     except Exception as e:
-        raise Exception (f"Erro, Professor não indentificado ou existente!: {str(e)}")
+        raise Exception (f"Erro, Professor não indentificado ou existente: {str(e)}")
 
 # sem esquecer que str(e) é transformar em string o objeto/mensagem exeção 2° tipo de erro (classe+mensagem do .py), 1° mesagem do erro personalizada
 
@@ -156,7 +156,7 @@ def deletarProfessorPorId(id_professor): #excluir aluno
         
         db_serv.session.delete(professor)
         db_serv.session.commit()
-        return {"mensagem": f"Professor {nome_del} eletado com sucesso"}
+        return {"mensagem": f"Professor {nome_del} eletado"}
     
     except ProfessorNaoIdentificado:
         raise
@@ -166,10 +166,19 @@ def deletarProfessorPorId(id_professor): #excluir aluno
 
 def resetar_professores():
     try:
-        Professor.query.delete()
+        dict_prof_del = Professor.query.delete()
         db_serv.session.commit()
-        return
-    
+        return {"mensagem": f"{dict_prof_del} professor resetado"}, 200
+
+# lembrando session = realiza operações no bd(canco de dados) e ainda não estão gravadas, permanetemente, no bd
+# commit envia para obd a operação a ser executada
+# dict_prof_del = n° de linhas deletadas = retona um int = analisa e compara o n° de linhas/registros deletados, compara com quantos tinha e retona este valor
+
+#------------------------------------QUERY--------------------------------------
+#  interface de integração com BD, no caso SQLAlchemy
+# .QUERY = RECEBO UM OBJETO PARA CONSULTAR QUE TEM MÉTODOS QUE USAREI (NESTE CASO NA TABELA Professor)
+#                     É O FI CONDUTOR ENTRE PY E BD
+
     except Exception as e:
         db_serv.session.rollback()
         raise Exception(f"{str(e)}: Erro ao resetar professor")
