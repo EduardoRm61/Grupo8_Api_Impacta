@@ -23,10 +23,42 @@ model_prof = ns.model( "Professor", {
 @bp_professor.route('/professores', methods=['GET'])
 def listar_professores():
     try:
-        return jsonify({"mensagem": "Ok", "professores": modf.professores["professor"]}) 
+        professores = modf.Professor.query.all()
+        lista_professores = [professor.direcionar() for professor in professores]        
+        return jsonify({"mensagem": "Ok", "professores": lista_professores}), 200
     except Exception as e:
         return jsonify({"mensagem": "error", "professor": f"Internal Server Error: {str(e)}"}), 500 
-    
+   
+#    Estava assim 
+
+#    try:
+#         return jsonify({"mensagem": "Ok", "professores": modf.professores["professor"]}) 
+#     except Exception as e:
+
+# distrinchando para não esquecer
+
+# @bp_professor.route("/professores", methods=["GET"]) - decorador Flask/py - modifica comportamento de uma função, que é "estender" a rota professor pra listar_professor na web flask
+# blueprint - como será organizado rotas e views
+# /professores - endpoint, pelo que entendi faz parte da rota, mas ainda confundo
+# get é apenas receber informação, apenas return
+# função def listar_professores() - bloco que realiza uma tarefa, neste caso não temparâmetros
+
+#------------------------ Parte que ainda tenho problemas -----------------------------------#
+# try - tente - bloco que pode, ou não gerar um erro - entendo assim tente andar de bicicleta vc pode cair ou pedar todo percurso
+# primeira parte é se tudo correr bem retorne ok, creado, feito, sem return ...
+# except Exception as e:- se algum erro no bloco except que esteja na classe Exception atribuia ao objeto e (este e recebe os dados do erro e os retonam quando e for "chamado")
+#---------------------------------------------------------------------------------------------#
+
+# modf.Professor - módulo do model_prof.py - classe Professor do BD
+# .query - interface de integração com BD, no caso SQLAlchemy
+# all pega tudo que foi listado
+
+# variável lista_professor recebe :
+# professor.direcionar() - objeto professor,(.)acessar atribuo, método direcionar (model_prof.py - class Professor - def direcionar (função que relaciona chave com seus dados), no formato dict {})
+# for professor in professores -  para cada professor na lista professores 
+#resumindo = variável lista_professores recebe: intere para cada professor, na list professores, os atributos e métodos no objeto professor, usando método direcionar (responsável por acessar atributos e métodos do obje e pelo retorno da lista com dados desejados) - criando asssim uma nova lista.
+# esta nova lista recebida pela variável usa o mecanismo list comprehension 
+# este mecanismo funciona assim = a lista professores contém cada objeto professor individualmente. A list comprehension intera por cada um desses objetos professor. Para cada objeto, o método direcionar() acessa suas informações (atributos e métodos) e as transforma em um dicionário formatado. Cada dicionário formatado é então coletado para formar a nova lista lista_professores.
 
 # ____________________________________________ GET ID ___________________________________________________________
 
