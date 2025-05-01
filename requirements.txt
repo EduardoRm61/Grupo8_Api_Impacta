@@ -4,4 +4,5 @@ gunicorn
 Flask-SQLAlchemy==3.1.1
 flask-restx
 SQLAlchemy==2.0.35
-pywin32==306; sys_platform == 'win32'
+# pywin32==306; sys_platform == 'win32'
+pywin32; sys_platform == 'win32'

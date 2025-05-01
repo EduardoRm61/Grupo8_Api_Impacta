@@ -1,5 +1,6 @@
 
 from config import app                                      # estava apps.config import ...
+from config import db_serv
 from professores.route_prof import bp_professor
 from flask_restx import Api
 
