@@ -16,6 +16,10 @@ api = Api(
   description= "Aplicativo de gerenciamênto de dados de turmas, professor e alunos da faculdade Impacta", # descrição do app
   doc = "/docs"  # Habilita a documentação Swagger/Open/Api. Define o endpoint onde Swaegger ui estará
 )
+
+with app.app_context(): # com minha instância app que recebe do método app_context (cria um ambiente correto para realizar minhas operações)
+    db_serv.create_all() # Cria as tabelas no banco de dados. Lembrando que  db_serve relaciona banco de dados SQLAlchemy e ao meu app (config.py)
+
 # atenção com vírgula no final
 if __name__ == '__main__':
   app.run(host=app.config["HOST"], port = app.config['PORT'],debug=app.config['DEBUG'] )
