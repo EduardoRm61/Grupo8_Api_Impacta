@@ -1,19 +1,27 @@
-# rotas apenas
-# lembrar que agora não tem app e sim blueprint
 
 from flask import Blueprint, request, jsonify
-# from model_prof import professores, ProfessorNaoIdentificado, ProfessorExiste, CadastroDeProfessorFalhado, apaga_tudo, ProfessorExistente, procurarProfessorPorId, criarNovoProfessor, deletarProfessorPorId, resetar_professores
-# forma feita pelo professor
-import professores.model_prof as modf
-# dica do Edu,
+from . import model_prof as modf # (.) = desta pasta
+from flask_restx import  Namespace, fields, Resource
 
 
 bp_professor = Blueprint("professores", __name__)
 
-# blueprint = estrutura flask que organiza rotas, templates e conf em partes separadas
-# a variável bluep_professor receberá o blueprint do flask, terá nome de professor/ usado no url e totas
-# name indicará o módulo atual (neste caso arquivo  route_prof.py), assim o flask poderá localizar templates, arquivos estáticos e blueprint - seu valor é automático
+ns = Namespace("professores", description="Gerenciamento de dados dos professores da faculdade Impacta")
 
+
+#____________________________________________DOC SWAGGER_______________________________________________________
+
+@bp_professor.route('/')
+def list_professores():
+    return "Rota de professores funcionando!"
+
+model_prof = ns.model("Professor", {
+    "id" : fields.Integer(required=True, description="Identificação (id) do professor - pk"),
+    "nome" : fields.String(required=True, description="Nome do professor - obrigatório"),
+    "idade" : fields.Integer(required=False, description="Idade do professor "),
+    "materia" : fields.String(required=True, description="Matéria aplicada pelo professor- obrigatória"),
+    "obs" : fields.String(required=False, description="Observações, informações extras sobre o professor")
+})
 
 # ____________________________________________ GET GERAL _______________________________________________________
 
@@ -21,10 +29,12 @@ bp_professor = Blueprint("professores", __name__)
 @bp_professor.route('/professores', methods=['GET'])
 def listar_professores():
     try:
-        return jsonify({"mensagem": "Ok", "professores": modf.professores["professor"]}) 
+        professores = modf.Professor.query.all()
+        lista_professores = [professor.direcionar() for professor in professores]        
+        return jsonify({"mensagem": "Ok", "professores": lista_professores}), 200
     except Exception as e:
         return jsonify({"mensagem": "error", "professor": f"Internal Server Error: {str(e)}"}), 500 
-    
+
 
 # ____________________________________________ GET ID ___________________________________________________________
 
@@ -99,6 +109,3 @@ def resetar_professor():
     modf.resetar_professores()  # Função que reseta o dicionário de professores
     return jsonify({"mensagem": "Ok", "professor": "Resetado"}), 200
 
-
-
-# ++++++++++++++++++++++++++++++++++++++ ok ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
