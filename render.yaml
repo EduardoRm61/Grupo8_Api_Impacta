@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: grupo8-api_testando
+    runtime: python
+    pythonVersion: "3.9"
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn apps.app:app
+    envVars:
+      - key: PORT
+        sync : false
+        value: 1000
+      - key: FLASK-APP
+        value: "apps.py"
+    plan: free
+
