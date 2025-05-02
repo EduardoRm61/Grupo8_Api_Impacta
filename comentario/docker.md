@@ -21,3 +21,14 @@ retono caso não esteja
 retorno
 
 ModuleNotFoundError: No module named 'flask_restx' - não instalei no docker
+
+
+Deu problema no py, tive que desinstalar e dava erro
+
+https://support.microsoft.com/pt-br/topic/corrigir-problemas-que-bloqueiam-a-instala%C3%A7%C3%A3o-ou-remo%C3%A7%C3%A3o-de-programas-cca7d1b6-65a9-3d98-426b-e9f927e1eb4d
+
+baixei o app e rodei
+
+coisa linda!
+
+forçou desistalação
