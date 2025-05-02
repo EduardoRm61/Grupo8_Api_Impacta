@@ -1,187 +1,204 @@
-from ..config import db_serv
+from datetime import datetime
+from config import db_serv
+from turma.model_turma as modTur 
 
-class Professor (db_serv.Model):
-    id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False)       # cuidado estava column
-    nome = db_serv.Column(db_serv.String (100), nullable=False)
-    idade = db_serv.Column(db_serv.Integer)  # cuidado estava nullabe.
-    materia = db_serv.Column(db_serv.String (100), nullable=False)
-    obs = db_serv.Column(db_serv.String (200))   
+dados = {
+    "alunos": [
+        {
+            "Id": 20,
+            "Nome": "Thaina",
+            "Idade": 19,
+            "Turma_Id": 12,
+            "Data_nascimento": "10/08/2005",
+            "Nota_Primeiro_Semestre": 8.0,
+            "Nota_Segundo_semestre": 9.0,
+            "Media_final": 8.5
+        },
 
-    def __init__(self, id, nome, materia, idade=None, obs=None):
-        
-        '''função para instanciar este objeto professor, com seus parametro
-        #lembrando que none é vazia, sendo assim não obrigatório'''
-        
-        self.id = id
+        {
+            "Id": 25,
+            "Nome": "Rafaela",
+            "Idade": 25,
+            "Turma_Id": 16,
+            "Data_nascimento": "10/09/2000",
+            "Nota_Primeiro_Semestre": 6.0,
+            "Nota_Segundo_semestre": 9.0, 
+            "Media_final": 7.5
+        }
+    ]
+}
+
+class Aluno(db_serv.Model):
+    __tablename__ = "alunos"
+
+    id = db_serv.Column(db_serv.Integer, primary_key=True)
+    nome = db_serv.Column(db_serv.String(100), nullable=False)
+    idade = db_serv.Column(db_serv.Integer, nullable=False)
+    data_nascimento = db_serv.Column(db_serv.Date, nullable=False)
+    nota_primeiro_semestre = db_serv.Column(db_serv.Float, nullable=False)
+    nota_segundo_semestre = db_serv.Column(db_serv.Float, nullable=False)
+    media_final = db_serv.Column(db_serv.Float, nullable=False)
+
+#RELAÇÃO DA CHAVE ESTRANGEIRA
+    turma_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey('turma.id'), nullable=False) #CHAVE ESTRANGEIRA --não sei se tenho que colocar id_turma como está em model_turma
+    turma = db_serv.relationship("Turma", back_populates="alunos") 
+    #foreignKey = cria o vínculo no BANCO DE DADOS
+    #relationship = cria vínculo no CÓGIDO PYTHON
+    #back_populates = torna o RELACIONAMENTO BIDERICIONAL
+
+    def __init__(self, nome, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, turma_id):
         self.nome = nome
-        self.idade = idade
-        self.materia = materia
-        self.obs = obs
+        self.data_nascimento = data_nascimento
+        self.nota_primeiro_semestre = nota_primeiro_semestre
+        self.nota_segundo_semestre = nota_segundo_semestre
+        self.media_final = self.calcular_media()
+        self.idade = self.calcular_idade()
+        self.turma_id = turma_id
+
+##
+def calcular_media(self):
+    media = (self.nota_primeiro_semestre + self.nota_segundo_semestre) / 2
+    mediaFim = f"{media:.1f}"
+    return mediaFim
+   
+
+def calcular_idade(self):
+    if not self.data_nascimento:  
+        return None
+    try:
+        data_nasc = datetime.strptime(self.data_nascimento, '%d/%m/%Y')
+        data_atual = datetime.today()
+        idade = data_atual.year - data_nasc.year - ((data_atual.month, data_atual.day) < (data_nasc.month, data_nasc.day))
+        return idade
+    except ValueError:
+        return None
+
+##
+def procurar_aluno_por_id(id_aluno):
+    aluno = Aluno.query.get(id_aluno) 
+    if aluno:
+        return aluno
+    raise AlunoNaoIdentificado()
+
+def listar_aluno():
+    alunos = Aluno.query.all()
+    print(alunos)
+
+def criar_novo_aluno(novo_aluno):
+    #verifica se turma existe, se não existir vai aparecer o erro 404, se existir o código continua
+    turma = Turma.query.get(novo_aluno['turma_id'])
+    if(turma is None):
+        return {"Turma não encontrada"}, 404
+
+    adc_aluno = Aluno(
+        nome = novo_aluno['nome'],
+        data_nascimento = datetime.strftime(novo_aluno['data_nascimento'], "%d/%m/%Y"),
+        nota_primeiro_semestre = float(novo_aluno['nota_primeiro_semestre']),
+        nota_segundo_semestre = float(novo_aluno['nota_segundo_semestre']),
+        turma_id = int(novo_aluno['turma_id'])
+    )
+
+    db_serv.session.add(adc_aluno)  
+    db_serv.session.commit()            
+    return {"Resposta":"Aluno criado com sucesso!"}, 201
+
+
+def deletar_aluno_por_id(id_aluno):
+    aluno = db_serv.session.get(Aluno, id_aluno) 
+    if not aluno:
+        raise AlunoNaoIdentificado()
     
-    def direcionar(self):
-        
-        '''função que relaciona a chave com dados, formando retorno de um dicinário'''
-        
-        return {
-            "id" : self.id,
-            "nome" : self.nome,
-            "idade" : self.idade,
-            "materia" : self.materia,
-            "obs" : self.obs
-        }    
+    db_serv.session.delete(aluno)  
+    db_serv.session.commit()      
+    return {"Mensagem": "Aluno deletado com sucesso."}
 
+def alterar_informacoes_aluno(id_aluno, novo_aluno):
+    aluno = Aluno.query.get(id_aluno)
+    if not aluno:
+        raise AlunoNaoIdentificado()
+    
+    aluno.nome = novo_aluno['nome']
+    aluno.idade = aluno.calcular_idade()
+    aluno.data_nascimento = novo_aluno['data_nascimento']
+    aluno.nota_primeiro_semestre = novo_aluno['nota_primeiro_semestre']
+    aluno.nota_segundo_semestre = novo_aluno['nota_segundo_semestre']
+    aluno.media = novo_aluno.calcular_media()
+    aluno.turma.id = novo_aluno['turma_id']
 
+    db_serv.session.commit()
 
-# ____________ CLASSE DE EXCEÇÃO NÃO É DADOS- DEIXAR________________________
+def aluno_ja_existe(id_aluno):
+    aluno = Aluno.query.get(id_aluno)
+    if aluno: #se o aluno existir, levanta a exceção
+        raise AlunoExistente()
 
-class ProfessorNaoIdentificado(Exception):
-    def __init__(self,msg="Erro, Professor não indentificado ou existente!"):
+##
+class AlunoNaoIdentificado(Exception):
+    def _init_(self, msg="Erro, Aluno não identificado ou inexistente!"):
         self.msg = msg
-        super().__init__(self.msg)
+        super()._init_(self.msg)
 
-class ProfessorExiste(Exception):
-    def __init__(self, msg="Professor já existente"):
+class AlunoExistente(Exception):
+    def _init_(self, msg="Erro, Aluno já existente!"):
         self.msg = msg
-        super().__init__(self.msg)
+        super()._init_(self.msg)
 
-class CadastroDeProfessorFalhado(Exception): # Correção: Nome da classe estava incorreto na chamada do except
-    def __init__(self, msg="ID, nome e matéria são obrigatórios"):
+class CadastroDeAlunoFalhado(Exception):
+    def _init_(self, msg="Erro, Id do aluno ou Turma_Id incorretos!"):
         self.msg = msg
-        super().__init__(self.msg)
+        super()._init_(self.msg)
 
-# _________________________ FUNÇÕES________________________
+class AtualizacaoAlunoFalhou(Exception):
+    def _init_(self, msg="Erro, Não foi possível atualizar os dados do aluno! Reveja os campos e preencha corretamente"):
+        self.msg = msg
+        super()._init_(self.msg)
 
-# def apaga_tudo():
-#      professores["Professor"] = []
+##
 
-def ProfessorExistente(Id_professor): 
-    try:  
-        return Professor.query.get(Id_professor) is not None
+def procurar_aluno_por_id(id_aluno): #ok
+    for aluno in dados["alunos"]:
+        if aluno["Id"] == id_aluno:
+            return aluno
+    raise AlunoNaoIdentificado()
+
+def criar_novo_aluno(novo_aluno): #ok
+    dados["alunos"].append(novo_aluno)
+    return {"Resposta":"Aluno criando com sucesso"}
+
+def listar_alunos(): #ok
+    return dados["alunos"]
+
+def deletar_aluno_por_id(id_aluno): #ok
+    alunos = dados["alunos"]
+    for indice, aluno in enumerate(alunos):
+        if aluno["Id"] == id_aluno:
+            alunos.pop(indice)
+            return {"Mensagem": "Aluno deletado com sucesso."}
+    raise AlunoNaoIdentificado()
+
+def aluno_ja_existe(id_aluno): #ok
+    for aluno in dados["alunos"]:
+        if aluno["Id"] == id_aluno:
+            return True
+    return False
+
+def alterar_informacoes_aluno(id_aluno, nome, idade, turma_id, data_nascimento, nota_primeiro_semestre, nota_segundo_semestre, media_final): #NÃO SEI SE VAI PRECISAR
+    try: #ok
+        for aluno in dados["alunos"]:
+            if aluno["Id"] == id_aluno:
+                aluno["Nome"] = nome
+                aluno["Idade"] = idade
+                aluno["Turma_Id"] = turma_id
+                aluno["Data_nascimento"] = data_nascimento
+                aluno["Nota_Primeiro_Semestre"] = nota_primeiro_semestre
+                aluno["Nota_Segundo_semestre"] = nota_segundo_semestre
+                aluno["Media_final"] = media_final
+                return {"Detalhes": "Aluno atualizado com sucesso!"}, 200
+        raise AlunoNaoIdentificado()
     except Exception as e:
-        raise Exception (f"Erro, Professor não indentificado ou existente: {str(e)}")
+        return {"Erro": "Não foi possível atualizar o aluno", "Descrição": str(e)}, 500
 
-# sem esquecer que str(e) é transformar em string o objeto/mensagem exeção 2° tipo de erro (classe+mensagem do .py), 1° mesagem do erro personalizada
+def deletar_alunos():
+    dados["alunos"] = []
+    return
 
-def procurarProfessorPorId(id_professor):   
-    try:
-        professor = Professor.query.get(id_professor)
-        if not professor:
-            raise ProfessorNaoIdentificado()
-        return professor.direcionar()
-    
-    except ProfessorNaoIdentificado:
-        raise
-    except Exception as e:
-        raise Exception(f"Erro, Professor não indentificado ou existente: {str(e)}")
-
-
-def criarNovoProfessor(new_direcionar):
-    try:
-        if not new_direcionar.get("id") or not new_direcionar.get("nome") or not new_direcionar.get("materia"):
-        # se não tiver 1 ou 2 ou todos, falha
-            raise CadastroDeProfessorFalhado()
-        
-        if ProfessorExistente(new_direcionar["id"]):
-            raise ProfessorExiste()
-        
-        novo_professor = Professor (
-            id=new_direcionar["id"],
-            nome=new_direcionar["nome"],
-            materia=new_direcionar["materia"],
-            idade=new_direcionar.get("idade"),
-            obs=new_direcionar.get("obs")
-        )
-            
-        db_serv.session.add(novo_professor)  # add o objeto à sessão do banco de dados
-        db_serv.session.commit()             # confirma a transação, grava o objeto no banco de dados mysql
-        return novo_professor.direcionar()      # converte em diconário
-    
-    except (CadastroDeProfessorFalhado, ProfessorExiste):
-        raise
-    except Exception as e:
-        db_serv.session.rollback()
-        # sessão do banco de dados/zona de trabalho - db_serv.session
-        # evitar dados inconsistentes no banco, desfazendo operações realizadas no último commit
-        raise Exception(f"{str(e)}: Erro ao criar o professor")
-        
-        #cuidado com identação e abrir e fechar ( )
-        
-def atualizarProfessor(id_professor, novo_dado ):
-    try:
-        professor = Professor.query.get(id_professor)
-        if not professor:
-            raise ProfessorNaoIdentificado
-        
-        if "id" in novo_dado:
-            professor.id = novo_dado["id"]
-        if "nome" in novo_dado:
-            professor.nome = novo_dado["nome"]
-        if "idade" in novo_dado:
-            professor.idade = novo_dado["idade"]
-        if "materia" in novo_dado:
-            professor.materia = novo_dado["materia"]
-        if "obs" in novo_dado:
-            professor.obs = novo_dado["obs"]
-        
-        # professor.id = novo_dado["id"]
-        # professor.nome = novo_dado["nome"]
-        # professor.idade = novo_dado["idade"]
-        # professor.materia = novo_dado["materia"]
-        # professor.obs = novo_dado["obs"]
-        # estava nesta forma mas ela é um bloco fechado e inflexível, então se não add qualquer um deles dará retorno de erro de KeyError e quebra o cód
-        # aqui não vê linha por linhas, não é unidade, é grupo 
-        
-        # aforma posta/ corrigida é flexível, e corre de linha em linha, se não for da chave, passa para próxima, se for, atua e vai para próxima ou sai e segue o cód. Então se não tem uma informação, ele não quebra, ele pula e segue
-        # é algo unitário, diferente da forma posta antes
-        
-        db_serv.session.commit()
-    
-        return professor.direcionar()
-    
-    except (ProfessorNaoIdentificado, CadastroDeProfessorFalhado):
-        raise
-    except Exception as e:
-        db_serv.session.rollback()
-        raise Exception(f"{str(e)}: Falha ao atualizar professor")
-    
-def deletarProfessorPorId(id_professor): #excluir aluno
-    try:
-        professor = Professor.query.get(id_professor)
-        if not professor:
-            raise ProfessorNaoIdentificado()
-        
-        # variável para receber quem será deletado e guardar informação
-        
-        nome_del = professor.nome
-        
-        db_serv.session.delete(professor)
-        db_serv.session.commit()
-        return {"mensagem": f"Professor {nome_del} eletado"}
-    
-    except ProfessorNaoIdentificado:
-        raise
-    except Exception as e:
-        db_serv.session.rollback()
-        raise Exception(f"{str(e)}: Erro ao deletar professor {nome_del}")
-
-def resetar_professores():
-    try:
-        dict_prof_del = Professor.query.delete()
-        db_serv.session.commit()
-        return {"mensagem": f"{dict_prof_del} professor resetado"}, 200
-
-# lembrando session = realiza operações no bd(canco de dados) e ainda não estão gravadas, permanetemente, no bd
-# commit envia para obd a operação a ser executada
-# dict_prof_del = n° de linhas deletadas = retona um int = analisa e compara o n° de linhas/registros deletados, compara com quantos tinha e retona este valor
-
-#------------------------------------QUERY--------------------------------------
-#  interface de integração com BD, no caso SQLAlchemy
-# .QUERY = RECEBO UM OBJETO PARA CONSULTAR QUE TEM MÉTODOS QUE USAREI (NESTE CASO NA TABELA Professor)
-#                     É O FI CONDUTOR ENTRE PY E BD
-
-    except Exception as e:
-        db_serv.session.rollback()
-        raise Exception(f"{str(e)}: Erro ao resetar professor")
-
-
-# +++++++++++++++++++++++++++++++++++++ ok ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
