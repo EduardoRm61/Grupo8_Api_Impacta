@@ -1,9 +1,10 @@
 from flask_restx import Namespace, Resource, fields
-from alunos.model_aluno import listar_alunos, criar_novo_aluno, procurar_aluno_por_id, alterar_informacoes_aluno, deletar_aluno_por_id
+from apps.alunos.model_aluno import listar_alunos, criar_novo_aluno, procurar_aluno_por_id, alterar_informacoes_aluno, deletar_aluno_por_id
 
 alunos_ns = Namespace("alunos", description="Operações relacionadas aos alunos")
 
 aluno_model = alunos_ns.model("Aluno", {
+    "id" : fields.Integer(required=True, description="ID do aluno"),
     "nome": fields.String(required=True, description="Nome do aluno"),
     "data_nascimento": fields.String(required=True, description="Data de nascimento (YYYY-MM-DD)"),
     "nota_primeiro_semestre": fields.Float(required=True, description="Nota do primeiro semestre"),

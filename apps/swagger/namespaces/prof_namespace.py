@@ -4,7 +4,7 @@ from professores.model_prof import criar_novo_professor, alterar_informacoes_pro
 professor_ns = Namespace("professores", description="Operações relacionadas aos professores")
 
 professor_model = professor_ns.model("Professor", {
-    "id" : fields.Integer(required=True, description="Identificação (id) do professor - pk"),
+    "id" : fields.Integer(required=True, description="Identificação (id) do professor"),
     "nome" : fields.String(required=True, description="Nome do professor"),
     "idade" : fields.Integer(required=False, description="Idade do professor "),
     "materia" : fields.String(required=True, description="Materia que o professor leciona"),
