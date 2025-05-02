@@ -1,4 +1,4 @@
-import os   #porque impostar os se não estou usando?
+import os   #porque impostar os se não estou chamando?
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 

@@ -1,6 +1,10 @@
-## <center>Swagger</center>
+## <center>📜 Swagger 🔊</center>
 
 Conjunto de ferramentas (framework) de códigos aberto para projetar, construir, documentar e consumir API REST
+
+É como um manual interativo da api
+
+Deixando documentação organizada e fácil de entender e trazendo uma comunicação, por exemplo back-end e fron-end
 
 Swagger UI gera interface interativa a partir de uma openApi
 

@@ -1,4 +1,11 @@
-### <center> Render</center>
+### <center> 👻 Render 👀</center>
+&nbsp;
+
+Transforma o cód em "imagens" que iremos ver no pag web/ navegador
+
+Pega o cód, traduz e "vetoriza"
+
+Resumindo - Crio meus código no Vscode(ou outro editor de cód) que dará infromações para o servidor que manda para o navegador que irá interpretar, renderizar e mostrar na tela o resultado
 
 services:
   type: web

@@ -1,4 +1,4 @@
-## <center> Docker</center>
+## <center>🚛 Docker 📦</center>
 
 ### 1° coisa, abrir ambiente dockerdesktop e verificar se está rodando
 
