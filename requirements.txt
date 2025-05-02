@@ -1,5 +1,5 @@
-Flask==3.1.0  # nãos ei
+Flask==3.1.0  
 gunicorn  
 Flask-SQLAlchemy==3.1.1 
-flask-restx # precisa
+flask-restx
 SQLAlchemy==2.0.35
