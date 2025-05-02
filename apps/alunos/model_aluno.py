@@ -1,5 +1,5 @@
 from datetime import datetime
-from config import db_serv
+from ..config import db_serv
 
 
 dados = {
