@@ -63,3 +63,15 @@ Contribuir com suas alterações de volta para o repositório original: Se você
 Pull Request
 
  a partir do seu fork para o branch desejado no repositório original. A outra pessoa então revisará suas mudanças e decidirá se as aceita e as mescla.
+
+git push --all
+
+To https://github.com...Grupo8_Api_Impacta.git
+
+ ! [rejected]        develop -> develop (non-fast-forward)
+
+ ! [rejected]        testes -> testes (non-fast-forward)
+
+ porque houve alterações que nãop tiveram pull
+
+ ir para cada uma das branch com git checkout e dar pull
