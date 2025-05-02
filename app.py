@@ -1,11 +1,11 @@
 import sys 
-import os  # já tinha - não tinha no meu teste
-from flask import Flask, jsonify, request, redirect, url_for # já tinha - não tinha no meu teste
-from apps.swagger.swagger_config import configure_swagger # já tinha - não tinha no meu teste - atulalizei para apps.
+import os  
+from flask import Flask, jsonify, request, redirect, url_for 
+from apps.swagger.swagger_config import configure_swagger #
 from apps.config import app, db_serv                                     
 from apps.professores.route_prof import bp_professor
-from apps.turma.routes_turma import Bd_Turma # já tinha - não tinha no meu teste
-from apps.alunos.route_aluno import bp_aluno # já tinha - não tinha no meu teste               
+from apps.turma.routes_turma import Bd_Turma 
+from apps.alunos.route_aluno import bp_aluno             
 from flask_restx import Api
 
 

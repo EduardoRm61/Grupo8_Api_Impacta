@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 import apps.alunos.model_aluno as modAl
+from . import model_aluno as moda
 
 bp_aluno = Blueprint("alunos", __name__)
 
