@@ -7,10 +7,11 @@ from apps.swagger.swagger_config import configure_swagger
 from apps.professores.route_prof import bp_professor
 from apps.turma.routes_turma import Bd_Turma
 from apps.alunos.route_aluno import bp_aluno
+from flask_sqlalchemy import SQLAlchemy
+from flask_restx import Api
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from flask_sqlalchemy import SQLAlchemy
 
 app.register_blueprint(bp_professor)
 app.register_blueprint(Bd_Turma)
