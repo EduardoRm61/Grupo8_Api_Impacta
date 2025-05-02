@@ -9,6 +9,7 @@ bp_professor = Blueprint("professores", __name__, url_prefix='/professores')
 ns = Namespace("professores", description="Gerenciamento de dados dos professores da faculdade Impacta")
 
 #____________________________________________DOC SWAGGER_______________________________________________________
+# ! verse dá erro
 
 @bp_professor.route('/')
 def list_professores():
