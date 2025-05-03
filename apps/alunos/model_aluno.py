@@ -1,5 +1,6 @@
 from datetime import datetime
 from ..config import db_serv
+from apps.turma.model_turma import dadosTurma, TurmaExistente, TurmaJaDeletada, TurmaNaoIdentificada, turmaJaExiste 
 #from turma.model_turma as modTur 
 
 dados = {

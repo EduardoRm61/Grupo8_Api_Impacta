@@ -4,11 +4,11 @@ services:
     runtime: python
     pythonVersion: "3.9"
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn apps.app:app
+    startCommand: gunicorn app:app
     envVars:
       - key: PORT
         sync : false
-        value: 1000
+        value: 10000
       - key: FLASK-APP
         value: "apps.py"
     plan: free

@@ -1,12 +1,13 @@
 import apps.professores.model_prof as modPro
 import apps.turma.model_turma as modAlu
-
+from ..config import db_serv
 
 dadosTurma = {"Turma":[
     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}     
 ]} 
 
+    
 #Aqui estão todas as classes de exceções:
 
 class ProfessorExiste(Exception):

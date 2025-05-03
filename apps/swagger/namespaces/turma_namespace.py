@@ -1,56 +1,59 @@
 from flask_restx import Namespace, Resource, fields
-from alunos.model_aluno import listar_alunos, criar_novo_aluno, procurar_aluno_por_id, alterar_informacoes_aluno, deletar_aluno_por_id
+from apps.turma import model_turma as modTur
 
-alunos_ns = Namespace("alunos", description="Operações relacionadas aos alunos")
+turma_ns = Namespace("turma", description="Operações relacionadas às turmas")
 
-aluno_model = alunos_ns.model("Aluno", {
-    "nome": fields.String(required=True, description="Nome do aluno"),
-    "data_nascimento": fields.String(required=True, description="Data de nascimento (YYYY-MM-DD)"),
-    "nota_primeiro_semestre": fields.Float(required=True, description="Nota do primeiro semestre"),
-    "nota_segundo_semestre": fields.Float(required=True, description="Nota do segundo semestre"),
-    "turma_id": fields.Integer(required=True, description="ID da turma associada"),
+turma_model = turma_ns.model("Turma", {
+    "Id": fields.Integer(required=True, description="ID da turma"),
+    "Descrição": fields.String(required=True, description="Descrição da turma"),
+    "Ativa": fields.Boolean(required=True, description="Status da turma (True/False)"),
+    "Professor Id": fields.Integer(required=True, description="ID do professor responsável")
 })
 
-aluno_output_model = alunos_ns.model("AlunoOutput", {
-    "id": fields.Integer(description="ID do aluno"),
-    "nome": fields.String(description="Nome do aluno"),
-    "idade": fields.Integer(description="Idade do aluno"),
-    "data_nascimento": fields.String(description="Data de nascimento (YYYY-MM-DD)"),
-    "nota_primeiro_semestre": fields.Float(description="Nota do primeiro semestre"),
-    "nota_segundo_semestre": fields.Float(description="Nota do segundo semestre"),
-    "media_final": fields.Float(description="Média final do aluno"),
-    "turma_id": fields.Integer(description="ID da turma associada"),
+turma_output_model = turma_ns.model("TurmaOutput", {
+    "Id": fields.Integer(description="ID da turma"),
+    "Descrição": fields.String(description="Descrição da turma"),
+    "Ativa": fields.Boolean(description="Status da turma"),
+    "Professor Id": fields.Integer(description="ID do professor responsável")
 })
 
-@alunos_ns.route("/")
-class AlunosResource(Resource):
-    @alunos_ns.marshal_list_with(aluno_output_model)
+@turma_ns.route("/")
+class TurmaResource(Resource):
+    @turma_ns.marshal_list_with(turma_output_model)
     def get(self):
-        """Lista todos os alunos"""
-        return listar_alunos()
+        """Lista todas as turmas"""
+        return modTur.listarTurma()
 
-    @alunos_ns.expect(aluno_model)
+    @turma_ns.expect(turma_model)
     def post(self):
-        """Cria um novo aluno"""
-        data = alunos_ns.payload
-        response, status_code = criar_novo_aluno(data)
-        return response, status_code
+        """Cria uma nova turma"""
+        data = turma_ns.payload
+        return modTur.criarNovaTurma(data)
 
-@alunos_ns.route("/<int:id_aluno>")
-class AlunoIdResource(Resource):
-    @alunos_ns.marshal_with(aluno_output_model)
-    def get(self, id_aluno):
-        """Obtém um aluno pelo ID"""
-        return procurar_aluno_por_id(id_aluno)
+@turma_ns.route("/<int:id_turma>")
+class TurmaIdResource(Resource):
+    @turma_ns.marshal_with(turma_output_model)
+    def get(self, id_turma):
+        """Obtém uma turma pelo ID"""
+        return modTur.procurarTurmaPorId(id_turma)
 
-    @alunos_ns.expect(aluno_model)
-    def put(self, id_aluno):
-        """Atualiza um aluno pelo ID"""
-        data = alunos_ns.payload
-        alterar_informacoes_aluno(id_aluno, data)
-        return data, 200
+    @turma_ns.expect(turma_model)
+    def put(self, id_turma):
+        """Atualiza uma turma pelo ID"""
+        data = turma_ns.payload
+        return modTur.alterarInformacoes(
+            Id_turma=id_turma,
+            Descricao=data["Descrição"],
+            Ativa=data["Ativa"],
+            Id_Pro=data["Professor Id"]
+        )
 
-    def delete(self, id_aluno):
-        """Exclui um aluno pelo ID"""
-        deletar_aluno_por_id(id_aluno)
-        return {"message": "Aluno excluído com sucesso"}, 200
+    def delete(self, id_turma):
+        """Exclui uma turma pelo ID"""
+        return modTur.deletarTurmaPorId(id_turma)
+
+@turma_ns.route("/reset")
+class TurmaResetResource(Resource):
+    def delete(self):
+        """Remove todas as turmas"""
+        return modTur.deletarTurma()

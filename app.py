@@ -13,12 +13,12 @@ from flask_restx import Api
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
-app.register_blueprint(bp_professor)
-app.register_blueprint(Bd_Turma)
-app.register_blueprint(bp_aluno)
-# app.register_blueprint(bp_professor, url_prefix='/api')
-# app.register_blueprint(Bd_Turma, url_prefix='/api')
-# app.register_blueprint(bp_aluno, url_prefix='/api')
+# app.register_blueprint(bp_professor)
+# app.register_blueprint(Bd_Turma)
+# app.register_blueprint(bp_aluno)
+app.register_blueprint(bp_professor, url_prefix='/api')
+app.register_blueprint(Bd_Turma, url_prefix='/api')
+app.register_blueprint(bp_aluno, url_prefix='/api')
 
 api = Api(
   app, 
@@ -30,9 +30,9 @@ api = Api(
 with app.app_context(): 
   db_serv.create_all() 
 
-swagger_url ='/docs' 
-API_URL = '/static/swagger.json' 
-configure_swagger(app)
+# swagger_url ='/docs' 
+# API_URL = '/static/swagger.json' 
+# configure_swagger(app)
 
 if __name__ == '__main__':
   app.run(host=app.config["HOST"], port = app.config['PORT'],debug=app.config['DEBUG'] )
