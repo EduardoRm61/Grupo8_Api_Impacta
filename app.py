@@ -1,4 +1,3 @@
-
 import sys
 import os
 from flask import Flask, jsonify, request, redirect, url_for
@@ -10,22 +9,10 @@ from apps.alunos.route_aluno import bp_aluno
 from flask_sqlalchemy import SQLAlchemy
 from flask_restx import Api
 from apps.swagger.namespaces import prof_namespace, aluno_namespace, turma_namespace
-
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-
-# app.register_blueprint(bp_professor)
-# app.register_blueprint(Bd_Turma)
-# app.register_blueprint(bp_aluno)
-# app.register_blueprint(bp_professor, url_prefix='/api')
-# app.register_blueprint(Bd_Turma, url_prefix='/api')
-# app.register_blueprint(bp_aluno, url_prefix='/api')
 app.register_blueprint(bp_professor, url_prefix="/professores")
 app.register_blueprint(Bd_Turma, url_prefix="/alunos")
 app.register_blueprint(bp_aluno, url_prefix="/turmas")
-
-
 api = Api(
   app, 
   version= "1.0", 
