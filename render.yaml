@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: Grupo8_Api_Impacta
+    name: Grupo8_Api_Impacta_life
     runtime: python
     pythonVersion: "3.9"
     buildCommand: pip install -r requirements.txt
@@ -9,7 +9,7 @@ services:
       - key: PORT
         sync : false
         value: 10000
-      - key: FLASK-APP
+      - key: FLASK_APP
         value: "apps.py"
     plan: free
 
