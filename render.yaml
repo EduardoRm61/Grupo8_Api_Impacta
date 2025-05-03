@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: grupo8-api_testando
+    name: Grupo8_Api_Impacta
     runtime: python
     pythonVersion: "3.9"
     buildCommand: pip install -r requirements.txt
