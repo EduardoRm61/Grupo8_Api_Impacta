@@ -1,6 +1,7 @@
 
 import sys
 import os
+import pytest
 from flask import Flask, jsonify, request, redirect, url_for
 from apps.config import app, db_serv
 from apps.swagger.swagger_config import configure_swagger
@@ -33,12 +34,15 @@ api = Api(
   description= "Aplicativo de gerenciamênto de dados de turmas, professor e alunos da faculdade Impacta", 
   doc = "/docs"  
 )
+
+configure_swagger(app)
+
 with app.app_context(): 
   db_serv.create_all() 
 
 # swagger_url ='/docs' 
 # API_URL = '/static/swagger.json' 
-# configure_swagger(app)
+
 
 if __name__ == '__main__':
   app.run(host=app.config["HOST"], port = app.config['PORT'],debug=app.config['DEBUG'] )
