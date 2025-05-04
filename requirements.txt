@@ -3,4 +3,4 @@ gunicorn==21.2.0
 Flask-SQLAlchemy==3.1.1 
 flask-restx
 SQLAlchemy==2.0.35
-pytest 8.3.5
+pytest ==8.3.5
