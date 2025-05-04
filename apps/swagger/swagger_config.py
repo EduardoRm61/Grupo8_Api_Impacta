@@ -1,5 +1,4 @@
-from flask_restx import api
-#from . import api
+from . import api
 from apps.swagger.namespaces.aluno_namespace import alunos_ns
 from apps.swagger.namespaces.prof_namespace import professor_ns
 from apps.swagger.namespaces.turma_namespace import turma_ns
