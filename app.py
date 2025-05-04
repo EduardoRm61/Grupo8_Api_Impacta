@@ -1,7 +1,7 @@
 
 import sys
 import os
-import pytest
+#import pytest
 from flask import Flask, jsonify, request, redirect, url_for
 from apps.config import app, db_serv
 from apps.swagger.swagger_config import configure_swagger
@@ -23,7 +23,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 # app.register_blueprint(bp_aluno, url_prefix='/api')
 app.register_blueprint(bp_professor, url_prefix="/professores")
 app.register_blueprint(Bd_Turma, url_prefix="/alunos")
-app.register_blueprint(bp_aluno, url_prefix="/turmas")
+app.register_blueprint(bp_aluno, url_prefix="/Turmas")
 
 
 configure_swagger(app)

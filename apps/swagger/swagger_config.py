@@ -8,5 +8,5 @@ def configure_swagger(app):
     api.init_app(app)
     api.add_namespace(alunos_ns, path="/alunos")
     api.add_namespace(professor_ns, path="/professores")
-    api.add_namespace(turma_ns, path="/turmas")
+    api.add_namespace(turma_ns, path="/Turmas")
     api.mask_swagger = False
