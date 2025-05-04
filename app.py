@@ -9,7 +9,6 @@ from apps.professores.route_prof import bp_professor
 from apps.turma.routes_turma import Bd_Turma
 from apps.alunos.route_aluno import bp_aluno
 from flask_sqlalchemy import SQLAlchemy
-#from flask_restx import Api
 from apps.swagger.namespaces import prof_namespace, aluno_namespace, turma_namespace
 
 
@@ -26,14 +25,6 @@ app.register_blueprint(bp_professor, url_prefix="/professores")
 app.register_blueprint(Bd_Turma, url_prefix="/alunos")
 app.register_blueprint(bp_aluno, url_prefix="/turmas")
 
-
-api = Api(
-  app, 
-  version= "1.0", 
-  title= "Grupo8_Api_Impacta",  
-  description= "Aplicativo de gerenciamênto de dados de turmas, professor e alunos da faculdade Impacta", 
-  doc = "/docs"  
-)
 
 configure_swagger(app)
 
