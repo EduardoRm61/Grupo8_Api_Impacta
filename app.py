@@ -1,6 +1,6 @@
 import sys
 import os
-import pytest
+#import pytest
 from flask import Flask, jsonify, request, redirect, url_for
 from apps.config import app, db_serv
 from apps.swagger.swagger_config import configure_swagger
@@ -12,6 +12,7 @@ from apps.swagger.namespaces import prof_namespace, aluno_namespace, turma_names
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 app.register_blueprint(bp_professor, url_prefix="/professores")
 app.register_blueprint(Bd_Turma, url_prefix="/alunos")
+<<<<<<< HEAD
 app.register_blueprint(bp_aluno, url_prefix="/turmas")
 <<<<<<< HEAD
 api = Api(
@@ -22,6 +23,9 @@ api = Api(
   doc = "/docs"  
 )
 =======
+=======
+app.register_blueprint(bp_aluno, url_prefix="/Turmas")
+>>>>>>> 822735b0d6da287de69bb19d7f56b42a1fe26e1f
 
 
 configure_swagger(app)
