@@ -48,3 +48,5 @@ class ProfessorReset(Resource):
     def delete(self):
         """Reseta todos os professores"""
         return modpro.resetar_professores()
+    
+    #teste push/conexão/ estava falhando
