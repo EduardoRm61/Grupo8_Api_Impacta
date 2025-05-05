@@ -1,6 +1,6 @@
 
 from flask import Blueprint, request, jsonify
-
+from apps.config import db_serv
 from . import model_prof as modf
 from flask_restx import  Namespace, fields, Resource
 
@@ -39,7 +39,7 @@ def listar_professores():
 # ____________________________________________ GET ID ___________________________________________________________
 
 
-@bp_professor.route("/professores/<int:id>", methods=["GET"])
+@bp_professor.route("/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
     try:
         professor = modf.procurarProfessorPorId(id)
@@ -51,14 +51,17 @@ def pesquisa_professor(id):
 # ____________________________________________ POST ______________________________________________________________
 
 
-@bp_professor.route('/professores', methods=['POST'])
+@bp_professor.route('/', methods=['POST'])
 def cadastrar_professores():
     novo_professor = request.json
-    if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
-        return jsonify({"mensagem": "error", "professor": f"Bad Request: {str(e)}"}), 400 
+    
+    if not novo_professor or "id" not in novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
+        return jsonify({"mensagem": "error", "professor": "Bad Request: ID, nome e matéria são obrigatórios"}), 400
+     
     try:
         if modf.ProfessorExistente(novo_professor["id"]):  
             raise modf.ProfessorExiste("Professor já existe")
+        
         modf.criarNovoProfessor(novo_professor)
         return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
     
@@ -69,9 +72,13 @@ def cadastrar_professores():
 # ____________________________________________ PUT _______________________________________________________________
 
 
-@bp_professor.route('/professores/<int:id>', methods=['PUT'])
+@bp_professor.route('/<int:id>', methods=['PUT'])
 def atualizar_professor(id):
     atualizado = request.json
+    
+    if not atualizado:
+        return jsonify({"mensagem": "error", "professor": "Não atualizado. Informar corretamente dados"}), 400
+    
     try:
         professor = modf.procurarProfessorPorId(id) 
         if "nome" in atualizado:
@@ -82,29 +89,33 @@ def atualizar_professor(id):
             professor['materia'] = atualizado['materia']
         if "obs" in atualizado:
             professor['obs'] = atualizado['obs']
+        
+        db_serv.session.commit()
+        
         return jsonify({"mensagem": "Atualizado", "professor": professor}), 200
+    
     except modf.ProfessorNaoIdentificado as e:
         return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404
     except Exception as e:
-        return jsonify({"mensagem": "erro", "professor": f"Internal Server Error: {str(e)}"}) 
+        return jsonify({"mensagem": "erro", "professor": f"Internal Server Error: {str(e)}"}), 500
 
 
 # ____________________________________________ DELETE ID __________________________________________________________
 
 
-@bp_professor.route("/professores/deletar/<int:id_professor>", methods=["DELETE"])
+@bp_professor.route("/delete/<int:id_professor>", methods=["DELETE"])
 def delete_professor(id_professor):
     try:
         resultado = modf.deletarProfessorPorId(id_professor)
-        return jsonify({"mensagem": "Ok", "professor": {resultado}}), 200
+        return jsonify({"mensagem": "Ok", "professor": resultado}), 200
     except modf.ProfessorNaoIdentificado as e:
         return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404
-
+# estava {"mensagem": "Ok", "professor": {resultado}}), 200 , estava trazendo um diconário em resultado
 
 # ____________________________________________ DELETE ______________________________________________________________
 
 
-@bp_professor.route('/professores/resetar', methods=['DELETE'])
+@bp_professor.route('/resetar', methods=['DELETE'])
 def resetar_professor():
     modf.resetar_professores()  
     return jsonify({"mensagem": "Ok", "professor": "Resetado"}), 200
