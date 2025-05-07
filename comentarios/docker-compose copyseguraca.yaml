@@ -2,7 +2,7 @@
 #versão do arquivo compose - para saber sobre versões é só entrar na https://docs.docker.com/reference/compose-file/legacy-versions/
 services:
 # cria a configuração do contêiner ser criado
-  db:      # por convenção colocam para referenciar database / criando serviço de dados
+  db:      # por convenção colocam para referenciar database / criando serviço de dados / MICROSSERVIÇO
     image: mysql:8.0   #tirei latest porque deu erro = o que roda é o 8.0.42-debian ()
     container_name: cont_mysql  # nome contêiner
     environment:
@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: 12345 #senha do usuário
       #TZ: America/São Paulo     # time zone, isso tem haver com aws 
     ports:
-      - "3306:3306"  # padrão mysql ---  deu erro então coloqeui 5002 na frente, tirando 3306
+      - "3306:3306"  # padrão mysql ---  deu erro então coloqeui 5002 na frente, tirando 3306 | 1°
     volumes:
       - mysql_data:/var/lib/mysql #local onde serão guardados os dados, assim não serão perdidios ao encerrar o contêiner
     restart: always  #sempre restartar/iniciar automaticamente o contêiner
@@ -35,7 +35,7 @@ services:
 
 
 #  ------- para rodar flask corretamnete, fiquei na dúvida de coloco ou não - qualquer coisa é só comentar
-  app:     # serviço de aplicação
+  app:     # serviço de aplicação  - SEGUNDO MICROSSERVIÇO
     build: .
     ports:
       - "5002:5002"  #manter acessível as rotas
@@ -84,3 +84,21 @@ volumes:
 # https://hub.docker.com/_/mysql/tags
 
 # lts-oraclelinux9 é menos vulnerável
+
+# TODAS AS REDES DEVEM SER IGUAIS - NETWORKS:
+#                                      - MINHA REDE
+
+# VOLUME É PERSISTÊNCIA DE DADOS
+
+# PHPMYADIM:
+#    IMAGEM: IMAGEM/IMAGEM DA RAN
+#    ENVIROMENTE:
+#       MYSQL_TOOT_PASSWORD: SENHA
+#   PORTS:
+#       1° MINHA/LOCAL_DE_ACESSO
+
+# UPLOADS.     - MOSTRA CONFIIGURAÇÃO
+
+# CONEXÃO COM BANCO DE DADOS
+
+# BANCO DE DADOS(IMAGEM), USUÁRIOS, SENHA , BASE(BANNCO DE DADOS)
