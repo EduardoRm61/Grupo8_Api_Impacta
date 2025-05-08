@@ -98,31 +98,33 @@ def valoorBuleano(valorbool):
     return False
 
 def alterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
-    nv_dados = dadosTurma["Turma"]
+    nv_dados = Turma.query.get(Id_turma)
     try:
-        for turma in nv_dados:
-            if turma["Id"] == Id_turma:
-                if not professorExistente(Id_Pro):
-                    return ({
-                        "Erro": "Requisição inválida",
-                        "Descrição": "Id do Professor inexistente"
-                    }), 400
-                if not valoorBuleano(Ativa):
-                    return ({
-                        "Erro": "Requisição inválida",
-                        "Descricao": "Valor de Ativa incorreto. Digite True ou False"
-                    }), 409 
-                turma["Descrição"] = Descricao
-                turma["Professor Id"] = Id_Pro
-                turma["Ativa"] = Ativa
-                return {"Detalhes":"Turma atualizada com seucesso!"}, 200
-        return ({
-            "Erro": "Requisição inválida",
-            "Descrição": "Id da turma inexistente"
-        }), 400
+        if not nv_dados:
+            raise TurmaNaoIdentificada()
+        
+        if not professorExistente(Id_Pro):
+            return ({
+                "Erro": "Requisição inválida",
+                "Descrição": "Id do Professor inexistente"
+                }), 400
+        
+        if not valoorBuleano(Ativa):
+            return ({
+                "Erro": "Requisição inválida",
+                "Descricao": "Valor de Ativa incorreto. Digite True ou False"
+                    }), 409
+        
+        
+        nv_dados["Descrição"] = Descricao
+        nv_dados["Professor Id"] = Id_Pro
+        nv_dados["Ativa"] = Ativa
+        db_serv.session.commit()
+        return {"Detalhes":"Turma atualizada com seucesso!"}, 200
+    
     except Exception as e:
-        return({
-            "Erro": "Não foi possível fazer a requisição",
+        return ({
+            "Erro":"Não foi possível fazer a requisição",
             "Descrição": str(e)
         }), 500
     
