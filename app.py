@@ -10,8 +10,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-app.register_blueprint(bp_professor, url_prefix="/professores")
-# app.register_blueprint(Bd_Turma, url_prefix="/alunos")  - tirar depois do teste
+app.register_blueprint(bp_professor, url_prefix="/rofessores")
+app.register_blueprint(Bd_Turma, url_prefix="/Turma")
+app.register_blueprint(bp_aluno, url_prefix="/alunos")
 
 # <<<<<<< HEAD
 # app.register_blueprint(bp_aluno, url_prefix="/turmas")

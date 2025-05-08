@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
 from . import model_turma as modTur
+from apps.professores import model_prof as modPro
 
 
-Bd_Turma = Blueprint('Turma', __name__ )
+Bd_Turma = Blueprint('Turma', __name__, url_prefix="/Turma" )
 
 @Bd_Turma.route("/Turma",methods=["GET"])                              
 def listar_turma():

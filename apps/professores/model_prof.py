@@ -1,6 +1,8 @@
 from ..config import db_serv
 
 class Professor (db_serv.Model):
+    __tablename__ = "professores" 
+    
     id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False) 
     nome = db_serv.Column(db_serv.String (100), nullable=False)
     idade = db_serv.Column(db_serv.Integer)  
@@ -51,16 +53,17 @@ class CadastroDeProfessorFalhado(Exception):
 
 # _________________________ FUNÇÕES________________________
 
-def ProfessorExistente(Id_professor): 
+def ProfessorExistente(Id_professor):
+    
     try:  
         return Professor.query.get(Id_professor) is not None
     except Exception as e:
         raise Exception (f"Erro, Professor não indentificado ou existente: {str(e)}")
 
 
-def procurarProfessorPorId(id_professor):   
+def procurarProfessorPorId(id_professor): 
+    professor = Professor.query.get(id_professor)  
     try:
-        professor = Professor.query.get(id_professor)
         if not professor:
             raise ProfessorNaoIdentificado()
         return professor.direcionar()
@@ -100,6 +103,7 @@ def criarNovoProfessor(new_direcionar):
 
         
 def atualizarProfessor(id_professor, novo_dado ):
+    professor = Professor.query.get(id_professor)
     try:
         professor = Professor.query.get(id_professor)
         if not professor:
@@ -125,7 +129,8 @@ def atualizarProfessor(id_professor, novo_dado ):
         db_serv.session.rollback()
         raise Exception(f"{str(e)}: Falha ao atualizar professor")
     
-def deletarProfessorPorId(id_professor): 
+def deletarProfessorPorId(id_professor):
+    professor = Professor.query.get(id_professor)
     try:
         professor = Professor.query.get(id_professor)
         if not professor:

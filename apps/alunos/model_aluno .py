@@ -1,7 +1,6 @@
 from datetime import datetime
 from ..config import db_serv
-#from apps.turma.model_turma import dadosTurma 
-from apps.turma.model_turma import dadosTurma 
+from apps.turma.model_turma import Turma 
 
 class Aluno(db_serv.Model):
     __tablename__ = "alunos"
@@ -61,8 +60,8 @@ def listar_aluno():
 
 def criar_novo_aluno(novo_aluno):
     #verifica se turma existe, se não existir vai aparecer o erro 404, se existir o código continua
-    turma = turma.query.get(novo_aluno['turma_id'])
-    if(turma is None):
+    turma = Turma.query.get(novo_aluno['turma_id'])
+    if(Turma is None):
         return {"Turma não encontrada"}, 404
 
     adc_aluno = Aluno(
@@ -131,7 +130,7 @@ class AtualizacaoAlunoFalhou(Exception):
 ##
 
 def procurar_aluno_por_id(id_aluno): #ok
-    for aluno in dados["alunos"]:
+    for aluno in Aluno["alunos"]:
         if aluno["Id"] == id_aluno:
             return aluno
     raise AlunoNaoIdentificado()
