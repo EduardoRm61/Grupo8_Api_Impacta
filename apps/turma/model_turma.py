@@ -55,6 +55,14 @@ class Turma(db_serv.Model):
     ativa = db_serv.Column(db_serv.Boolean,nullable=False)
     professor_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey("professor.id"),nullable=False)    
 
+    def __init__(self, id, descricao, ativa, professor_id):
+        self.id = id
+        self.descricao = descricao
+        self.ativa = ativa
+        self.professor_id = professor_id
+
+    def to_dict(self):
+        return {"id":self.id, "descricao":self.descricao,"ativa":self.ativa, "professor_id":self.professor_id}
 
 def apaga_tudo():
     modAlu.dados['alunos'] = []
