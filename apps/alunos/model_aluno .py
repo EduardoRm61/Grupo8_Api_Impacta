@@ -14,7 +14,7 @@ class Aluno(db_serv.Model):
     media_final = db_serv.Column(db_serv.Float, nullable=False)
 
 #RELAÇÃO DA CHAVE ESTRANGEIRA
-    turma_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey('turma_id'), nullable=False) #CHAVE ESTRANGEIRA --não sei se tenho que colocar id_turma como está em model_turma
+    turma_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey('turmas_id'), nullable=False) #CHAVE ESTRANGEIRA --não sei se tenho que colocar id_turma como está em model_turma
     turma = db_serv.relationship("Turma", back_populates="alunos") 
     #foreignKey = cria o vínculo no BANCO DE DADOS
     #relationship = cria vínculo no CÓGIDO PYTHON
@@ -28,6 +28,9 @@ class Aluno(db_serv.Model):
         self.media_final = self.calcular_media()
         self.idade = self.calcular_idade()
         self.turma_id = turma_id
+    
+    def to_dict(self):
+        return {"id":self.id, "nome":self.nome,"ativa":self.ativa, "idade":self.idade, "data_nascimento":self.data_nascimento, "nota_primeiro_semestre":self.nota_primeiro_semestre, "nota_segundo_semestre":self.nota_segundo_semestre, "media_final":self.media_final}
 
 ##
 def calcular_media(self):
@@ -50,17 +53,18 @@ def calcular_idade(self):
 ##
 def procurar_aluno_por_id(id_aluno):
     aluno = Aluno.query.get(id_aluno) 
-    if aluno:
-        return aluno
-    raise AlunoNaoIdentificado()
+    if not aluno:
+        raise AlunoNaoIdentificado()
+    return aluno.to_dict()
 
 def listar_aluno():
     alunos = Aluno.query.all()
     print(alunos)
+    return [aluno.to_direct() for aluno in alunos]
 
 def criar_novo_aluno(novo_aluno):
     #verifica se turma existe, se não existir vai aparecer o erro 404, se existir o código continua
-    turma = Turma.query.get(novo_aluno['turma_id'])
+    turma = Turma.query.get(novo_aluno['turmas_id'])
     if(Turma is None):
         return {"Turma não encontrada"}, 404
 
@@ -69,7 +73,7 @@ def criar_novo_aluno(novo_aluno):
         data_nascimento = datetime.strftime(novo_aluno['data_nascimento'], "%d/%m/%Y"),
         nota_primeiro_semestre = float(novo_aluno['nota_primeiro_semestre']),
         nota_segundo_semestre = float(novo_aluno['nota_segundo_semestre']),
-        turma_id = int(novo_aluno['turma_id'])
+        turma_id = int(novo_aluno['turmas_id'])
     )
 
     db_serv.session.add(adc_aluno)  
@@ -97,7 +101,7 @@ def alterar_informacoes_aluno(id_aluno, novo_aluno):
     aluno.nota_primeiro_semestre = novo_aluno['nota_primeiro_semestre']
     aluno.nota_segundo_semestre = novo_aluno['nota_segundo_semestre']
     aluno.media = novo_aluno.calcular_media()
-    aluno.turma.id = novo_aluno['turma_id']
+    aluno.turma.id = novo_aluno['turmas_id']
 
     db_serv.session.commit()
 
@@ -129,7 +133,8 @@ class AtualizacaoAlunoFalhou(Exception):
 
 ##
 
-def procurar_aluno_por_id(id_aluno): #ok
+def procurar_aluno_por_id(id_aluno):
+    aluno = Aluno.query.get(id) 
     for aluno in Aluno["alunos"]:
         if aluno["Id"] == id_aluno:
             return aluno

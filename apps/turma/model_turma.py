@@ -1,5 +1,5 @@
 from apps.professores import model_prof as modPro
-from apps.alunos import model_aluno as modAlu
+#import turma.model_turma as modAlu
 from apps.config import db_serv
 
 
@@ -28,7 +28,7 @@ class Turma(db_serv.Model):
     id = db_serv.Column(db_serv.Integer, primary_key=True)
     descricao = db_serv.Column(db_serv.String(30),nullable=False)
     ativa = db_serv.Column(db_serv.Boolean,nullable=False)
-    professor_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey("professor.id"),nullable=False)
+    professor_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey("professores.id"),nullable=False)
 
     def __init__(self, id, descricao, ativa, professor_id):
         self.id = id
@@ -37,7 +37,7 @@ class Turma(db_serv.Model):
         self.professor_id = professor_id
 
     def to_dict(self):
-        return {"id":self.id, "descricao":self.descricao,"ativa":self.ativa, "professor_id":self.professor_id}
+        return {"id":self.id, "descricao":self.descricao,"ativa":self.ativa, "professores_id":self.professor_id}
 
 
 #Aqui estão todas as classes de exceções:

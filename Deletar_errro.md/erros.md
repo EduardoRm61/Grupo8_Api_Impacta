@@ -4,13 +4,16 @@
 
 - deletar lista
 - linhas 3 e 4 - import dando erro, deixei co from
-- linha 17 - Foreignkey ("Id") - acho que não precisa, se precisar volto e comento na póxima linha
+- linha 17, 63, 72, 100 - Foreignkey ("Id") - acho que não precisa, se precisar volto e comento na póxima linha
 
-    Ao usar forengkey - como se criou um "objeto de mapeamento" - ao chamar, deve ser pelo nome da tabela
+    Ao usar forengkey - como se criou um "objeto de mapeamento" - ao chamar, deve ser pelo nome da tabela - 
 
 - linhas 63 - turma letra minúscula
 
 - mostra linhas amarela nas linhas 133, 139, 143, 146, 154, 161, com dados - vou por Aluno - referenciando class Aluno
+
+- seld to direct - deixei como do Edu, eu fiz com outro nome, para saber o que é, mas é a mesma coisa - linhas 32 e 33
+
 
 ### Turma
 
@@ -18,6 +21,13 @@
 - copiei aqui o file de_turma
 - linhas 1 a 3 imposts estavam dadno erro de caminho
 - linha 184 estava professorexistente(def) - linha amarela - coloquei ProfessorExiste(class), linhas saiu
+
+- comente linhas 2 imposta
+- colouei class direto
+
+-chave estrangeira recebe nome da tabela, que mudei para professores, pois não tinha feito o objto - linhas 31, 40
+
+-turma.to_direct - chama apenas um individo da turmas, por isso  ele é no singular
 
 ### Git
 
@@ -55,4 +65,9 @@ chama quando for pegar algo específico, no nosso caso, por id
 
 ex : saber nome do professor, deletar por id, get porfessor por id, etc -
 
--linhas - 57,65,106, 133
+-linhas - 65,106, 133, 63, 
+
+------
+
+fiz model_aluno
+57 e 58
