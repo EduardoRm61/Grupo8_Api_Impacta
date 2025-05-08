@@ -73,8 +73,9 @@ def procurarTurmaPorId(id_turma):
     return turma.to_dict()
 
 def criarNovaTurma(nv_dict):
-    dadosTurma["Turma"].append(nv_dict)
-    return
+    db_serv.session.add(nv_dict)
+    db_serv.session.commit()
+    return {"Descrição":"Turma criada com êxito! "},200
 
 def listarTurma():
     return dadosTurma["Turma"]
