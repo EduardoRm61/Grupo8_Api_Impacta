@@ -11,3 +11,5 @@ ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 
 CMD ["python","app.py"]
+
+# mv dockerfile Dockerfile - renomear, estava com erro de DockerFile para dockerfile
