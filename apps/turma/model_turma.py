@@ -78,7 +78,9 @@ def criarNovaTurma(nv_dict):
     return {"Descrição":"Turma criada com êxito! "},200
 
 def listarTurma():
-    return dadosTurma["Turma"]
+    turmas = Turma.query.all()
+    print(turmas)
+    return [turma.to_dict() for turma in turmas]
 
 def deletarTurma():
     dadosTurma["Turma"] = []
