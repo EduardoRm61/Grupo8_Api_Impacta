@@ -1,19 +1,27 @@
-# rotas apenas
-# lembrar que agora não tem app e sim blueprint
 
 from flask import Blueprint, request, jsonify
-# from model_prof import professores, ProfessorNaoIdentificado, ProfessorExiste, CadastroDeProfessorFalhado, apaga_tudo, ProfessorExistente, procurarProfessorPorId, criarNovoProfessor, deletarProfessorPorId, resetar_professores
-# forma feita pelo professor
-import professores.model_prof as modf
-# dica do Edu,
+from apps.config import db_serv
+from . import model_prof as modf
+from flask_restx import  Namespace, fields, Resource
 
+bp_professor = Blueprint("professores", __name__, url_prefix='/professores')
 
-bp_professor = Blueprint("professores", __name__)
+ns = Namespace("professores", description="Gerenciamento de dados dos professores da faculdade Impacta")
 
-# blueprint = estrutura flask que organiza rotas, templates e conf em partes separadas
-# a variável bluep_professor receberá o blueprint do flask, terá nome de professor/ usado no url e totas
-# name indicará o módulo atual (neste caso arquivo  route_prof.py), assim o flask poderá localizar templates, arquivos estáticos e blueprint - seu valor é automático
+#____________________________________________DOC SWAGGER_______________________________________________________
+# ! verse dá erro
 
+@bp_professor.route('/')
+def list_professores():
+    return "Rota de professores funcionando!"
+
+# model_prof = ns.model("Professor", {
+#     "id" : fields.Integer(required=True, description="Identificação (id) do professor - pk"),
+#     "nome" : fields.String(required=True, description="Nome do professor - obrigatório"),
+#     "idade" : fields.Integer(required=False, description="Idade do professor "),
+#     "materia" : fields.String(required=True, description="Matéria aplicada pelo professor- obrigatória"),
+#     "obs" : fields.String(required=False, description="Observações, informações extras sobre o professor")
+# })
 
 # ____________________________________________ GET GERAL _______________________________________________________
 
@@ -21,37 +29,42 @@ bp_professor = Blueprint("professores", __name__)
 @bp_professor.route('/professores', methods=['GET'])
 def listar_professores():
     try:
-        return jsonify({"mensagem": "Ok", "professores": modf.professores["professor"]}) 
+        professores = modf.Professor.query.all()
+        lista_professores = [professor.direcionar() for professor in professores]        
+        return jsonify({"mensagem": "Ok", "professores": lista_professores}), 200
     except Exception as e:
         return jsonify({"mensagem": "error", "professor": f"Internal Server Error: {str(e)}"}), 500 
-    
+
 
 # ____________________________________________ GET ID ___________________________________________________________
 
 
-@bp_professor.route("/professores/<int:id>", methods=["GET"])
+@bp_professor.route("/<int:id>", methods=["GET"])
 def pesquisa_professor(id):
     try:
         professor = modf.procurarProfessorPorId(id)
         return jsonify({"mensagem": "Ok", "professor": professor}), 200
     except modf.ProfessorNaoIdentificado as e:
-        return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404 # trocar por 400 Bad Request
+        return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404 
     
     
 # ____________________________________________ POST ______________________________________________________________
 
 
-@bp_professor.route('/professores', methods=['POST'])
+@bp_professor.route('/', methods=['POST'])
 def cadastrar_professores():
     novo_professor = request.json
-    if not novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
-        return jsonify({"mensagem": "error", "professor": f"Bad Request: {str(e)}"}), 400    #talvez seja melhor 
+    
+    if not novo_professor or "id" not in novo_professor or "nome" not in novo_professor or "materia" not in novo_professor:
+        return jsonify({"mensagem": "error", "professor": "Bad Request: ID, nome e matéria são obrigatórios"}), 400
+     
     try:
-        if modf.ProfessorExistente(novo_professor["id"]):  # Correção: Verifica se o professor já existe
+        if modf.ProfessorExistente(novo_professor["id"]):  
             raise modf.ProfessorExiste("Professor já existe")
+        
         modf.criarNovoProfessor(novo_professor)
         return jsonify({"mensagem": "Created", "professor": novo_professor}), 201
-        #return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
+    
     except modf.ProfessorExiste as e:
         return jsonify({"mensagem": "error", "professor": f"Bad Request: {str(e)}"}), 400
     
@@ -59,11 +72,15 @@ def cadastrar_professores():
 # ____________________________________________ PUT _______________________________________________________________
 
 
-@bp_professor.route('/professores/<int:id>', methods=['PUT'])
+@bp_professor.route('/<int:id>', methods=['PUT'])
 def atualizar_professor(id):
     atualizado = request.json
+    
+    if not atualizado:
+        return jsonify({"mensagem": "error", "professor": "Não atualizado. Informar corretamente dados"}), 400
+    
     try:
-        professor = modf.procurarProfessorPorId(id) # Correção: Usar a função de procurarProfessorPorId correta
+        professor = modf.procurarProfessorPorId(id) 
         if "nome" in atualizado:
             professor['nome'] = atualizado['nome']
         if "idade" in atualizado:
@@ -72,33 +89,36 @@ def atualizar_professor(id):
             professor['materia'] = atualizado['materia']
         if "obs" in atualizado:
             professor['obs'] = atualizado['obs']
+        
+        db_serv.session.commit()
+        
         return jsonify({"mensagem": "Atualizado", "professor": professor}), 200
+    
     except modf.ProfessorNaoIdentificado as e:
         return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404
     except Exception as e:
-        return jsonify({"mensagem": "erro", "professor": f"Internal Server Error: {str(e)}"}) # Correção: Mensagem de erro mais clara
+        return jsonify({"mensagem": "erro", "professor": f"Internal Server Error: {str(e)}"}), 500
 
 
 # ____________________________________________ DELETE ID __________________________________________________________
 
 
-@bp_professor.route("/professores/deletar/<int:id_professor>", methods=["DELETE"])
+@bp_professor.route("/delete/<int:id_professor>", methods=["DELETE"])
 def delete_professor(id_professor):
     try:
         resultado = modf.deletarProfessorPorId(id_professor)
-        return jsonify({"mensagem": "Ok", "professor": {resultado}}), 200
+        return jsonify({"mensagem": "Ok", "professor": resultado}), 200
     except modf.ProfessorNaoIdentificado as e:
         return jsonify({"mensagem": "error", "professor": f"Not Found: {str(e)}"}), 404
-
+# estava {"mensagem": "Ok", "professor": {resultado}}), 200 , estava trazendo um diconário em resultado
 
 # ____________________________________________ DELETE ______________________________________________________________
 
 
-@bp_professor.route('/professores/resetar', methods=['DELETE'])
+@bp_professor.route('/resetar', methods=['DELETE'])
 def resetar_professor():
-    modf.resetar_professores()  # Função que reseta o dicionário de professores
+    modf.resetar_professores()  
     return jsonify({"mensagem": "Ok", "professor": "Resetado"}), 200
 
 
 
-# ++++++++++++++++++++++++++++++++++++++ ok ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

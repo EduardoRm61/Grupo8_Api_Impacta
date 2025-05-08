@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: Grupo8_Api_Impacta_life
+    runtime: python
+    pythonVersion: "3.9"
+    buildCommand: pip install -r requirements.txt
+    #startCommand: gunicorn app:app
+    startCommand: python3 app.py
+    envVars:
+      - key: PORT
+        sync : false
+        value: 10000
+      - key: FLASK_APP
+        value: "apps.py"
+    plan: free
+
