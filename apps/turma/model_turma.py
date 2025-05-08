@@ -83,7 +83,8 @@ def listarTurma():
     return [turma.to_dict() for turma in turmas]
 
 def deletarTurma():
-    dadosTurma["Turma"] = []
+    db_serv.session.delete()
+    db_serv.session.commit()
 
 
 def deletarTurmaPorId(id_turma):
