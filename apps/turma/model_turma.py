@@ -1,5 +1,3 @@
-import apps.professores.model_prof as modPro
-import apps.turma.model_turma as modAlu
 import professores.model_prof as modclas
 from ..config import db_serv
 
