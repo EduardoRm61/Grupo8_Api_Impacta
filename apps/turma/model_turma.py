@@ -48,6 +48,14 @@ class TurmaJaDeletada(Exception):
 
 #Aqui estão as funções auxiliares para Turma em app.py:
 
+class Turma(db_serv.Model):
+    __tablename__ = "turmas"
+    id = db_serv.Column(db_serv.Integer, primary_key=True)
+    descricao = db_serv.Column(db_serv.String(30),nullable=False)
+    ativa = db_serv.Column(db_serv.Boolean,nullable=False)
+    professor_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey("professor.id"),nullable=False)    
+
+
 def apaga_tudo():
     modAlu.dados['alunos'] = []
     modPro.professores["Professor"] = []
