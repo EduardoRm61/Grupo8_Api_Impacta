@@ -67,10 +67,10 @@ class Turma(db_serv.Model):
 
 
 def procurarTurmaPorId(id_turma):
-            for dict in dadosTurma["Turma"]:
-                if dict['Id'] == id_turma:
-                    return dict
-            raise TurmaNaoIdentificada()
+    turma = Turma.query.get(id_turma)
+    if not turma:
+        raise TurmaNaoIdentificada()
+    return turma.to_dict()
 
 def criarNovaTurma(nv_dict):
     dadosTurma["Turma"].append(nv_dict)
