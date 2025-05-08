@@ -135,7 +135,7 @@ class AtualizacaoAlunoFalhou(Exception):
 
 def procurar_aluno_por_id(id_aluno):
     aluno = Aluno.query.get(id) 
-    for aluno in Aluno["alunos"]:
+    for aluno in alunos["alunos"]:
         if aluno["Id"] == id_aluno:
             return aluno
     raise AlunoNaoIdentificado()
