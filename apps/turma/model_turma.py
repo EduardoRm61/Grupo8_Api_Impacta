@@ -88,13 +88,9 @@ def deletarTurma():
 
 
 def deletarTurmaPorId(id_turma):
-    turmas = dadosTurma["Turma"]
+    db_serv.session.delete(id_turma)
+    db_serv.session.commit()
 
-    for indice, turma in enumerate(turmas):
-        if turma["Id"] == id_turma:
-            turmas.pop(indice)
-            return {"Mensagem": "Turma deletada com sucesso."}
-    raise TurmaNaoIdentificada()
 
 def valoorBuleano(valorbool):
     if valorbool is True or valorbool is False:
