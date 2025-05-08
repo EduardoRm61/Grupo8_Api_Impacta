@@ -64,10 +64,7 @@ class Turma(db_serv.Model):
     def to_dict(self):
         return {"id":self.id, "descricao":self.descricao,"ativa":self.ativa, "professor_id":self.professor_id}
 
-def apaga_tudo():
-    modAlu.dados['alunos'] = []
-    modPro.professores["Professor"] = []
-    dadosTurma["Turma"] = []
+
 
 def procurarTurmaPorId(id_turma):
             for dict in dadosTurma["Turma"]:
