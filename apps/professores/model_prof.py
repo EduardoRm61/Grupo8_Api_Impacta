@@ -50,7 +50,7 @@ class CadastroDeProfessorFalhado(Exception):
         super().__init__(self.msg)
 
 # _________________________ FUNÇÕES________________________
-
+ 
 def ProfessorExistente(Id_professor): 
     try:  
         return Professor.query.get(Id_professor) is not None

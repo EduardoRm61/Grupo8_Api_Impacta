@@ -1,5 +1,6 @@
 import apps.professores.model_prof as modPro
 import apps.turma.model_turma as modAlu
+import professores.model_prof as modclas
 from ..config import db_serv
 
 
@@ -66,6 +67,27 @@ class Turma(db_serv.Model):
 
 
 
+def TrumaJaExiste(Id_turma):
+    try: 
+        dic = Turma.query.get(Id_turma)
+        if dic == None:
+            return False
+        return True
+    except Exception:
+        return False
+
+
+def professorExistente(Id_professor):
+    try:
+        dic = modclas.Professor.query.get(Id_professor)
+        if dic == None:
+            return False
+        return True
+    except Exception:
+        return False
+    
+
+
 def procurarTurmaPorId(id_turma):
     turma = Turma.query.get(id_turma)
     if not turma:
@@ -128,14 +150,3 @@ def alterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
             "Descrição": str(e)
         }), 500
     
-def turmaJaExiste(Id_turma):
-    for turma in dadosTurma["Turma"]:
-        if turma["Id"] == Id_turma:
-            return True
-    return False
-
-def professorExistente(Id_professor):
-    for professor in modPro.professores["professor"]:
-        if professor["id"] == Id_professor:
-            return True  
-    return False
