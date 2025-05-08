@@ -1,33 +1,6 @@
 from datetime import datetime
 from ..config import db_serv
-from apps.turma.model_turma import dadosTurma, TurmaExistente, TurmaJaDeletada, TurmaNaoIdentificada, turmaJaExiste 
-#from turma.model_turma as modTur 
-
-dados = {
-    "alunos": [
-        {
-            "Id": 20,
-            "Nome": "Thaina",
-            "Idade": 19,
-            "Turma_Id": 12,
-            "Data_nascimento": "10/08/2005",
-            "Nota_Primeiro_Semestre": 8.0,
-            "Nota_Segundo_semestre": 9.0,
-            "Media_final": 8.5
-        },
-
-        {
-            "Id": 25,
-            "Nome": "Rafaela",
-            "Idade": 25,
-            "Turma_Id": 16,
-            "Data_nascimento": "10/09/2000",
-            "Nota_Primeiro_Semestre": 6.0,
-            "Nota_Segundo_semestre": 9.0, 
-            "Media_final": 7.5
-        }
-    ]
-}
+import apps.turma.model_turma as modTurma
 
 class Aluno(db_serv.Model):
     __tablename__ = "alunos"
@@ -87,7 +60,7 @@ def listar_aluno():
 
 def criar_novo_aluno(novo_aluno):
     #verifica se turma existe, se não existir vai aparecer o erro 404, se existir o código continua
-    turma = Turma.query.get(novo_aluno['turma_id'])
+    turma = modTurma.query.get(novo_aluno['turma_id'])
     if(turma is None):
         return {"Turma não encontrada"}, 404
 
@@ -130,7 +103,7 @@ def alterar_informacoes_aluno(id_aluno, novo_aluno):
 
 def aluno_ja_existe(id_aluno):
     aluno = Aluno.query.get(id_aluno)
-    if aluno: #se o aluno existir, levanta a exceção
+    if aluno:
         raise AlunoExistente()
 
 ##
