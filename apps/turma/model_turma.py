@@ -14,11 +14,11 @@ from config import db_serv
 #             return True
 #     return False
 
-# def professorExistente(Id_professor):
-#     for professor in modPro.professores["professor"]:
-#         if professor["id"] == Id_professor:
-#             return True
-#     return False
+def professorExistente(Id_professor):
+    for professor in modPro.professores["professor"]:
+        if professor["id"] == Id_professor:
+            return True
+    return False
 
 # Aqui estão todas as classes para o Banco de Dados
 

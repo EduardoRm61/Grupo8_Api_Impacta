@@ -1,10 +1,7 @@
-from flask_restx import Api
+from . import api
+from swagger.namespace.turma_namespace import turma_ns
 
-api = Api(
-    version="1.0",
-    title="API de Gestão Escolar",
-    description="Documentação da API para Alunos, Professores e Turmas",
-    doc="/docs",
-    mask_swagger=False, # Desativa o X-Fields no Swagger,
-    prefix="/api"
-)
+def configure_swagger(app):
+    api.init_app(app)
+    api.add_namespace(turma_ns, path="/Turmas")
+    api.mask_swagger = False

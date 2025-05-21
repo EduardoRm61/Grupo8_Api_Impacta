@@ -5,7 +5,7 @@ turma_ns = Namespace("Turma", description="Operações relacionadas as Turmas")
 
 turma_model = turma_ns.model("Turma", {
     "id": fields.Integer(required=True, description="Id da turma"),
-    "descriaoo": fields.String(required=True, description="Descrição da Turma/nome"),
+    "descricao": fields.String(required=True, description="Descrição da Turma/nome"),
     "ativa": fields.Boolean(required=True, description="Turma ativa: True ou False"),
     "professor_id": fields.Integer(required=True, description="Id do professor associado"),
 })
@@ -24,3 +24,28 @@ class TurmaResource(Resource):
         """Listar todas as turma"""
         return listarTurma()
     
+    @turma_ns.expect(turma_model)
+    def post(self):
+        """"Criar uma nova turma"""
+        data = turma_ns.payload
+        response, status_code = criarNovaTurma(data)
+        return response, status_code
+    
+@turma_ns.route("/<int:id_turma>")
+class TurmaIdResource(Resource):
+    @turma_ns.marshal_list_with(turma_output_model)
+    def get(self, id_turma):
+        "Obtém uma turma pelo seu ID"
+        return procurarTurmaPorId(id_turma)
+    
+    @turma_ns.expect(turma_model)
+    def put(self, id_turma):
+        """Atualiza uma turma pelo seu ID"""
+        data = turma_ns.payload
+        alterarInformacoes(id_turma, data)
+        return data, 200
+    
+    def delete(self, id_turma):
+        """Excluí uma turma pelo seu ID"""
+        deletarTurma(id_turma)
+        return {"message":"Turma deletada com êxito"}, 200
