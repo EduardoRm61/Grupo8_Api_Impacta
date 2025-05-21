@@ -1,6 +1,7 @@
 from flask_restx import Api
-
+from flask import Blueprint
 # Criando o Blueprint para a API
+bp_api = Blueprint("api", __name__, url_prefix="/api")
 
 api = Api(
     version="1.0",
