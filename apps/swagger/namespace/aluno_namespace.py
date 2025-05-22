@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from alunos.model_aluno import procurar_aluno_por_id, criar_novo_aluno, deletar_aluno_por_id, alterar_informacoes_aluno, aluno_ja_existe, deletar_alunos, med
+from alunos.model_aluno import procurar_aluno_por_id, criar_novo_aluno, deletar_aluno_por_id, alterar_informacoes_aluno, aluno_ja_existe, deletar_alunos, calcular_media, listar_aluno
 
 alunos_ns = Namespace("alunos", description="Operações realizadas aos alunos")
 
@@ -21,3 +21,35 @@ aluno_output_model = alunos_ns.model("AlunoOutput", {
     "turma_id": fields.Integer(required=True, description="ID da turma associada"),
     "media_final": fields.Float(description="Média final do aluno")
 })
+
+@alunos_ns.route("/")
+class AlunosResouce(Resource):
+    @alunos_ns.marshal_list_with(aluno_output_model)
+    def get(self):
+        """"Listar todos os alunos"""
+        return listar_aluno()
+    
+    @alunos_ns.expect(aluno_model)
+    def post(self):
+        """Cria um novo aluno"""
+        data = alunos_ns.payload
+        reponse, status_code = criar_novo_aluno(data)
+        return reponse, status_code
+    
+@alunos_ns.route("/<id_aluno>")
+class AlunoIdResource(Resource):
+    @alunos_ns.marshal_list_with(aluno_output_model)
+    def get(self, id_aluno):
+        """Obtém um aluno pelo ID"""
+        return procurar_aluno_por_id(id_aluno)
+    
+    @alunos_ns.expect(aluno_model)
+    def put(self, id_aluno):
+        """Atualizar um aluno pelo seu ID"""
+        data = alunos_ns.payload
+        alterar_informacoes_aluno(id_aluno, data)
+
+    def delete(self, id_aluno):
+        """Excluir um aluno pelo seu ID"""
+        deletar_aluno_por_id(id_aluno)
+        return{"message":"ALuno excluído com êxito"},200
