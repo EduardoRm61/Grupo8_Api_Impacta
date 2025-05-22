@@ -1,9 +1,7 @@
-#from ..config import db_serv
-from config import db_serv
-
+from ..config import db_serv
 
 class Professor (db_serv.Model):
-    id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False)      
+    id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False) 
     nome = db_serv.Column(db_serv.String (100), nullable=False)
     idade = db_serv.Column(db_serv.Integer)  
     materia = db_serv.Column(db_serv.String (100), nullable=False)
@@ -52,8 +50,7 @@ class CadastroDeProfessorFalhado(Exception):
         super().__init__(self.msg)
 
 # _________________________ FUNÇÕES________________________
-
-
+ 
 def ProfessorExistente(Id_professor): 
     try:  
         return Professor.query.get(Id_professor) is not None
@@ -91,16 +88,16 @@ def criarNovoProfessor(new_direcionar):
         )
             
         db_serv.session.add(novo_professor)  
-        db_serv.session.commit()             
-        return novo_professor.direcionar()      
+        db_serv.session.commit()  
+        return novo_professor.direcionar()     
     
     except (CadastroDeProfessorFalhado, ProfessorExiste):
         raise
     except Exception as e:
         db_serv.session.rollback()
-
         raise Exception(f"{str(e)}: Erro ao criar o professor")
         
+
         
 def atualizarProfessor(id_professor, novo_dado ):
     try:
@@ -118,11 +115,9 @@ def atualizarProfessor(id_professor, novo_dado ):
             professor.materia = novo_dado["materia"]
         if "obs" in novo_dado:
             professor.obs = novo_dado["obs"]
-        
+
         
         db_serv.session.commit()
-    
-        return professor.direcionar()
     
     except (ProfessorNaoIdentificado, CadastroDeProfessorFalhado):
         raise
@@ -155,8 +150,8 @@ def resetar_professores():
         return {"mensagem": f"{dict_prof_del} professor resetado"}, 200
 
 
+#------------------------------------QUERY--------------------------------------
 
     except Exception as e:
         db_serv.session.rollback()
         raise Exception(f"{str(e)}: Erro ao resetar professor")
-
