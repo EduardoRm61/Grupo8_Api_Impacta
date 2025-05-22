@@ -1,18 +1,7 @@
 import professores.model_prof as modPro
-import turma.model_turma as modAlu
+# import turma.model_turma as modAlu
 from config import db_serv
 
-
-# dadosTurma = {"Turma":[
-#     {"Id": 12, "Descrição": "Eng. Software","Ativa": True,"Professor Id": 10},
-#     {"Id": 14, "Descrição": "Análise e Desen. de Sistemas", "Ativa": False, "Professor Id": 11}
-# ]}
-
-# def turmaJaExiste(Id_turma):
-#     for turma in dadosTurma["Turma"]:
-#         if turma["Id"] == Id_turma:
-#             return True
-#     return False
 
 def professorExistente(Id_professor):
     for professor in modPro.professores["professor"]:
@@ -24,6 +13,7 @@ def professorExistente(Id_professor):
 
 class Turma(db_serv.Model):
     __tablename__ = "turmas"
+    __table_args__ = {'extend_existing': True}
 
     id = db_serv.Column(db_serv.Integer, primary_key=True)
     descricao = db_serv.Column(db_serv.String(30),nullable=False)

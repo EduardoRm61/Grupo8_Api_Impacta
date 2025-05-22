@@ -1,9 +1,10 @@
 from datetime import datetime
-from ..config import db_serv
-import apps.turma.model_turma as modTurma
+from config import db_serv
+import turma.model_turma as modTurma
 
 class Aluno(db_serv.Model):
     __tablename__ = "alunos"
+    __table_args__ = {'extend_existing': True}
 
     id = db_serv.Column(db_serv.Integer, primary_key=True)
     nome = db_serv.Column(db_serv.String(100), nullable=False)

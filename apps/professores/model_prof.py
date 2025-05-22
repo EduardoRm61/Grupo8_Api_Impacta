@@ -1,6 +1,9 @@
-from ..config import db_serv
+from config import db_serv
 
 class Professor (db_serv.Model):
+    __tablename__ = "professor"
+    __table_args__ = {'extend_existing': True}
+
     id = db_serv.Column(db_serv.Integer, primary_key=True, nullable=False) 
     nome = db_serv.Column(db_serv.String (100), nullable=False)
     idade = db_serv.Column(db_serv.Integer)  

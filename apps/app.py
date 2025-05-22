@@ -4,7 +4,7 @@ from professores.route_prof import bp_professor
 from turma.routes_turma import bd_Turma
 from alunos.route_aluno import bp_aluno
 #from flask_sqlalchemy import SQLAlchemy # Não está fazendo nada
-from apps.swagger import bp_api, api
+from apps.swagger import bp_api
 from apps.swagger.namespace.turma_namespace import turma_ns
 
 #app = Flask(__name__)
