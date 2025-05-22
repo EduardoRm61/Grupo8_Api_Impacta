@@ -30,6 +30,17 @@ class Aluno(db_serv.Model):
         self.idade = self.calcular_idade()
         self.turma_id = turma_id
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nome": self.nome,
+            "idade": self.idade,
+            "data_nascimento": self.data_nascimento,
+            "nota_primeiro_semestre": self.nota_primeiro_semestre,
+            "nota_segundo_semestre": self.nota_segundo_semestre,
+            "media_final": self.media_final
+        }
+
 ##
 def calcular_media(self):
     media = (self.nota_primeiro_semestre + self.nota_segundo_semestre) / 2
@@ -57,7 +68,8 @@ def procurar_aluno_por_id(id_aluno):
 
 def listar_aluno():
     alunos = Aluno.query.all()
-    print(alunos)
+    return [alunos.to_dict()]
+    
 
 def criar_novo_aluno(novo_aluno):
     #verifica se turma existe, se não existir vai aparecer o erro 404, se existir o código continua
