@@ -8,13 +8,15 @@ WORKDIR /app
 # ex C:\Users\ar\deletarr\Grupo8_Api_Impacta - ficaria apenas Grupo8_Api_Impacta
  
 COPY requirements.txt .
-RUN pip install --user -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 # --user é para evitar conflitos ao instalar a dependência
 # copiando e instalando todas bibliotecas entre outros, na versão usada
 # ponto no final está relacionado a pasta raiz
 
 COPY . .
 #copiar tudo que está na pasta e leve ao destino, raiz do docker, por exemplo
+
+ENV PYTHONPATH=/app
 
 EXPOSE 5002
 
