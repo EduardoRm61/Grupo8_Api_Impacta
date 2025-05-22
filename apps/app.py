@@ -13,7 +13,7 @@ from apps.swagger.namespace.turma_namespace import turma_ns
 #db_serv = SQLAlchemy(app)
 #db_serv.init_app(app)
 
-api.add_namespace(turma_ns) # Adicionando o namespace ao Api
+#api.add_namespace(turma_ns) # Adicionando o namespace ao Api
 
 app.register_blueprint(bp_api) # Registrando o Blueprint do swagger
 
