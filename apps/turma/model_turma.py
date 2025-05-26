@@ -106,7 +106,7 @@ def criarNovaTurma(nv_dict):
 
 def listarTurma():
     turmas = Turma.query.all()
-    print(turmas)
+    #print(turmas)
     return [turma.to_dict() for turma in turmas]
 
 

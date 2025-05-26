@@ -68,7 +68,8 @@ def procurar_aluno_por_id(id_aluno):
 
 def listar_aluno():
     alunos = Aluno.query.all()
-    return [aluno.()]
+    #print(alunos)
+    return [aluno.to_dict() for aluno in alunos]
     
 
 def criar_novo_aluno(novo_aluno):
