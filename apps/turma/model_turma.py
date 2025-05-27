@@ -18,7 +18,8 @@ class Turma(db_serv.Model):
     id = db_serv.Column(db_serv.Integer, primary_key=True)
     descricao = db_serv.Column(db_serv.String(30),nullable=False)
     ativa = db_serv.Column(db_serv.Boolean,nullable=False)
-    alunos = db_serv.relationship('Turma', back_populates='alunos')
+
+    alunos = db_serv.relationship('Aluno', back_populates='turma')
     professor_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey("professor.id"),nullable=False)
 
     def __init__(self, id, descricao, ativa, professor_id):

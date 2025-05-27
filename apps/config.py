@@ -8,11 +8,11 @@ app.config["HOST"] = "0.0.0.0"  # 127.0.0.1 - apenas host local, mudei para 0.0.
 app.config["PORT"]= 5002
 app.config["DEBUG"] = True
 
-DB_USER = os.environ.get("DB_USER")
-DB_PASSWORD = os.environ.get("DB_PASSWORD")
-DB_HOST = os.environ.get("DB_HOST")
-DB_PORT = os.environ.get("DB_PORT")
-DB_NAME = os.environ.get("DB_NAME")
+DB_USER = os.environ.get("DB_USER") or 'adm'
+DB_PASSWORD = os.environ.get("DB_PASSWORD") or '12345'
+DB_HOST = os.environ.get("DB_HOST") or 'localhost'
+DB_PORT = int(os.environ.get("DB_PORT",3306))
+DB_NAME = os.environ.get("DB_NAME") or 'SistemaEscolar'
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://adm:12345@db:3306/SistemaEscolar'
 #app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://${adm}:${12345}@${db}/${dados_mysql}"

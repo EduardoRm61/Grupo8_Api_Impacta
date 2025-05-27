@@ -7,6 +7,8 @@ from alunos.route_aluno import bp_aluno
 from apps.swagger import bp_api
 from apps.swagger.namespace.turma_namespace import turma_ns
 
+
+
 #app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://adm:12345@db:3306/SistemaEscolar'
 #app.config.from_object(Config)

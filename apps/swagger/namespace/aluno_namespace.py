@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from alunos.model_aluno import procurar_aluno_por_id, criar_novo_aluno, deletar_aluno_por_id, alterar_informacoes_aluno, aluno_ja_existe, calcular_media, listar_alunos
+from alunos.model_aluno import procurar_aluno_por_id, criar_novo_aluno, deletar_aluno_por_id, alterar_informacoes_aluno, listar_alunos
 
 alunos_ns = Namespace("alunos", description="Operações realizadas aos alunos")
 

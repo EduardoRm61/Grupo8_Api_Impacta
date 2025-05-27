@@ -15,7 +15,7 @@ class Aluno(db_serv.Model):
     media_final = db_serv.Column(db_serv.Float, nullable=False)
 
 #RELAÇÃO DA CHAVE ESTRANGEIRA
-    turma_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey('turma.id'), nullable=False) #CHAVE ESTRANGEIRA --não sei se tenho que colocar id_turma como está em model_turma
+    turma_id = db_serv.Column(db_serv.Integer, db_serv.ForeignKey('turmas.id'), nullable=False) #CHAVE ESTRANGEIRA --não sei se tenho que colocar id_turma como está em model_turma
     turma = db_serv.relationship("Turma", back_populates="alunos") 
     #foreignKey = cria o vínculo no BANCO DE DADOS
     #relationship = cria vínculo no CÓGIDO PYTHON
@@ -30,6 +30,24 @@ class Aluno(db_serv.Model):
         self.idade = self.calcular_idade()
         self.turma_id = turma_id
 
+
+    def calcular_media(self):
+        media = (self.nota_primeiro_semestre + self.nota_segundo_semestre) / 2
+        mediaFim = f"{media:.1f}"
+        return mediaFim
+   
+
+    def calcular_idade(self):
+        if not self.data_nascimento:  
+            return None
+        try:
+            data_nasc = datetime.strptime(self.data_nascimento, '%d/%m/%Y')
+            data_atual = datetime.today()
+            idade = data_atual.year - data_nasc.year - ((data_atual.month, data_atual.day) < (data_nasc.month, data_nasc.day))
+            return idade
+        except ValueError:
+            return None
+
     def to_dict(self):
         return {
             "id": self.id,
@@ -42,22 +60,7 @@ class Aluno(db_serv.Model):
         }
 
 ##
-def calcular_media(self):
-    media = (self.nota_primeiro_semestre + self.nota_segundo_semestre) / 2
-    mediaFim = f"{media:.1f}"
-    return mediaFim
-   
 
-def calcular_idade(self):
-    if not self.data_nascimento:  
-        return None
-    try:
-        data_nasc = datetime.strptime(self.data_nascimento, '%d/%m/%Y')
-        data_atual = datetime.today()
-        idade = data_atual.year - data_nasc.year - ((data_atual.month, data_atual.day) < (data_nasc.month, data_nasc.day))
-        return idade
-    except ValueError:
-        return None
 
 ##
 def procurar_aluno_por_id(id_aluno):
@@ -80,7 +83,7 @@ def criar_novo_aluno(novo_aluno):
 
     adc_aluno = Aluno(
         nome = novo_aluno['nome'],
-        data_nascimento = datetime.strftime(novo_aluno['data_nascimento'], "%d/%m/%Y"),
+        data_nascimento = novo_aluno['data_nascimento'],
         nota_primeiro_semestre = float(novo_aluno['nota_primeiro_semestre']),
         nota_segundo_semestre = float(novo_aluno['nota_segundo_semestre']),
         turma_id = int(novo_aluno['turma_id'])
