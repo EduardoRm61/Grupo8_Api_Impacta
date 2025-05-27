@@ -16,12 +16,13 @@ from apps.swagger.namespace.turma_namespace import turma_ns
 #api.add_namespace(turma_ns) # Adicionando o namespace ao Api
 
 app.register_blueprint(bp_api) # Registrando o Blueprint do swagger
+configure_swagger(app)
 
 app.register_blueprint(bp_professor, url_prefix='/api')
 app.register_blueprint(bd_Turma, url_prefix='/api')
 app.register_blueprint(bp_aluno, url_prefix='/api')
 
-configure_swagger(app)
+
 
 # Criando o app
 

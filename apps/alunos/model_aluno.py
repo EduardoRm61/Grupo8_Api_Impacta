@@ -66,7 +66,7 @@ def procurar_aluno_por_id(id_aluno):
         return aluno
     raise AlunoNaoIdentificado()
 
-def listar_aluno():
+def listar_alunos():
     alunos = Aluno.query.all()
     #print(alunos)
     return [aluno.to_dict() for aluno in alunos]
