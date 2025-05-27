@@ -122,6 +122,14 @@ def aluno_ja_existe(id_aluno):
     aluno = Aluno.query.get(id_aluno)
     if aluno:
         raise AlunoExistente()
+    
+# def deletarTurma():
+#     db_serv.session.delete()
+#     db_serv.session.commit()
+
+def resetarAlunos():
+    db_serv.session.delete()
+    db_serv.session.commit
 
 ##
 class AlunoNaoIdentificado(Exception):

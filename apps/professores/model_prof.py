@@ -60,6 +60,12 @@ def ProfessorExistente(Id_professor):
     except Exception as e:
         raise Exception (f"Erro, Professor não indentificado ou existente: {str(e)}")
 
+def listarTodosProfessores():
+    try:
+        professores = Professor.query.all()
+        return [prof.direcionar() for prof in professores]
+    except Exception as e:
+        raise Exception(f"Erro ao listar professores: {str(e)}")
 
 def procurarProfessorPorId(id_professor):   
     try:
@@ -151,10 +157,6 @@ def resetar_professores():
         dict_prof_del = Professor.query.delete()
         db_serv.session.commit()
         return {"mensagem": f"{dict_prof_del} professor resetado"}, 200
-
-
-#------------------------------------QUERY--------------------------------------
-
     except Exception as e:
         db_serv.session.rollback()
         raise Exception(f"{str(e)}: Erro ao resetar professor")

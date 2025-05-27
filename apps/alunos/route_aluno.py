@@ -58,9 +58,10 @@ def alterar_aluno_route(id_aluno):
         return jsonify({"Erro": "Falha ao atualizar aluno", "Detalhes": str(e)}), 500
 
 
+
 @bp_aluno.route('/alunos/resetar', methods=['DELETE'])
 def resetar_alunoId():
-    modAl.deletar_alunos()
+    modAl.resetarAlunos()
     return jsonify({"mensagem": "Resetado"}), 200
 
 @bp_aluno.route("/alunos/deletar/<int:id_aluno>", methods=["DELETE"])

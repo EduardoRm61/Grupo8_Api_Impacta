@@ -21,10 +21,10 @@ bp_professor = Blueprint("professores", __name__)
 @bp_professor.route('/professores', methods=['GET'])
 def listar_professores():
     try:
-        return jsonify({"mensagem": "Ok", "professores": modf.professores["professor"]}) 
+        lista = modf.listarTodosProfessores()
+        return jsonify({"mensagem": "Ok", "professores": lista}), 200
     except Exception as e:
-        return jsonify({"mensagem": "error", "professor": f"Internal Server Error: {str(e)}"}), 500 
-    
+        return jsonify({"mensagem": "error", "professor": f"Internal Server Error: {str(e)}"}), 500
 
 # ____________________________________________ GET ID ___________________________________________________________
 
