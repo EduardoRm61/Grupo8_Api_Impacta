@@ -41,7 +41,7 @@ class Aluno(db_serv.Model):
         if not self.data_nascimento:  
             return None
         try:
-            data_nasc = datetime.strptime(self.data_nascimento, '%d/%m/%Y')
+            data_nasc = datetime.strptime(self.data_nascimento, '%Y/%m/%d') 
             data_atual = datetime.today()
             idade = data_atual.year - data_nasc.year - ((data_atual.month, data_atual.day) < (data_nasc.month, data_nasc.day))
             return idade
