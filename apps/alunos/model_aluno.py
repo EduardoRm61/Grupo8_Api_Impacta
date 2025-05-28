@@ -1,6 +1,6 @@
 from datetime import datetime
 from config import db_serv
-import turma.model_turma as modTurma
+from turma.model_turma import Turma
 
 class Aluno(db_serv.Model):
     __tablename__ = "alunos"
@@ -69,7 +69,7 @@ def procurar_aluno_por_id(id_aluno):
         return aluno
     raise AlunoNaoIdentificado()
 
-def listar_alunos():
+def listar_alunos(): 
     alunos = Aluno.query.all()
     #print(alunos)
     return [aluno.to_dict() for aluno in alunos]
@@ -77,7 +77,7 @@ def listar_alunos():
 
 def criar_novo_aluno(novo_aluno):
     #verifica se turma existe, se não existir vai aparecer o erro 404, se existir o código continua
-    turma = modTurma.query.get(novo_aluno['turma_id'])
+    turma = Turma.query.get(novo_aluno['turma_id'])
     if(turma is None):
         return {"Turma não encontrada"}, 404
 

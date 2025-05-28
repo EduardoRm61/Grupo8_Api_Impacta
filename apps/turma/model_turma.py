@@ -104,10 +104,10 @@ def procurarTurmaPorId(id_turma):
 
 def criarNovaTurma(nv_dict):
     nova_turma = Turma(
-        id = nv_dict['Id'],
-        descricao = nv_dict['Descrição'],
-        professor_id= nv_dict['Professor Id'],
-        ativa = nv_dict['Ativa']
+        id = nv_dict['id'],
+        descricao = nv_dict['descricao'],
+        professor_id= nv_dict['professor_id'],
+        ativa = nv_dict['ativa']
     )
 
     db_serv.session.add(nova_turma)
@@ -197,9 +197,9 @@ def alterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
                     }), 409
         
         
-        nv_dados["Descrição"] = Descricao
-        nv_dados["Professor Id"] = Id_Pro
-        nv_dados["Ativa"] = Ativa
+        nv_dados["descricao"] = Descricao
+        nv_dados["professor_id"] = Id_Pro
+        nv_dados["ativa"] = Ativa
         db_serv.session.commit()
         return {"Detalhes":"Turma atualizada com seucesso!"}, 200
     
