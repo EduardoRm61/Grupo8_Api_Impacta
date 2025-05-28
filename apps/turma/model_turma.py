@@ -1,13 +1,9 @@
-import professores.model_prof as modPro
+from professores.model_prof import Professor
 # import turma.model_turma as modAlu
 from config import db_serv
 
 
-def professorExistente(Id_professor):
-    for professor in modPro.professores["professor"]:
-        if professor["id"] == Id_professor:
-            return True
-    return False
+
 
 # Aqui estão todas as classes para o Banco de Dados
 
@@ -86,6 +82,14 @@ class TurmaJaDeletada(Exception):
 #         if dict['Id'] == id_turma:
 #                     return dict
 #         raise TurmaNaoIdentificada()
+
+def professorExistente(Id_professor):
+    return Professor.query.get(Id_professor) is not None
+
+def turmaJaExiste(id_turma):
+    turma = Turma.query.get(id_turma)
+    return turma is not None
+
     
 def procurarTurmaPorId(id_turma):
     turma = Turma.query.get(id)
