@@ -103,7 +103,14 @@ def procurarTurmaPorId(id_turma):
 #     return
 
 def criarNovaTurma(nv_dict):
-    db_serv.session.add(nv_dict)
+    nova_turma = Turma(
+        id = nv_dict['Id'],
+        descricao = nv_dict['Descrição'],
+        professor_id= nv_dict['Professor Id'],
+        ativa = nv_dict['Ativa']
+    )
+
+    db_serv.session.add(nova_turma)
     db_serv.session.commit()
     return {"Descrição":"Turma criada com êxito! "},200
 

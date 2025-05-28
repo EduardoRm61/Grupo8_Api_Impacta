@@ -25,10 +25,8 @@ def procurarTurma(id_turma):
 @bd_Turma.route("/Turma", methods=["POST"])
 def AddTurma():
     nv_dict = request.json
-    nv_dict['Id'] = int(nv_dict['Id'])
-    nv_dict['Professor Id'] = int(nv_dict['Professor Id'])
 
-    try:
+    try: 
          
         if not modTur.professorExistente(nv_dict["Professor Id"]):
             return jsonify({
@@ -41,6 +39,14 @@ def AddTurma():
                 "Erro": "Requisição inválida",
                 "Detalhes": "Id da Turma já existente"
             }), 409  #conflict - duplicado ou duplo - estava 400 bad request
+        
+        dados_turma = {
+            'id': int(nv_dict.get('Id')),
+            'descricao': nv_dict('Descrição'),
+            'professor_id': int(nv_dict.get('Professor Id')),
+            'ativa': nv_dict('Ativa', True)
+        }
+
         modTur.criarNovaTurma(nv_dict)
         return jsonify({"mensagem": "Turma criada com sucesso!", "turma": nv_dict}), 201
     
