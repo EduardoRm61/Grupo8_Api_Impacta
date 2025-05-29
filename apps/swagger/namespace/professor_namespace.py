@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from apps.professores.model_prof import listarTodosProfessores, procurarProfessorPorId, criarNovoProfessor, atualizarProfessor, deletarProfessorPorId, resetar_professores
+from professores.model_prof import listarTodosProfessores, procurarProfessorPorId, criarNovoProfessor, atualizarProfessor, deletarProfessorPorId, resetar_professores
 
 professor_ns = Namespace("professores", description="Operações relacionadas aos professores")
 

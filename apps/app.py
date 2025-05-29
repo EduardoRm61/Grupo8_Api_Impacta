@@ -1,6 +1,6 @@
 from swagger.swagger_config import configure_swagger
 from config import app
-from apps.swagger import bp_api, api
+from swagger import bp_api, api
 from swagger.namespace.aluno_namespace import alunos_ns
 from swagger.namespace.turma_namespace import turma_ns
 from swagger.namespace.professor_namespace import professor_ns
