@@ -42,7 +42,11 @@ class TurmaIdResource(Resource):
     def put(self, id_turma):
         """Atualiza uma turma pelo seu ID"""
         data = turma_ns.payload
-        alterarInformacoes(id_turma, data)
+        alterarInformacoes(
+            id_turma,
+            data,
+            data.get('Ativa', True),
+            data.get('Id_Pro', None))
         return data, 200
     
     def delete(self, id_turma):
