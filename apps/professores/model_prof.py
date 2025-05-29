@@ -67,7 +67,7 @@ def listarTodosProfessores():
     except Exception as e:
         raise Exception(f"Erro ao listar professores: {str(e)}")
 
-def procurarProfessorPorId(id_professor):   
+def procurarProfessorPorId(id_professor):    
     try:
         professor = Professor.query.get(id_professor)
         if not professor:

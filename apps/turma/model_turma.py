@@ -91,8 +91,8 @@ def turmaJaExiste(id_turma):
     return turma is not None
 
     
-def procurarTurmaPorId(id_turma):
-    turma = Turma.query.get(id)
+def procurarTurmaPorId(id_turma): 
+    turma = Turma.query.get(id_turma)
     if not turma:
         raise TurmaNaoIdentificada()
     return turma.to_dict()
