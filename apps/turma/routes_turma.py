@@ -65,11 +65,11 @@ def ResetarTodaTurma():
     except modTur.TurmaJaDeletada as Trm:
         return jsonify ({"Requisção Inválida": str(Trm)}), 400 
     
-@bd_Turma.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
+@bd_Turma.route("/Turma/<int:id_turma>", methods=["DELETE"])
 def ResetarTurmaId(id_turma):
      try:
           modTur.deletarTurmaPorId(id_turma)
-          return jsonify(modTur.dadosTurma["Turma"]), 200
+          return jsonify({"Descrição": "Turma cadastrada com êxito!"}), 200
      except modTur.TurmaNaoIdentificada as trm:
           return jsonify({"Erro:": str(trm)}), 404
 

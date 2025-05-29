@@ -16,7 +16,7 @@ bp_professor = Blueprint("professores", __name__)
 
 
 # ____________________________________________ GET GERAL _______________________________________________________
-
+ 
 
 @bp_professor.route('/professores', methods=['GET'])
 def listar_professores():

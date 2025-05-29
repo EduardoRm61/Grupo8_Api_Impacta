@@ -48,8 +48,8 @@ class TurmaIdResource(Resource):
             data.get('Ativa', True),
             data.get('Id_Pro', None))
         return data, 200
-    
+
     def delete(self, id_turma):
         """Excluí uma turma pelo seu ID"""
-        deletarTurma(id_turma)
-        return {"message":"Turma deletada com êxito"}, 200
+        return deletarTurmaPorId(id_turma)
+        #{"message":"Turma deletada com êxito"}, 200
