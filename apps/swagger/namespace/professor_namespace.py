@@ -24,7 +24,7 @@ class ProfessorResource(Resource):
     @professor_ns.marshal_list_with(professor_output_model)
     def get(self):
         """Listar Todo os professores"""
-        return 
+        return listarTodosProfessores()
 
     @professor_ns.expect(professor_model)
     def post(self):
