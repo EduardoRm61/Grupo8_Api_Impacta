@@ -10,7 +10,7 @@ aluno_model = alunos_ns.model("Aluno", {
     "nota_segundo_semestre": fields.Float(required=True, description="Nota do segundo semestre"),
     "turma_id": fields.Integer(required=True, description="ID da turma associada")
 })
-
+ 
 aluno_output_model = alunos_ns.model("AlunoOutput", {
     "id": fields.Integer(description="ID do aluno"),
     "nome": fields.String(description="Nome do aluno"),
