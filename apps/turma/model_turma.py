@@ -84,7 +84,10 @@ class TurmaJaDeletada(Exception):
 #         raise TurmaNaoIdentificada()
 
 def professorExistente(Id_professor):
+    if Id_professor is None:
+        return False
     return Professor.query.get(Id_professor) is not None
+    
 
 def turmaJaExiste(id_turma):
     turma = Turma.query.get(id_turma)
@@ -127,9 +130,13 @@ def listarTurma():
 #     dadosTurma["Turma"] = []
 
 def deletarTurma():
-    db_serv.session.delete()
-    db_serv.session.commit()
-
+    try:
+        dict_turmas = Turma.query.delete()
+        db_serv.session.commit()
+        return {"mensagem": f"{dict_turmas} Turmass resetadas"}, 200
+    except Exception as e:
+        db_serv.session.rollback()
+        raise Exception(f"{str(e)}: Erro ao resetar Turmas")
 
 # def deletarTurmaPorId(id_turma):
 #     turmas = dadosTurma["Turma"]
