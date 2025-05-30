@@ -51,7 +51,7 @@ class CadastroDeProfessorFalhado(Exception):
     def __init__(self, msg="ID, nome e matéria são obrigatórios"):
         self.msg = msg
         super().__init__(self.msg)
-
+ 
 # _________________________ FUNÇÕES________________________
  
 def ProfessorExistente(Id_professor): 
