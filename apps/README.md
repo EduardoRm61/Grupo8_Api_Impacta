@@ -4,7 +4,7 @@ Estamos utilizando o GitHub para versionamento de código e colaboração em equ
 
 Grupo 9
 
- Alessandra F Rigonatti RA: 2401151
+ Alessandra F R RA: 24...
  Eduardo Nunes RA:2401234
  Rafaela Wohlers Rodrigues- RA: 2404142
  Thainá Foltran de Lima - RA:2401219
