@@ -200,9 +200,9 @@ def alterarInformacoes(Id_turma, Descricao, Ativa, Id_Pro):
                     }), 409
         
         
-        nv_dados["descricao"] = Descricao
-        nv_dados["professor_id"] = Id_Pro
-        nv_dados["ativa"] = Ativa
+        nv_dados.descricao = Descricao
+        nv_dados.professor_id = Id_Pro
+        nv_dados.ativa = Ativa
         db_serv.session.commit()
         return {"Detalhes":"Turma atualizada com seucesso!"}, 200
     

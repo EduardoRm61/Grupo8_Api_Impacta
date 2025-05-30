@@ -85,23 +85,28 @@ def AlterarInfo(id_turma):
             "Descrição": "O corpo da requisição está vazio, preencha todos os campos"
         }), 400
     
-    if "Descrição" not in dados:
+    if "descricao" not in dados:
         return jsonify({
             "Erro": "Não foi possível fazer a requisição",
             "Dscrição": "O campo Descrição da turma é obrigatório ser preenchido"
         }), 400
     
-    if "Ativa" not in dados:
+    if "ativa" not in dados:
         return jsonify({
             "Erro": "Não foi possível fazer a requisição",
             "Descrição": "O campo Ativa é obrigatório ser preenchido "
         }), 400
     
-    if "Professor Id" not in dados:
+    if "professor_id" not in dados:
         return jsonify({
             "Erro": "Não foi possível fazer a requisição",
             "Descrição": "O campo Professor Id é obrigatório se preechido"
         }), 400
     
-    resultado, status_code = modTur.alterarInformacoes(id_turma, dados["descrição"], dados["ativa"], dados["professor_id"])
+    resultado, status_code = modTur.alterarInformacoes(
+        id_turma,
+        dados["descricao"],
+        dados["ativa"],
+        dados["professor_id"]
+              )
     return jsonify(resultado), status_code  
