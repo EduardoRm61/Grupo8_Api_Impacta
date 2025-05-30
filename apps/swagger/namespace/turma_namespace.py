@@ -52,7 +52,7 @@ class TurmaIdResource(Resource):
     def delete(self, id_turma):
         """Excluí uma turma pelo seu ID"""
         return deletarTurmaPorId(id_turma)
-        #{"message":"Turma deletada com êxito"}, 200
+
 
 @turma_ns.route('/resetar')
 class Turmareset(Resource):
