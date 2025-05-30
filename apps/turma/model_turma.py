@@ -141,7 +141,10 @@ def deletarTurma():
 #     raise TurmaNaoIdentificada()
 
 def deletarTurmaPorId(id_turma):
-    db_serv.session.delete(id_turma)
+    turma = db_serv.session.query(Turma).get(id_turma)
+    if turma is None:
+        return {"message": f"Turma com ID {id_turma} não encontrada."}, 404
+    db_serv.session.delete(turma)
     db_serv.session.commit()
 
 def valoorBuleano(valorbool):

@@ -65,7 +65,7 @@ def ResetarTodaTurma():
     except modTur.TurmaJaDeletada as Trm:
         return jsonify ({"Requisção Inválida": str(Trm)}), 400 
     
-@bd_Turma.route("/Turma/<int:id_turma>", methods=["DELETE"])
+@bd_Turma.route("/Turma/Resetar/<int:id_turma>", methods=["DELETE"])
 def ResetarTurmaId(id_turma):
      try:
           modTur.deletarTurmaPorId(id_turma)
@@ -103,5 +103,5 @@ def AlterarInfo(id_turma):
             "Descrição": "O campo Professor Id é obrigatório se preechido"
         }), 400
     
-    resultado, status_code = modTur.alterarInformacoes(id_turma, dados["Descrição"], dados["Ativa"], dados["Professor Id"])
+    resultado, status_code = modTur.alterarInformacoes(id_turma, dados["descrição"], dados["ativa"], dados["professor_id"])
     return jsonify(resultado), status_code  
