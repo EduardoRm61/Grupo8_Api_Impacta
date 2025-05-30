@@ -80,6 +80,7 @@ Todos médoto get/get(id)/post/put/delet
 ## 🧱Estrutura do projeto
 
 <br>grupo8_api_impacta/
+<br>|
 <br>|-- apps/
 <br>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- alunos/
 <br>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- model_aluno.py
