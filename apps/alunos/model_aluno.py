@@ -128,8 +128,13 @@ def aluno_ja_existe(id_aluno):
 #     db_serv.session.commit()
 
 def resetarAlunos():
-    db_serv.session.delete()
-    db_serv.session.commit
+    try:
+        dict_prof_del = Aluno.query.delete()
+        db_serv.session.commit()
+        return {"mensagem": f"{dict_prof_del} Alunos resetado"}, 200
+    except Exception as e:
+        db_serv.session.rollback()
+        raise Exception(f"{str(e)}: Erro ao resetar Aluno")
 
 ##
 class AlunoNaoIdentificado(Exception):

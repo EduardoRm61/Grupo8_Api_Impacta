@@ -58,4 +58,4 @@ class TurmaIdResource(Resource):
 class Turmareset(Resource):
     def delete(self):
         """Resetar todas as Turma"""
-        return deletarTurma()
+        return deletarTurma() 
