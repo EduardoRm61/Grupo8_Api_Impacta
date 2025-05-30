@@ -33,7 +33,7 @@ class Aluno(db_serv.Model):
 
     def calcular_media(self):
         media = (self.nota_primeiro_semestre + self.nota_segundo_semestre) / 2
-        mediaFim = f"{media:.1f}"
+        mediaFim = round(media, 1)
         return mediaFim
    
 
@@ -41,11 +41,11 @@ class Aluno(db_serv.Model):
         if not self.data_nascimento:  
             return None
         try:
-            data_nasc = datetime.strptime(self.data_nascimento, '%Y/%m/%d') 
-            data_atual = datetime.today()
+            data_nasc = self.data_nascimento
+            data_atual = datetime.today().date()
             idade = data_atual.year - data_nasc.year - ((data_atual.month, data_atual.day) < (data_nasc.month, data_nasc.day))
             return idade
-        except ValueError:
+        except Exception:
             return None
 
     def to_dict(self):
@@ -109,12 +109,12 @@ def alterar_informacoes_aluno(id_aluno, novo_aluno):
         raise AlunoNaoIdentificado()
     
     aluno.nome = novo_aluno['nome']
+    aluno.data_nascimento = datetime.strptime(novo_aluno['data_nascimento'], '%Y/%m/%d').date()
     aluno.idade = aluno.calcular_idade()
-    aluno.data_nascimento = novo_aluno['data_nascimento']
     aluno.nota_primeiro_semestre = novo_aluno['nota_primeiro_semestre']
     aluno.nota_segundo_semestre = novo_aluno['nota_segundo_semestre']
-    aluno.media = novo_aluno.calcular_media()
-    aluno.turma.id = novo_aluno['turma_id']
+    aluno.media_final = aluno.calcular_media()
+    aluno.turma_id = int(novo_aluno['turma_id'])
 
     db_serv.session.commit()
 
